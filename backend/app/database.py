@@ -16,6 +16,10 @@ def _get_async_url(url: str) -> str:
         return url.replace("sqlite:///", "sqlite+aiosqlite:///")
     if url.startswith("postgresql://"):
         return url.replace("postgresql://", "postgresql+asyncpg://")
+    if url.startswith("mysql://"):
+        return url.replace("mysql://", "mysql+aiomysql://")
+    if url.startswith("mysql+mysqldb://"):
+        return url.replace("mysql+mysqldb://", "mysql+aiomysql://")
     return url
 
 
@@ -26,7 +30,7 @@ engine = create_async_engine(
     echo=False,
     pool_pre_ping=True,
     # SQLite لا يدعم pool size
-    **({"pool_size": 10, "max_overflow": 20} if "postgresql" in DATABASE_URL else {})
+    **(({"pool_size": 10, "max_overflow": 20}) if ("postgresql" in DATABASE_URL or "mysql" in DATABASE_URL) else {})
 )
 
 async_session_maker = async_sessionmaker(

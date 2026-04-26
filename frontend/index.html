@@ -576,52 +576,6 @@ function Landing({ onCTA }) {
             <p className="text-ink-muted text-lg max-w-2xl mx-auto">عندما تطرح سؤالاً مهماً على نموذج واحد، تحصل على وجهة نظر واحدة. هنا، تحصل على نقاش حقيقي.</p>
           </div>
 
-          {/* ❆ Manus vs Claude comparison table - جديد */}
-          <div className="mb-12 overflow-x-auto">
-            <div className="text-center mb-5">
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-amber-50 border border-amber-200 rounded-full text-sm font-bold text-amber-700">
-                ❆ Manus v2.2 مقابل LibyaPro AI v2 — مقارنة حقيقية
-              </span>
-            </div>
-            <table className="w-full text-sm border-collapse">
-              <thead>
-                <tr className="border-b-2 border-line">
-                  <th className="text-right py-3 px-4 font-bold text-ink-dim">الميزة</th>
-                  <th className="py-3 px-4 text-center">
-                    <span className="inline-flex items-center gap-1.5 font-bold" style={{color:'#D97706'}}>❆ Manus v2.2</span>
-                  </th>
-                  <th className="py-3 px-4 text-center">
-                    <span className="inline-flex items-center gap-1.5 font-bold" style={{color:'#C2410C'}}>LibyaPro AI v2</span>
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-line/50">
-                {[
-                  ['بحث الويب بدون API key', '✅ DuckDuckGo', '✅ DuckDuckGo'],
-                  ['بحث الويب Premium', '❓ غير متاح', '✅ Brave + Tavily'],
-                  ['توليد صور بدون API key', '✅ Manus Image API', '❌ يحتاج DALL-E key'],
-                  ['TTS (استماع) بدون API key', '✅ gTTS مجاني', '❌ يحتاج OpenAI key'],
-                  ['تنفيذ كود Python', '✅ Sandbox حقيقي', '✅ Sandbox حقيقي'],
-                  ['توليد فيديو', '❌ غير متاح', '✅ 3 نماذج Replicate'],
-                  ['عدد النماذج', '✅ 5 نماذج (Claude+GPT+Gemini+DS+Manus)', '✅ 4 نماذج حقيقية'],
-                  ['نمط الإجماع 3 مراحل', '✅ موجود', '✅ موجود'],
-                  ['Vision (تحليل صور)', '✅ مدعوم', '✅ Claude+GPT+Gemini'],
-                  ['STT (تسجيل صوتي)', '✅ Web Speech API', '✅ Web Speech API'],
-                  ['ثنائي AR/EN + RTL', '✅ مدعوم', '✅ مدعوم'],
-                  ['مكتبة الصور + تكبير', '✅ موجودة', '✅ موجودة'],
-                  ['Tools Panel مدمج', '✅ موجود', '✅ موجود'],
-                  ['ملكية الكود الكاملة', '❓ بيئة Manus', '✅ VPS مستقل'],
-                ].map(([feat, manus, claude], i) => (
-                  <tr key={i} className={i % 2 === 0 ? 'bg-surface/30' : ''}>
-                    <td className="py-2.5 px-4 text-ink font-medium">{feat}</td>
-                    <td className="py-2.5 px-4 text-center text-sm">{manus}</td>
-                    <td className="py-2.5 px-4 text-center text-sm">{claude}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <p className="text-xs text-ink-dim mt-3 text-center">تحديث آخر: أبريل 2026 — البيانات مبنية على اختبار حقيقي</p>
-          </div>
           <div className="grid md:grid-cols-2 gap-5 mb-10">
             {/* Single model */}
             <div className="card-soft rounded-2xl p-7 opacity-90">
