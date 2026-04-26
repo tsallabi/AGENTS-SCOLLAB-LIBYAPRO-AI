@@ -103,7 +103,7 @@ app.include_router(support_router, prefix="/api")
 app.include_router(auth_google_router, prefix="/api")
 app.include_router(billing_lemon_router, prefix="/api")
 app.include_router(images_router, prefix="/api")
-app.include_router(manus_exclusive_router)  # prefix already set in router
+app.include_router(manus_exclusive_router, prefix="/api")  # /api/manus/*
 
 
 @app.get("/api/health")

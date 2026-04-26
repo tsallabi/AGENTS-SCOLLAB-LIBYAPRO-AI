@@ -35,3 +35,4 @@ aiosqlite==0.22.1
 # --- Testing ---
 pytest==8.3.3
 pytest-asyncio==0.24.0
+ddgs>=1.0.0

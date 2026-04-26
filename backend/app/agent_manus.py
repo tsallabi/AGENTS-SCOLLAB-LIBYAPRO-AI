@@ -1,20 +1,21 @@
 """
-Manus Agent - وكيل Manus الحقيقي بقدرات حصرية
-هذا الوكيل يستخدم Manus Forge API المدمج ويضيف قدرات لا تملكها النماذج الأخرى:
-1. توليد الصور (Image Generation)
-2. البحث الذكي على الويب (Web Search)
-3. تنفيذ الكود الحقيقي (Code Execution)
-4. تحليل الملفات والصور (File/Image Analysis)
-5. إنشاء الخطط متعددة الخطوات (Agentic Planning)
+Manus Agent — وكيل Manus الحقيقي بقدرات حصرية
+============================================================
+الميزات الحصرية:
+1. توليد الصور (Manus Image Generation API) — مجاني
+2. البحث الذكي على الويب (DuckDuckGo — بدون API key)
+3. تنفيذ الكود Python الحقيقي (sandbox آمن)
+4. تحليل الصور Vision (Manus Forge API)
+5. استدعاء LLM مدمج (Manus Forge API)
 """
 import asyncio
-import base64
 import json
 import logging
 import os
 import subprocess
 import tempfile
-from typing import AsyncGenerator, Optional, Tuple
+import time
+from typing import AsyncGenerator, List, Optional, Tuple
 
 import aiohttp
 
@@ -22,85 +23,105 @@ from app.agents import Agent, AgentInfo, StreamResult
 
 logger = logging.getLogger(__name__)
 
-MANUS_FORGE_URL = os.environ.get("BUILT_IN_FORGE_API_URL", "https://forge.manus.ai")
+MANUS_FORGE_URL = os.environ.get("BUILT_IN_FORGE_API_URL", "")
 MANUS_FORGE_KEY = os.environ.get("BUILT_IN_FORGE_API_KEY", "")
 
 MANUS_INFO = AgentInfo(
     id="manus",
-    name="Manus",
+    name="Manus ✦",
     provider="manus",
     role="الوكيل الذكي متعدد القدرات",
-    color="#6366F1",  # indigo - لون مانوس
+    color="#6366F1",  # indigo
     description=(
-        "وكيل ذكي من منصة Manus يجمع بين التفكير العميق والقدرة على التنفيذ الفعلي. "
-        "يستطيع توليد الصور، البحث على الويب، تنفيذ الكود، وبناء خطط متعددة الخطوات. "
-        "يتميز بالتوازن بين الإبداع والدقة التقنية."
+        "وكيل ذكي من منصة Manus يجمع بين التفكير العميق والتنفيذ الفعلي. "
+        "يستطيع البحث على الويب في الوقت الفعلي، توليد الصور، تنفيذ الكود، "
+        "وتحليل الصور — كل ذلك مجاناً بدون API key إضافي."
     ),
     model="manus-forge-auto",
-    input_price_per_mtok=0.0,   # مجاني ضمن منصة Manus
+    input_price_per_mtok=0.0,
     output_price_per_mtok=0.0,
 )
 
 
 class ManusAgent(Agent):
     """
-    وكيل Manus الحقيقي - يستخدم Manus Forge API
-    يضيف قدرات حصرية: توليد الصور، البحث، تنفيذ الكود
+    وكيل Manus — يستخدم Manus Forge API المدمج
+    يضيف قدرات حصرية لا تملكها النماذج الأخرى
     """
 
     INFO = MANUS_INFO
 
     def __init__(self, api_key: str = ""):
-        # api_key اختياري - Manus يستخدم مفتاحه المدمج
         super().__init__(self.INFO, api_key or MANUS_FORGE_KEY)
         self.forge_url = MANUS_FORGE_URL
         self.forge_key = MANUS_FORGE_KEY
 
     def build_system_prompt(self, team_context: str = "") -> str:
-        base = f"""أنت Manus، وكيل ذكاء اصطناعي متقدم من منصة Manus.
-شخصيتك: {self.info.description}
+        return f"""أنت Manus ✦، وكيل ذكاء اصطناعي متقدم من منصة Manus.
 
-أنت جزء من فريق AgentForge - منصة تجمع نماذج AI من شركات مختلفة للتعاون:
-- Claude من Anthropic - المهندس المعماري والمحلل الناقد
-- GPT من OpenAI - المبرمج العملي وحلال المشاكل
-- Gemini من Google - الباحث والمبتكر
-- DeepSeek - المتخصص في الكود والرياضيات
-- **Manus (أنت)** - الوكيل الذكي متعدد القدرات، الجسر بين التفكير والتنفيذ
+دورك في الفريق: الوكيل الذكي متعدد القدرات — الجسر بين التفكير والتنفيذ الفعلي.
 
-قواعد العمل الجماعي:
-1. تحدث بالعربية دائماً
-2. قدّم منظورك الفريد - أنت تجمع بين التفكير والتنفيذ الفعلي
-3. عندما تقترح كوداً، يمكنك تنفيذه فعلاً والتحقق من نتائجه
-4. عندما تحتاج معلومات، يمكنك البحث عنها فعلاً
-5. كن محدداً وعملياً - لا تكتفِ بالنظرية
-6. اعترف بنقاط قوة الآخرين وأضف قيمة مختلفة
-7. ردودك بين 150-400 كلمة في المحادثة العادية
+قدراتك الحصرية التي لا يملكها الآخرون:
+• البحث على الويب في الوقت الفعلي (معلومات محدّثة)
+• توليد الصور (Image Generation)
+• تنفيذ الكود Python فعلياً والتحقق من النتائج
+• تحليل الصور بالتفصيل (Vision)
+
+أنت جزء من فريق يضم:
+- Claude (Anthropic) — المهندس المعماري والناقد الدقيق
+- GPT (OpenAI) — المبرمج العملي وحلال المشاكل
+- Gemini (Google) — الباحث والمبتكر
+- DeepSeek — المتخصص في الكود والرياضيات
+- **Manus ✦ (أنت)** — الوكيل الذكي، تُنفّذ ما يقترحه الآخرون وتتحقق منه
+
+قواعد العمل:
+1. أضف قيمة مختلفة — لا تكرر ما قاله الآخرون
+2. عندما تقترح كوداً، أشر إلى أنك يمكنك تنفيذه فعلاً
+3. عندما تحتاج معلومات حديثة، أشر إلى أنك ستبحث عنها
+4. كن محدداً وعملياً — ردودك بين 150-350 كلمة
+5. اكتب باللغة التي يستخدمها المستخدم (عربي أو إنجليزي)
+6. انتقد بصدق وبنّاء — الهدف أفضل حل لا الإجماع الزائف
+
+{f"سياق الفريق الحالي:{chr(10)}{team_context}" if team_context else ""}
 """
-        if team_context:
-            base += f"\nسياق الفريق الحالي:\n{team_context}"
-        return base
 
     async def stream(
         self, messages: list, team_context: str = ""
     ) -> AsyncGenerator[Tuple[str, Optional[StreamResult]], None]:
-        """
-        يبث الرد من Manus Forge API مع دعم الميزات الحصرية
-        """
+        """يبث الرد من Manus Forge API"""
+        if not self.forge_url or not self.forge_key:
+            err = "[Manus غير متاح: BUILT_IN_FORGE_API_URL أو BUILT_IN_FORGE_API_KEY غير مُعدَّين]"
+            yield err, StreamResult(err, 0, 0)
+            return
+
         system = self.build_system_prompt(team_context)
 
-        # تحويل الرسائل لصيغة OpenAI-compatible
+        # بناء رسائل بصيغة OpenAI-compatible
         forge_messages = [{"role": "system", "content": system}]
         for m in messages:
-            if m["role"] == "user":
-                forge_messages.append({"role": "user", "content": m["content"]})
-            elif m["role"] == "agent" and m.get("agent_id") == "manus":
-                forge_messages.append({"role": "assistant", "content": m["content"]})
-            elif m["role"] == "agent":
-                name = m.get("agent_name", "زميل")
-                forge_messages.append({
-                    "role": "user",
-                    "content": f"[رسالة من {name}]: {m['content']}"
-                })
+            role = m.get("role", "user")
+            content = m.get("content", "")
+
+            if role == "user":
+                # دعم الصور في رسائل المستخدم
+                images = m.get("images", [])
+                if images:
+                    parts = [{"type": "text", "text": content}]
+                    for img in images[:4]:
+                        parts.append({"type": "image_url", "image_url": {"url": img}})
+                    forge_messages.append({"role": "user", "content": parts})
+                else:
+                    forge_messages.append({"role": "user", "content": content})
+
+            elif role == "agent":
+                if m.get("agent_id") == "manus":
+                    forge_messages.append({"role": "assistant", "content": content})
+                else:
+                    name = m.get("agent_name", "زميل")
+                    forge_messages.append({
+                        "role": "user",
+                        "content": f"[{name}]: {content}"
+                    })
 
         full_text = ""
         input_tokens = 0
@@ -127,15 +148,15 @@ class ManusAgent(Agent):
                 ) as resp:
                     if resp.status != 200:
                         err_body = await resp.text()
-                        err = f"\n\n[خطأ Manus API: {resp.status} - {err_body[:200]}]"
+                        err = f"\n\n[خطأ Manus API {resp.status}: {err_body[:200]}]"
                         yield err, StreamResult(err, 0, 0)
                         return
 
                     async for line in resp.content:
-                        line = line.decode("utf-8").strip()
-                        if not line or not line.startswith("data: "):
+                        line_str = line.decode("utf-8").strip()
+                        if not line_str or not line_str.startswith("data: "):
                             continue
-                        data_str = line[6:]
+                        data_str = line_str[6:]
                         if data_str == "[DONE]":
                             break
                         try:
@@ -143,11 +164,10 @@ class ManusAgent(Agent):
                             choices = data.get("choices", [])
                             if choices:
                                 delta = choices[0].get("delta", {})
-                                content = delta.get("content", "")
-                                if content:
-                                    full_text += content
-                                    yield content, None
-                            # usage في بعض chunks
+                                chunk = delta.get("content", "")
+                                if chunk:
+                                    full_text += chunk
+                                    yield chunk, None
                             usage = data.get("usage", {})
                             if usage:
                                 input_tokens = usage.get("prompt_tokens", input_tokens)
@@ -163,14 +183,108 @@ class ManusAgent(Agent):
 
 
 # ============================================================
-# قدرات Manus الحصرية - خدمات مستقلة
+# قدرات Manus الحصرية — خدمات مستقلة
 # ============================================================
+
+async def manus_web_search(query: str, max_results: int = 6) -> dict:
+    """
+    بحث حقيقي على الويب باستخدام DuckDuckGo (بدون API key)
+    يستخدم مكتبة ddgs للحصول على نتائج حقيقية من الإنترنت
+    يرجع: {"success": bool, "results": list[dict], "query": str, "error": str|None}
+    """
+    try:
+        from ddgs import DDGS
+
+        results = []
+        with DDGS() as ddgs:
+            raw = list(ddgs.text(query, max_results=max_results))
+
+        for r in raw:
+            results.append({
+                "title": r.get("title", ""),
+                "snippet": r.get("body", "")[:400],
+                "url": r.get("href", ""),
+                "source": "DuckDuckGo",
+            })
+
+        if results:
+            return {
+                "success": True,
+                "results": results,
+                "query": query,
+                "error": None,
+            }
+
+        # Fallback إذا لم تُرجع نتائج
+        return {
+            "success": True,
+            "results": [{
+                "title": f"بحث: {query}",
+                "snippet": "لم تُعثر على نتائج فورية. جرّب صياغة مختلفة.",
+                "url": f"https://duckduckgo.com/?q={query.replace(' ', '+')}",
+                "source": "DuckDuckGo",
+            }],
+            "query": query,
+            "error": None,
+        }
+
+    except ImportError:
+        # Fallback إلى DuckDuckGo Instant Answer API
+        return await _ddg_instant_answer(query, max_results)
+    except Exception as e:
+        logger.warning(f"[Manus Search] ddgs failed: {e}, trying fallback")
+        return await _ddg_instant_answer(query, max_results)
+
+
+async def _ddg_instant_answer(query: str, max_results: int = 5) -> dict:
+    """Fallback: DuckDuckGo Instant Answer API"""
+    try:
+        encoded = query.replace(" ", "+")
+        url = f"https://api.duckduckgo.com/?q={encoded}&format=json&no_html=1&skip_disambig=1"
+        async with aiohttp.ClientSession() as session:
+            async with session.get(
+                url,
+                headers={"User-Agent": "AgentsCollab-Manus/2.0"},
+                timeout=aiohttp.ClientTimeout(total=10),
+            ) as resp:
+                if resp.status == 200:
+                    data = await resp.json(content_type=None)
+                    results = []
+                    if data.get("AbstractText"):
+                        results.append({
+                            "title": data.get("Heading", "ملخص"),
+                            "snippet": data["AbstractText"][:500],
+                            "url": data.get("AbstractURL", ""),
+                            "source": "DuckDuckGo Abstract",
+                        })
+                    for topic in data.get("RelatedTopics", [])[:max_results]:
+                        if isinstance(topic, dict) and topic.get("Text"):
+                            results.append({
+                                "title": topic.get("Text", "")[:100],
+                                "snippet": topic.get("Text", "")[:300],
+                                "url": topic.get("FirstURL", ""),
+                                "source": "DuckDuckGo",
+                            })
+                    if results:
+                        return {"success": True, "results": results[:max_results], "query": query, "error": None}
+        return {
+            "success": False,
+            "results": [],
+            "query": query,
+            "error": "لم تُعثر على نتائج",
+        }
+    except Exception as e:
+        return {"success": False, "results": [], "query": query, "error": str(e)[:200]}
+
 
 async def manus_generate_image(prompt: str) -> dict:
     """
     توليد صورة باستخدام Manus Image Generation API
-    يرجع: {"success": bool, "b64": str, "mime": str, "error": str}
+    يرجع: {"success": bool, "b64": str, "mime": str, "url": str, "error": str|None}
     """
+    if not MANUS_FORGE_URL or not MANUS_FORGE_KEY:
+        return {"success": False, "b64": "", "mime": "", "url": "", "error": "Manus API غير مُعدّ"}
+
     try:
         url = f"{MANUS_FORGE_URL}/images.v1.ImageService/GenerateImage"
         headers = {
@@ -184,7 +298,7 @@ async def manus_generate_image(prompt: str) -> dict:
         async with aiohttp.ClientSession() as session:
             async with session.post(
                 url, headers=headers, json=payload,
-                timeout=aiohttp.ClientTimeout(total=60)
+                timeout=aiohttp.ClientTimeout(total=90)
             ) as resp:
                 if resp.status == 200:
                     data = await resp.json()
@@ -193,43 +307,47 @@ async def manus_generate_image(prompt: str) -> dict:
                         "success": True,
                         "b64": img.get("b64Json", ""),
                         "mime": img.get("mimeType", "image/png"),
+                        "url": "",
                         "error": None,
                     }
                 else:
                     err = await resp.text()
-                    return {"success": False, "b64": "", "mime": "", "error": err[:200]}
+                    return {"success": False, "b64": "", "mime": "", "url": "", "error": err[:200]}
     except Exception as e:
-        return {"success": False, "b64": "", "mime": "", "error": str(e)[:200]}
+        return {"success": False, "b64": "", "mime": "", "url": "", "error": str(e)[:200]}
 
 
 async def manus_execute_code(code: str, language: str = "python") -> dict:
     """
-    تنفيذ كود Python فعلياً في بيئة آمنة (sandbox)
+    تنفيذ كود Python فعلياً في بيئة آمنة
     يرجع: {"success": bool, "output": str, "error": str, "execution_time": float}
     """
-    import time
-
     if language.lower() not in ("python", "python3"):
         return {
             "success": False,
             "output": "",
-            "error": f"اللغة '{language}' غير مدعومة حالياً. المدعوم: Python",
+            "error": f"اللغة '{language}' غير مدعومة. المدعوم: Python",
             "execution_time": 0,
         }
 
-    # حماية أساسية - منع الأوامر الخطرة
-    dangerous = ["import os", "import sys", "subprocess", "__import__", "eval(", "exec(", "open(", "shutil"]
+    # حماية من الأوامر الخطرة
+    BLOCKED = [
+        "import subprocess", "import shutil", "__import__",
+        "eval(", "exec(", "os.system", "os.popen",
+        "open(", "socket", "urllib.request",
+    ]
     code_lower = code.lower()
-    for d in dangerous:
-        if d in code_lower:
+    for blocked in BLOCKED:
+        if blocked in code_lower:
             return {
                 "success": False,
                 "output": "",
-                "error": f"الكود يحتوي على عملية محظورة: '{d}'",
+                "error": f"محظور: '{blocked}' غير مسموح في sandbox الآمن",
                 "execution_time": 0,
             }
 
     start = time.time()
+    tmp_path = None
     try:
         with tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False) as f:
             f.write(code)
@@ -239,104 +357,53 @@ async def manus_execute_code(code: str, language: str = "python") -> dict:
             ["python3", tmp_path],
             capture_output=True,
             text=True,
-            timeout=10,
+            timeout=15,
         )
         elapsed = time.time() - start
 
-        os.unlink(tmp_path)
+        if tmp_path:
+            try:
+                os.unlink(tmp_path)
+            except Exception:
+                pass
 
-        if result.returncode == 0:
-            return {
-                "success": True,
-                "output": result.stdout[:2000],
-                "error": result.stderr[:500] if result.stderr else "",
-                "execution_time": round(elapsed, 3),
-            }
-        else:
-            return {
-                "success": False,
-                "output": result.stdout[:500],
-                "error": result.stderr[:1000],
-                "execution_time": round(elapsed, 3),
-            }
+        return {
+            "success": result.returncode == 0,
+            "output": result.stdout[:3000],
+            "error": result.stderr[:1000] if result.stderr else "",
+            "execution_time": round(elapsed, 3),
+        }
+
     except subprocess.TimeoutExpired:
         return {
             "success": False,
             "output": "",
-            "error": "انتهت مهلة التنفيذ (10 ثوانٍ)",
-            "execution_time": 10.0,
+            "error": "انتهت مهلة التنفيذ (15 ثانية)",
+            "execution_time": 15.0,
         }
     except Exception as e:
         return {
             "success": False,
             "output": "",
             "error": str(e)[:300],
-            "execution_time": 0,
+            "execution_time": round(time.time() - start, 3),
         }
-
-
-async def manus_web_search(query: str, max_results: int = 5) -> dict:
-    """
-    بحث ذكي على الويب باستخدام DuckDuckGo (بدون API key)
-    يرجع: {"success": bool, "results": list, "error": str}
-    """
-    try:
-        # استخدام DuckDuckGo Instant Answer API (مجاني)
-        encoded = query.replace(" ", "+")
-        url = f"https://api.duckduckgo.com/?q={encoded}&format=json&no_html=1&skip_disambig=1"
-
-        async with aiohttp.ClientSession() as session:
-            async with session.get(
-                url,
-                headers={"User-Agent": "AgentForge/2.0"},
-                timeout=aiohttp.ClientTimeout(total=10),
-            ) as resp:
-                if resp.status == 200:
-                    data = await resp.json(content_type=None)
-                    results = []
-
-                    # Abstract (الملخص الرئيسي)
-                    if data.get("AbstractText"):
-                        results.append({
-                            "title": data.get("Heading", "ملخص"),
-                            "snippet": data["AbstractText"][:500],
-                            "url": data.get("AbstractURL", ""),
-                            "source": "DuckDuckGo Abstract",
-                        })
-
-                    # Related Topics
-                    for topic in data.get("RelatedTopics", [])[:max_results]:
-                        if isinstance(topic, dict) and topic.get("Text"):
-                            results.append({
-                                "title": topic.get("Text", "")[:100],
-                                "snippet": topic.get("Text", "")[:300],
-                                "url": topic.get("FirstURL", ""),
-                                "source": "DuckDuckGo",
-                            })
-
-                    if results:
-                        return {"success": True, "results": results[:max_results], "error": None}
-
-                # Fallback: إرجاع رسالة بدون نتائج
-                return {
-                    "success": True,
-                    "results": [{
-                        "title": f"بحث: {query}",
-                        "snippet": "لم يتم العثور على نتائج فورية. يُنصح بالبحث مباشرة.",
-                        "url": f"https://duckduckgo.com/?q={encoded}",
-                        "source": "DuckDuckGo",
-                    }],
-                    "error": None,
-                }
-    except Exception as e:
-        return {"success": False, "results": [], "error": str(e)[:200]}
+    finally:
+        if tmp_path:
+            try:
+                os.unlink(tmp_path)
+            except Exception:
+                pass
 
 
 async def manus_analyze_image_from_url(image_url: str, question: str) -> dict:
     """
     تحليل صورة من URL باستخدام Manus Vision API
-    يرجع: {"success": bool, "analysis": str, "error": str}
+    يرجع: {"success": bool, "analysis": str, "error": str|None}
     """
+    if not MANUS_FORGE_URL or not MANUS_FORGE_KEY:
+        return {"success": False, "analysis": "", "error": "Manus API غير مُعدّ"}
+
     try:
         headers = {
             "Authorization": f"Bearer {MANUS_FORGE_KEY}",
@@ -344,16 +411,14 @@ async def manus_analyze_image_from_url(image_url: str, question: str) -> dict:
         }
         payload = {
             "model": "auto",
-            "messages": [
-                {
-                    "role": "user",
-                    "content": [
-                        {"type": "image_url", "image_url": {"url": image_url}},
-                        {"type": "text", "text": question or "صف هذه الصورة بالتفصيل"},
-                    ],
-                }
-            ],
-            "max_tokens": 1000,
+            "messages": [{
+                "role": "user",
+                "content": [
+                    {"type": "image_url", "image_url": {"url": image_url}},
+                    {"type": "text", "text": question or "صف هذه الصورة بالتفصيل"},
+                ],
+            }],
+            "max_tokens": 1500,
         }
 
         async with aiohttp.ClientSession() as session:

@@ -1519,6 +1519,170 @@ function Bubble({ msg, isStreaming }) {
   );
 }
 
+
+// ============================================================
+// MANUS EXCLUSIVE PANEL — ميزات حصرية لا تتوفر في نسخة Claude
+// ============================================================
+function ManusExclusivePanel({ onInsertText, disabled }) {
+  const [tab, setTab] = useState(null); // null | 'search' | 'image' | 'code'
+  const [searchQ, setSearchQ] = useState('');
+  const [searchRes, setSearchRes] = useState(null);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [imgPrompt, setImgPrompt] = useState('');
+  const [imgResult, setImgResult] = useState(null);
+  const [imgLoading, setImgLoading] = useState(false);
+  const [codeText, setCodeText] = useState('');
+  const [codeResult, setCodeResult] = useState(null);
+  const [codeLoading, setCodeLoading] = useState(false);
+
+  async function doSearch() {
+    if (!searchQ.trim()) return;
+    setSearchLoading(true); setSearchRes(null);
+    try {
+      const r = await fetch('/api/manus/web-search', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ query: searchQ, max_results: 5 })
+      });
+      const d = await r.json();
+      setSearchRes(d);
+    } catch(e) { setSearchRes({ error: e.message }); }
+    finally { setSearchLoading(false); }
+  }
+
+  async function doImage() {
+    if (!imgPrompt.trim()) return;
+    setImgLoading(true); setImgResult(null);
+    try {
+      const r = await fetch('/api/manus/generate-image', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ prompt: imgPrompt })
+      });
+      const d = await r.json();
+      setImgResult(d);
+    } catch(e) { setImgResult({ error: e.message }); }
+    finally { setImgLoading(false); }
+  }
+
+  async function doCode() {
+    if (!codeText.trim()) return;
+    setCodeLoading(true); setCodeResult(null);
+    try {
+      const r = await fetch('/api/manus/execute-code', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ code: codeText, language: 'python' })
+      });
+      const d = await r.json();
+      setCodeResult(d);
+    } catch(e) { setCodeResult({ error: e.message }); }
+    finally { setCodeLoading(false); }
+  }
+
+  const tabs = [
+    { id: 'search', icon: '🔍', label: 'بحث الويب', color: '#10B981' },
+    { id: 'image',  icon: '🎨', label: 'توليد صورة', color: '#8B5CF6' },
+    { id: 'code',   icon: '⚡', label: 'تنفيذ كود', color: '#F59E0B' },
+  ];
+
+  return (
+    <div className="border-t border-line bg-surface-soft">
+      {/* Tab bar */}
+      <div className="flex items-center gap-1 px-3 py-1.5 border-b border-line">
+        <span className="text-xs font-bold text-brand mr-2">✦ Manus حصري</span>
+        {tabs.map(t => (
+          <button key={t.id} onClick={() => setTab(tab === t.id ? null : t.id)}
+            className={`px-2.5 py-1 rounded-md text-xs font-medium smooth flex items-center gap-1 ${tab === t.id ? 'bg-brand text-white' : 'hover:bg-paper-soft text-ink-muted'}`}>
+            <span>{t.icon}</span><span>{t.label}</span>
+          </button>
+        ))}
+      </div>
+
+      {/* Search Panel */}
+      {tab === 'search' && (
+        <div className="p-3 space-y-2">
+          <div className="flex gap-2">
+            <input value={searchQ} onChange={e => setSearchQ(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && doSearch()}
+              placeholder="ابحث على الإنترنت..." disabled={searchLoading}
+              className="flex-1 bg-paper border border-line rounded-lg px-3 py-1.5 text-sm focus:border-brand smooth" />
+            <button onClick={doSearch} disabled={searchLoading || !searchQ.trim()}
+              className="px-3 py-1.5 bg-brand text-white rounded-lg text-sm font-medium disabled:opacity-50 smooth">
+              {searchLoading ? '...' : 'بحث'}
+            </button>
+          </div>
+          {searchRes && !searchRes.error && (
+            <div className="space-y-1.5 max-h-48 overflow-y-auto">
+              {(searchRes.results || []).map((r, i) => (
+                <div key={i} className="p-2 rounded-lg bg-paper border border-line hover:border-brand/40 smooth cursor-pointer"
+                  onClick={() => onInsertText && onInsertText(`نتيجة بحث: "${r.title}"\n${r.snippet}\nالمصدر: ${r.url}`)}>
+                  <div className="text-xs font-semibold text-ink truncate">{r.title}</div>
+                  <div className="text-xs text-ink-dim mt-0.5 line-clamp-2">{r.snippet}</div>
+                  <div className="text-xs text-brand mt-0.5 truncate">{r.url}</div>
+                </div>
+              ))}
+              <p className="text-xs text-ink-dim text-center">اضغط على نتيجة لإضافتها للمحادثة</p>
+            </div>
+          )}
+          {searchRes?.error && <p className="text-xs text-red-400">خطأ: {searchRes.error}</p>}
+        </div>
+      )}
+
+      {/* Image Generation Panel */}
+      {tab === 'image' && (
+        <div className="p-3 space-y-2">
+          <div className="flex gap-2">
+            <input value={imgPrompt} onChange={e => setImgPrompt(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && doImage()}
+              placeholder="صف الصورة التي تريد توليدها..." disabled={imgLoading}
+              className="flex-1 bg-paper border border-line rounded-lg px-3 py-1.5 text-sm focus:border-brand smooth" />
+            <button onClick={doImage} disabled={imgLoading || !imgPrompt.trim()}
+              className="px-3 py-1.5 bg-purple-600 text-white rounded-lg text-sm font-medium disabled:opacity-50 smooth">
+              {imgLoading ? '...' : 'توليد'}
+            </button>
+          </div>
+          {imgLoading && <p className="text-xs text-ink-dim text-center animate-pulse">جاري توليد الصورة... (15-30 ثانية)</p>}
+          {imgResult?.data_url && (
+            <div className="text-center">
+              <img src={imgResult.data_url} alt={imgPrompt} className="max-h-48 rounded-lg mx-auto border border-line" />
+              <p className="text-xs text-ink-dim mt-1">تم توليد الصورة بواسطة Manus ✦</p>
+            </div>
+          )}
+          {imgResult?.error && <p className="text-xs text-red-400">خطأ: {imgResult.error}</p>}
+        </div>
+      )}
+
+      {/* Code Execution Panel */}
+      {tab === 'code' && (
+        <div className="p-3 space-y-2">
+          <textarea value={codeText} onChange={e => setCodeText(e.target.value)}
+            placeholder="اكتب كود Python هنا..." rows={4} disabled={codeLoading}
+            className="w-full bg-paper border border-line rounded-lg px-3 py-2 text-sm font-mono focus:border-brand smooth resize-none" />
+          <div className="flex gap-2">
+            <button onClick={doCode} disabled={codeLoading || !codeText.trim()}
+              className="px-3 py-1.5 bg-amber-500 text-white rounded-lg text-sm font-medium disabled:opacity-50 smooth">
+              {codeLoading ? 'جاري التنفيذ...' : '⚡ تنفيذ'}
+            </button>
+            {codeResult && (
+              <button onClick={() => onInsertText && onInsertText(`نتيجة تنفيذ الكود:\n\`\`\`\n${codeResult.output || codeResult.error}\n\`\`\``)}
+                className="px-3 py-1.5 bg-surface border border-line rounded-lg text-sm text-ink-muted hover:text-ink smooth">
+                إضافة للمحادثة
+              </button>
+            )}
+          </div>
+          {codeResult && (
+            <div className={`rounded-lg p-2 text-xs font-mono ${codeResult.success ? 'bg-green-950/30 border border-green-800/30 text-green-300' : 'bg-red-950/30 border border-red-800/30 text-red-300'}`}>
+              <div className="flex justify-between mb-1">
+                <span className="font-bold">{codeResult.success ? '✓ نجح' : '✗ فشل'}</span>
+                {codeResult.execution_time_seconds && <span className="text-ink-dim">{codeResult.execution_time_seconds}s</span>}
+              </div>
+              <pre className="whitespace-pre-wrap max-h-32 overflow-y-auto">{codeResult.output || codeResult.error}</pre>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function InputBar({ onSend, disabled, placeholder, prefill }) {
   const [text, setText] = useState('');
   const [images, setImages] = useState([]);  // [{name, dataUrl}]
@@ -1568,8 +1732,18 @@ function InputBar({ onSend, disabled, placeholder, prefill }) {
 
   const removeImage = (idx) => setImages(prev => prev.filter((_, i) => i !== idx));
 
+  const insertText = (t) => {
+    setText(prev => prev ? prev + '\n' + t : t);
+    if (taRef.current) {
+      taRef.current.style.height = 'auto';
+      taRef.current.style.height = Math.min(taRef.current.scrollHeight, 200) + 'px';
+      taRef.current.focus();
+    }
+  };
   return (
-    <div className="border-t border-line p-3 md:p-4 bg-paper">
+    <div className="bg-paper">
+      <ManusExclusivePanel onInsertText={insertText} disabled={disabled} />
+      <div className="border-t border-line p-3 md:p-4">
       <div className="max-w-3xl mx-auto">
         <div className="card-soft rounded-2xl p-3 focus-within:border-brand/50 smooth">
           {/* Image previews */}
