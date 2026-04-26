@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Agents Collab + Manus — 5 عقول · إجماع واحد · من LibyaPro AI</title>
+<title>Agents Collab — Where AI Models Debate. From LibyaPro AI</title>
 <meta name="description" content="Agents Collab from LibyaPro AI — The first platform where Claude, GPT, and Gemini debate together as a council. Three minds. One verdict. Better than any single model." />
 <meta name="keywords" content="AI collaboration, multi-agent AI, Claude GPT Gemini, AI council, Arabic AI, LibyaPro" />
 <!-- Open Graph -->
@@ -52,6 +52,7 @@
           gpt:    '#16A34A',
           gemini: '#2563EB',
           deepseek: '#7C3AED',
+          manus:  '#D97706',
         },
       }
     }
@@ -265,7 +266,7 @@ const AGENT_META = {
   gpt:      { name: 'GPT',      color: '#16A34A', desc: 'المبرمج العملي' },
   gemini:   { name: 'Gemini',   color: '#2563EB', desc: 'الباحث المبتكر' },
   deepseek: { name: 'DeepSeek', color: '#7C3AED', desc: 'الرياضي والكود' },
-  manus:    { name: 'Manus',    color: '#0EA5E9', desc: 'المنسق الذكي ✦ مجاني', exclusive: true, badge: '✦ حصري' },
+  manus:    { name: 'M Manus',  color: '#D97706', desc: 'وكيل Manus الحصري' },
 };
 
 const MODES = {
@@ -349,7 +350,7 @@ const TRANSLATIONS = {
     hero_badge: 'حيث تتداول نماذج الذكاء الاصطناعي وتقرّر',
     hero_h1_a: 'ثلاثة عقول.',
     hero_h1_b: 'قرار واحد. أفضل من أي نموذج منفرد.',
-    hero_p: 'Claude · GPT · Gemini · DeepSeek · Manus — خمسة نماذج من خمس شركات مختلفة. في هذه النسخة يجلسون كأعضاء مجلس واحد: يقترحون، ينتقدون اقتراحات بعضهم، ويتنازلون — حتى يصل إليك أفضل قرار. Manus مجاني بالكامل ولا يحتاج API key.',
+    hero_p: 'Claude · GPT · Gemini — كلٌّ يُعطيك منظوراً واحداً. في Agents Collab يجلسون كأعضاء مجلس واحد: يقترحون، ينتقدون اقتراحات بعضهم، يدافعون عن أفكارهم، ويتنازلون — حتى يصل إليك أفضل قرار يمكنهم اتخاذه مجتمعين.',
     hero_cta_signup: 'ابدأ مجاناً — بدون بطاقة ائتمان',
     hero_cta_compare: 'لماذا أفضل من Claude منفرداً؟',
     hero_p1: '3 نماذج من 3 شركات', hero_p2: 'تعاون حقيقي - لا وهم', hero_p3: '50 رسالة مجاناً',
@@ -357,7 +358,7 @@ const TRANSLATIONS = {
     compare_h: 'لماذا 3 عقول > عقل واحد؟',
     compare_sub: 'عندما تطرح سؤالاً مهماً على نموذج واحد، تحصل على وجهة نظر واحدة. هنا، تحصل على نقاش حقيقي.',
     compare_old_label: 'الحلول التقليدية', compare_old_h: 'نموذج واحد · رأي واحد',
-    compare_new_label: 'Agents Collab + Manus', compare_new_h: '5 عقول · 5 شركات · إجماع واحد',
+    compare_new_label: 'Agents Collab', compare_new_h: '3 عقول · 3 شركات · إجماع واحد',
     how_label: 'آلية العمل', how_h: 'كيف تتفق النماذج؟',
     how_sub: 'ثلاث مراحل تجعل الإجابة أفضل من أي نموذج منفرد',
     features_label: 'الاستخدامات', features_h: 'ثلاث طرق للاستخدام',
@@ -375,7 +376,7 @@ const TRANSLATIONS = {
     hero_badge: 'Where AI models deliberate and decide',
     hero_h1_a: 'Three minds.',
     hero_h1_b: 'One verdict. Better than any single model.',
-    hero_p: 'Claude · GPT · Gemini · DeepSeek · Manus — five models from five companies. In this edition they sit as a council: they propose, critique each other, and concede — so you receive the best decision. Manus is free and needs no API key.',
+    hero_p: 'Claude · GPT · Gemini — each gives you one perspective. In Agents Collab they sit as a council: they propose, critique each other, defend their ideas, and concede — so you receive the best decision they can make together.',
     hero_cta_signup: 'Start free — no credit card',
     hero_cta_compare: 'Why better than Claude alone?',
     hero_p1: '3 models from 3 companies', hero_p2: 'Real collaboration - no illusion', hero_p3: '50 messages free',
@@ -383,7 +384,7 @@ const TRANSLATIONS = {
     compare_h: 'Why 3 minds > 1 mind?',
     compare_sub: 'When you ask a single model an important question, you get one viewpoint. Here, you get real debate.',
     compare_old_label: 'Traditional', compare_old_h: 'One model · One opinion',
-    compare_new_label: 'Agents Collab + Manus', compare_new_h: '5 minds · 5 companies · 1 consensus',
+    compare_new_label: 'Agents Collab', compare_new_h: '3 minds · 3 companies · 1 consensus',
     how_label: 'HOW IT WORKS', how_h: 'How do the models reach agreement?',
     how_sub: 'Three phases that make the answer better than any single model',
     features_label: 'USE CASES', features_h: 'Three ways to use it',
@@ -573,6 +574,53 @@ function Landing({ onCTA }) {
             <div className="text-xs font-bold uppercase tracking-widest text-ink-dim mb-3">المقارنة</div>
             <h2 className="text-3xl md:text-5xl font-display font-extrabold mb-4 tracking-tight">لماذا 3 عقول &gt; عقل واحد؟</h2>
             <p className="text-ink-muted text-lg max-w-2xl mx-auto">عندما تطرح سؤالاً مهماً على نموذج واحد، تحصل على وجهة نظر واحدة. هنا، تحصل على نقاش حقيقي.</p>
+          </div>
+
+          {/* ❆ Manus vs Claude comparison table - جديد */}
+          <div className="mb-12 overflow-x-auto">
+            <div className="text-center mb-5">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-amber-50 border border-amber-200 rounded-full text-sm font-bold text-amber-700">
+                ❆ Manus v2.2 مقابل LibyaPro AI v2 — مقارنة حقيقية
+              </span>
+            </div>
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="border-b-2 border-line">
+                  <th className="text-right py-3 px-4 font-bold text-ink-dim">الميزة</th>
+                  <th className="py-3 px-4 text-center">
+                    <span className="inline-flex items-center gap-1.5 font-bold" style={{color:'#D97706'}}>❆ Manus v2.2</span>
+                  </th>
+                  <th className="py-3 px-4 text-center">
+                    <span className="inline-flex items-center gap-1.5 font-bold" style={{color:'#C2410C'}}>LibyaPro AI v2</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-line/50">
+                {[
+                  ['بحث الويب بدون API key', '✅ DuckDuckGo', '✅ DuckDuckGo'],
+                  ['بحث الويب Premium', '❓ غير متاح', '✅ Brave + Tavily'],
+                  ['توليد صور بدون API key', '✅ Manus Image API', '❌ يحتاج DALL-E key'],
+                  ['TTS (استماع) بدون API key', '✅ gTTS مجاني', '❌ يحتاج OpenAI key'],
+                  ['تنفيذ كود Python', '✅ Sandbox حقيقي', '✅ Sandbox حقيقي'],
+                  ['توليد فيديو', '❌ غير متاح', '✅ 3 نماذج Replicate'],
+                  ['عدد النماذج', '✅ 5 نماذج (Claude+GPT+Gemini+DS+Manus)', '✅ 4 نماذج حقيقية'],
+                  ['نمط الإجماع 3 مراحل', '✅ موجود', '✅ موجود'],
+                  ['Vision (تحليل صور)', '✅ مدعوم', '✅ Claude+GPT+Gemini'],
+                  ['STT (تسجيل صوتي)', '✅ Web Speech API', '✅ Web Speech API'],
+                  ['ثنائي AR/EN + RTL', '✅ مدعوم', '✅ مدعوم'],
+                  ['مكتبة الصور + تكبير', '✅ موجودة', '✅ موجودة'],
+                  ['Tools Panel مدمج', '✅ موجود', '✅ موجود'],
+                  ['ملكية الكود الكاملة', '❓ بيئة Manus', '✅ VPS مستقل'],
+                ].map(([feat, manus, claude], i) => (
+                  <tr key={i} className={i % 2 === 0 ? 'bg-surface/30' : ''}>
+                    <td className="py-2.5 px-4 text-ink font-medium">{feat}</td>
+                    <td className="py-2.5 px-4 text-center text-sm">{manus}</td>
+                    <td className="py-2.5 px-4 text-center text-sm">{claude}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p className="text-xs text-ink-dim mt-3 text-center">تحديث آخر: أبريل 2026 — البيانات مبنية على اختبار حقيقي</p>
           </div>
           <div className="grid md:grid-cols-2 gap-5 mb-10">
             {/* Single model */}
@@ -1093,7 +1141,7 @@ function AuthModal({ initialMode, onAuth, onClose }) {
 // ============================================================
 // SIDEBAR
 // ============================================================
-function Sidebar({ user, sessions, currentId, view, onSelect, onCreate, onDelete, onRename, onSettings, onLogout, usage, onAdmin, onHome }) {
+function Sidebar({ user, sessions, currentId, view, onSelect, onCreate, onDelete, onRename, onSettings, onLogout, usage, onAdmin, onHome, onImages, onVideos }) {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
@@ -1108,11 +1156,22 @@ function Sidebar({ user, sessions, currentId, view, onSelect, onCreate, onDelete
       </div>
 
       {!collapsed && (
-        <div className="px-2 pb-1.5">
+        <div className="px-2 pb-1.5 space-y-0.5">
           <button onClick={onHome}
             className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm smooth ${view==='home' ? 'nav-active text-ink' : 'text-ink-muted hover:bg-surface hover:text-ink'}`}>
             <Icon name="home" className="w-4 h-4" />
             <span className="font-semibold">الرئيسية</span>
+          </button>
+          <button onClick={onImages}
+            className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm smooth ${view==='images' ? 'nav-active text-ink' : 'text-ink-muted hover:bg-surface hover:text-ink'}`}>
+            <Icon name="sparkles" className="w-4 h-4" />
+            <span className="font-semibold">مكتبة الصور</span>
+          </button>
+          <button onClick={onVideos}
+            className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm smooth ${view==='videos' ? 'nav-active text-ink' : 'text-ink-muted hover:bg-surface hover:text-ink'}`}>
+            <Icon name="play" className="w-4 h-4" />
+            <span className="font-semibold">مكتبة الفيديو</span>
+            <span className="mr-auto text-[9px] bg-brand-soft text-brand px-1.5 py-0.5 rounded font-bold">جديد</span>
           </button>
         </div>
       )}
@@ -1279,7 +1338,15 @@ function Home({ user, onCreate, agents, sessions }) {
 // ============================================================
 function ChatView({ session, agents, onUpdate, onExport, hasSidePanel, sidePanel, onTogglePanel, messages, currentPhase, isThinking, awaitingChunks, onSend, onCloseSession }) {
   const [prefill, setPrefill] = useState('');
-  const onPromptPick = (p) => setPrefill(p + ' '); // مسافة في النهاية لـ cursor placement
+  const [showImgGen, setShowImgGen] = useState(false);
+  const onPromptPick = (p) => setPrefill(p + ' ');
+
+  const onImageGenerated = (result) => {
+    // أضف الصورة المُولَّدة كرسالة من system في المحادثة (محلياً - لا تُحفظ في DB)
+    // تعرض الصورة في الـ chat
+    const note = `🎨 **تم توليد صورة بـ DALL-E 3:**\n\n![generated](${result.image_url})\n\n_Prompt: ${result.prompt}_`;
+    onSend(note);  // إرسال كـ user message للنماذج لو أردنا - أو يمكن إضافتها فقط للعرض
+  };
   return (
     <div className="flex-1 flex flex-col h-full overflow-hidden bg-paper">
       <header className="border-b border-line px-4 md:px-6 py-3 flex items-center justify-between gap-3 bg-paper/80 backdrop-blur z-10">
@@ -1309,8 +1376,12 @@ function ChatView({ session, agents, onUpdate, onExport, hasSidePanel, sidePanel
         <div className={`flex flex-col h-full overflow-hidden ${sidePanel ? 'w-2/5 border-l border-line' : 'flex-1'}`}>
           <ChatMessages messages={messages} currentPhase={currentPhase} isThinking={isThinking} awaitingChunks={awaitingChunks}
             sessionKind={session.kind} onPromptPick={onPromptPick} />
-          <InputBar onSend={onSend} disabled={isThinking || awaitingChunks} prefill={prefill} />
+          {/* ❆ Manus Exclusive Tools Panel */}
+          <ManusToolsPanel onSend={onSend} disabled={isThinking || awaitingChunks} />
+          <InputBar onSend={onSend} disabled={isThinking || awaitingChunks} prefill={prefill}
+            onOpenImageGen={() => setShowImgGen(true)} />
         </div>
+        {showImgGen && <ImageGeneratorModal onClose={() => setShowImgGen(false)} onGenerated={onImageGenerated} />}
         {sidePanel && (
           <div className="flex-1 h-full overflow-hidden bg-surface-soft">
             {session.kind === 'code' ? <CodePreviewPanel messages={messages} session={session} />
@@ -1494,9 +1565,49 @@ function Bubble({ msg, isStreaming }) {
   }
 
   const meta = AGENT_META[msg.agent_id] || { name: msg.agent_id, color: '#888' };
-  const isManusAgent = msg.agent_id === 'manus';
+  const [playing, setPlaying] = useState(false);
+  const audioRef = useRef(null);
+
+  async function playTTS() {
+    if (playing && audioRef.current) {
+      audioRef.current.pause();
+      setPlaying(false);
+      return;
+    }
+    setPlaying(true);
+    try {
+      // ❆ Manus Free TTS - بدون OpenAI API key
+      const text = msg.content.replace(/[#*`>]/g, '').slice(0, 4000);
+      const res = await fetch(`${API_BASE}/manus/tts/speak`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, lang: 'auto' }),
+      });
+      if (!res.ok) throw new Error(`TTS failed: ${res.status}`);
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const audio = new Audio(url);
+      audioRef.current = audio;
+      audio.onended = () => { setPlaying(false); URL.revokeObjectURL(url); };
+      audio.onerror = () => { setPlaying(false); };
+      audio.play();
+    } catch (e) {
+      setPlaying(false);
+      // fallback to browser TTS
+      if (window.speechSynthesis) {
+        const utt = new SpeechSynthesisUtterance(msg.content.slice(0, 500));
+        utt.lang = 'ar-SA';
+        utt.onend = () => setPlaying(false);
+        window.speechSynthesis.speak(utt);
+      } else {
+        alert('فشل التحويل لصوت: ' + e.message);
+        setPlaying(false);
+      }
+    }
+  }
+
   return (
-    <div className="flex gap-3 fade-in">
+    <div className="flex gap-3 fade-in group">
       <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 text-xs font-bold border"
         style={{ background: meta.color + '12', color: meta.color, borderColor: meta.color + '30' }}>
         {meta.name.charAt(0)}
@@ -1506,6 +1617,20 @@ function Bubble({ msg, isStreaming }) {
           <span style={{ color: meta.color }} className="font-bold">{meta.name}</span>
           <span className="text-ink-dim">·</span>
           <span className="text-ink-dim">{meta.desc}</span>
+          {!isStreaming && msg.content && (
+            <button onClick={playTTS} title="❆ استمع مجاناً (Manus TTS)"
+              className="opacity-0 group-hover:opacity-100 smooth p-1 rounded hover:bg-paper-soft text-ink-dim hover:text-amber-600">
+              {playing ? (
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-3.5 h-3.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" />
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-3.5 h-3.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" />
+                </svg>
+              )}
+            </button>
+          )}
         </div>
         <div ref={ref} className={`markdown-body ${isStreaming ? 'typing' : ''}`}
           dangerouslySetInnerHTML={{ __html: renderMarkdown(msg.content) }} />
@@ -1519,175 +1644,226 @@ function Bubble({ msg, isStreaming }) {
   );
 }
 
-
 // ============================================================
-// MANUS EXCLUSIVE PANEL — ميزات حصرية لا تتوفر في نسخة Claude
+// MANUS TOOLS PANEL - أدوات Manus الحصرية فوق صندوق الإدخال
 // ============================================================
-function ManusExclusivePanel({ onInsertText, disabled }) {
-  const [tab, setTab] = useState(null); // null | 'search' | 'image' | 'code'
-  const [searchQ, setSearchQ] = useState('');
-  const [searchRes, setSearchRes] = useState(null);
-  const [searchLoading, setSearchLoading] = useState(false);
-  const [imgPrompt, setImgPrompt] = useState('');
-  const [imgResult, setImgResult] = useState(null);
-  const [imgLoading, setImgLoading] = useState(false);
-  const [codeText, setCodeText] = useState('');
+function ManusToolsPanel({ onSend, disabled }) {
+  const [showSearch, setShowSearch] = useState(false);
+  const [showCodeRun, setShowCodeRun] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searching, setSearching] = useState(false);
+  const [searchResults, setSearchResults] = useState(null);
+  const [codeInput, setCodeInput] = useState('');
+  const [codeRunning, setCodeRunning] = useState(false);
   const [codeResult, setCodeResult] = useState(null);
-  const [codeLoading, setCodeLoading] = useState(false);
+  const [imgPrompt, setImgPrompt] = useState('');
+  const [showImgTool, setShowImgTool] = useState(false);
+  const [imgGenerating, setImgGenerating] = useState(false);
 
-  async function doSearch() {
-    if (!searchQ.trim()) return;
-    setSearchLoading(true); setSearchRes(null);
+  async function runWebSearch() {
+    if (!searchQuery.trim()) return;
+    setSearching(true);
     try {
-      const r = await fetch('/api/manus/web-search', {
-        method: 'POST', headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({ query: searchQ, max_results: 5 })
+      const res = await fetch(`${API_BASE}/manus/web-search`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: searchQuery, max_results: 5 }),
       });
-      const d = await r.json();
-      setSearchRes(d);
-    } catch(e) { setSearchRes({ error: e.message }); }
-    finally { setSearchLoading(false); }
+      const data = await res.json();
+      if (data.success) {
+        setSearchResults(data.results);
+      } else {
+        alert('فشل البحث: ' + (data.detail || 'error'));
+      }
+    } catch (e) {
+      alert('خطأ في البحث: ' + e.message);
+    } finally {
+      setSearching(false);
+    }
   }
 
-  async function doImage() {
+  function addSearchToChat() {
+    if (!searchResults || !searchResults.length) return;
+    const md = `**نتائج بحث الويب:** "${searchQuery}"\n\n` +
+      searchResults.map((r, i) => `${i+1}. **[${r.title}](${r.url})**\n   ${r.snippet}`).join('\n\n') +
+      `\n\n_تم البحث بواسطة Manus DuckDuckGo - بدون API key_`;
+    onSend(md);
+    setShowSearch(false);
+    setSearchResults(null);
+    setSearchQuery('');
+  }
+
+  async function runCode() {
+    if (!codeInput.trim()) return;
+    setCodeRunning(true);
+    setCodeResult(null);
+    try {
+      const res = await fetch(`${API_BASE}/manus/execute-code`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
+        body: JSON.stringify({ code: codeInput, language: 'python' }),
+      });
+      const data = await res.json();
+      setCodeResult(data);
+    } catch (e) {
+      setCodeResult({ success: false, output: '', error: e.message });
+    } finally {
+      setCodeRunning(false);
+    }
+  }
+
+  async function generateManusImage() {
     if (!imgPrompt.trim()) return;
-    setImgLoading(true); setImgResult(null);
+    setImgGenerating(true);
     try {
-      const r = await fetch('/api/manus/generate-image', {
-        method: 'POST', headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({ prompt: imgPrompt })
+      const res = await fetch(`${API_BASE}/manus/generate-image`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
+        body: JSON.stringify({ prompt: imgPrompt }),
       });
-      const d = await r.json();
-      setImgResult(d);
-    } catch(e) { setImgResult({ error: e.message }); }
-    finally { setImgLoading(false); }
+      if (res.ok) {
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const md = `**❆ صورة Manus AI:**\n\n![${imgPrompt}](${url})\n\n_Prompt: ${imgPrompt}_`;
+        onSend(md);
+        setShowImgTool(false);
+        setImgPrompt('');
+      } else {
+        const err = await res.json();
+        alert('فشل توليد الصورة: ' + (err.detail || res.status));
+      }
+    } catch (e) {
+      alert('خطأ: ' + e.message);
+    } finally {
+      setImgGenerating(false);
+    }
   }
-
-  async function doCode() {
-    if (!codeText.trim()) return;
-    setCodeLoading(true); setCodeResult(null);
-    try {
-      const r = await fetch('/api/manus/execute-code', {
-        method: 'POST', headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({ code: codeText, language: 'python' })
-      });
-      const d = await r.json();
-      setCodeResult(d);
-    } catch(e) { setCodeResult({ error: e.message }); }
-    finally { setCodeLoading(false); }
-  }
-
-  const tabs = [
-    { id: 'search', icon: '🔍', label: 'بحث الويب', color: '#10B981' },
-    { id: 'image',  icon: '🎨', label: 'توليد صورة', color: '#8B5CF6' },
-    { id: 'code',   icon: '⚡', label: 'تنفيذ كود', color: '#F59E0B' },
-  ];
 
   return (
-    <div className="border-t border-line bg-surface-soft">
-      {/* Tab bar */}
-      <div className="flex items-center gap-1 px-3 py-1.5 border-b border-line">
-        <span className="text-xs font-bold text-brand mr-2">✦ Manus حصري</span>
-        {tabs.map(t => (
-          <button key={t.id} onClick={() => setTab(tab === t.id ? null : t.id)}
-            className={`px-2.5 py-1 rounded-md text-xs font-medium smooth flex items-center gap-1 ${tab === t.id ? 'bg-brand text-white' : 'hover:bg-paper-soft text-ink-muted'}`}>
-            <span>{t.icon}</span><span>{t.label}</span>
-          </button>
-        ))}
+    <div className="border-b border-line/50 bg-amber-50/30 dark:bg-amber-900/10">
+      {/* Tools Bar */}
+      <div className="max-w-3xl mx-auto px-3 py-1.5 flex items-center gap-2 flex-wrap">
+        <span className="text-[10px] font-bold uppercase tracking-widest text-amber-600 opacity-70">❆ أدوات Manus</span>
+        <button onClick={() => { setShowSearch(!showSearch); setShowImgTool(false); setShowCodeRun(false); }} disabled={disabled}
+          className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium smooth border ${
+            showSearch ? 'bg-amber-100 text-amber-700 border-amber-300' : 'bg-white/60 text-ink-muted border-line hover:border-amber-300 hover:text-amber-700'
+          }`}>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-3.5 h-3.5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+          </svg>
+          بحث الويب
+        </button>
+        <button onClick={() => { setShowImgTool(!showImgTool); setShowSearch(false); setShowCodeRun(false); }} disabled={disabled}
+          className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium smooth border ${
+            showImgTool ? 'bg-amber-100 text-amber-700 border-amber-300' : 'bg-white/60 text-ink-muted border-line hover:border-amber-300 hover:text-amber-700'
+          }`}>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-3.5 h-3.5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z" />
+          </svg>
+          توليد صورة
+        </button>
+        <button onClick={() => { setShowCodeRun(!showCodeRun); setShowSearch(false); setShowImgTool(false); }} disabled={disabled}
+          className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium smooth border ${
+            showCodeRun ? 'bg-amber-100 text-amber-700 border-amber-300' : 'bg-white/60 text-ink-muted border-line hover:border-amber-300 hover:text-amber-700'
+          }`}>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-3.5 h-3.5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5" />
+          </svg>
+          تنفيذ كود
+        </button>
+        <span className="text-[10px] text-amber-600/60 mr-auto">مجاني دائماً</span>
       </div>
 
-      {/* Search Panel */}
-      {tab === 'search' && (
-        <div className="p-3 space-y-2">
-          <div className="flex gap-2">
-            <input value={searchQ} onChange={e => setSearchQ(e.target.value)}
-              onKeyDown={e => e.key === 'Enter' && doSearch()}
-              placeholder="ابحث على الإنترنت..." disabled={searchLoading}
-              className="flex-1 bg-paper border border-line rounded-lg px-3 py-1.5 text-sm focus:border-brand smooth" />
-            <button onClick={doSearch} disabled={searchLoading || !searchQ.trim()}
-              className="px-3 py-1.5 bg-brand text-white rounded-lg text-sm font-medium disabled:opacity-50 smooth">
-              {searchLoading ? '...' : 'بحث'}
-            </button>
-          </div>
-          {searchRes && !searchRes.error && (
-            <div className="space-y-1.5 max-h-48 overflow-y-auto">
-              {(searchRes.results || []).map((r, i) => (
-                <div key={i} className="p-2 rounded-lg bg-paper border border-line hover:border-brand/40 smooth cursor-pointer"
-                  onClick={() => onInsertText && onInsertText(`نتيجة بحث: "${r.title}"\n${r.snippet}\nالمصدر: ${r.url}`)}>
-                  <div className="text-xs font-semibold text-ink truncate">{r.title}</div>
-                  <div className="text-xs text-ink-dim mt-0.5 line-clamp-2">{r.snippet}</div>
-                  <div className="text-xs text-brand mt-0.5 truncate">{r.url}</div>
-                </div>
-              ))}
-              <p className="text-xs text-ink-dim text-center">اضغط على نتيجة لإضافتها للمحادثة</p>
+      {/* Web Search Panel */}
+      {showSearch && (
+        <div className="max-w-3xl mx-auto px-3 pb-3">
+          <div className="bg-white/80 rounded-xl border border-amber-200 p-3">
+            <div className="flex gap-2 mb-2">
+              <input value={searchQuery} onChange={e => setSearchQuery(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && runWebSearch()}
+                placeholder="ابحث في الويب..."
+                className="flex-1 bg-transparent border border-line rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-amber-400" />
+              <button onClick={runWebSearch} disabled={searching || !searchQuery.trim()}
+                className="px-3 py-1.5 bg-amber-500 text-white rounded-lg text-sm font-medium hover:bg-amber-600 smooth disabled:opacity-50">
+                {searching ? '...' : 'بحث'}
+              </button>
             </div>
-          )}
-          {searchRes?.error && <p className="text-xs text-red-400">خطأ: {searchRes.error}</p>}
+            {searchResults && (
+              <div className="space-y-2 max-h-48 overflow-y-auto">
+                {searchResults.map((r, i) => (
+                  <div key={i} className="text-xs border-b border-line/50 pb-2">
+                    <a href={r.url} target="_blank" rel="noopener" className="font-semibold text-amber-700 hover:underline">{r.title}</a>
+                    <p className="text-ink-muted mt-0.5 leading-relaxed">{r.snippet}</p>
+                  </div>
+                ))}
+                <button onClick={addSearchToChat}
+                  className="w-full mt-2 py-1.5 bg-amber-500 text-white rounded-lg text-xs font-medium hover:bg-amber-600 smooth">
+                  ➕ أضف للمحادثة وحلّل بالنماذج
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       )}
 
       {/* Image Generation Panel */}
-      {tab === 'image' && (
-        <div className="p-3 space-y-2">
-          <div className="flex gap-2">
-            <input value={imgPrompt} onChange={e => setImgPrompt(e.target.value)}
-              onKeyDown={e => e.key === 'Enter' && doImage()}
-              placeholder="صف الصورة التي تريد توليدها..." disabled={imgLoading}
-              className="flex-1 bg-paper border border-line rounded-lg px-3 py-1.5 text-sm focus:border-brand smooth" />
-            <button onClick={doImage} disabled={imgLoading || !imgPrompt.trim()}
-              className="px-3 py-1.5 bg-purple-600 text-white rounded-lg text-sm font-medium disabled:opacity-50 smooth">
-              {imgLoading ? '...' : 'توليد'}
-            </button>
-          </div>
-          {imgLoading && <p className="text-xs text-ink-dim text-center animate-pulse">جاري توليد الصورة... (15-30 ثانية)</p>}
-          {imgResult?.data_url && (
-            <div className="text-center">
-              <img src={imgResult.data_url} alt={imgPrompt} className="max-h-48 rounded-lg mx-auto border border-line" />
-              <p className="text-xs text-ink-dim mt-1">تم توليد الصورة بواسطة Manus ✦</p>
+      {showImgTool && (
+        <div className="max-w-3xl mx-auto px-3 pb-3">
+          <div className="bg-white/80 rounded-xl border border-amber-200 p-3">
+            <div className="flex gap-2">
+              <input value={imgPrompt} onChange={e => setImgPrompt(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && generateManusImage()}
+                placeholder="صف الصورة بالإنجليزية..."
+                className="flex-1 bg-transparent border border-line rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-amber-400" />
+              <button onClick={generateManusImage} disabled={imgGenerating || !imgPrompt.trim()}
+                className="px-3 py-1.5 bg-amber-500 text-white rounded-lg text-sm font-medium hover:bg-amber-600 smooth disabled:opacity-50">
+                {imgGenerating ? 'جاري...' : 'توليد'}
+              </button>
             </div>
-          )}
-          {imgResult?.error && <p className="text-xs text-red-400">خطأ: {imgResult.error}</p>}
+            <p className="text-[10px] text-ink-dim mt-1">❆ Manus Image API - بدون DALL-E key</p>
+          </div>
         </div>
       )}
 
       {/* Code Execution Panel */}
-      {tab === 'code' && (
-        <div className="p-3 space-y-2">
-          <textarea value={codeText} onChange={e => setCodeText(e.target.value)}
-            placeholder="اكتب كود Python هنا..." rows={4} disabled={codeLoading}
-            className="w-full bg-paper border border-line rounded-lg px-3 py-2 text-sm font-mono focus:border-brand smooth resize-none" />
-          <div className="flex gap-2">
-            <button onClick={doCode} disabled={codeLoading || !codeText.trim()}
-              className="px-3 py-1.5 bg-amber-500 text-white rounded-lg text-sm font-medium disabled:opacity-50 smooth">
-              {codeLoading ? 'جاري التنفيذ...' : '⚡ تنفيذ'}
-            </button>
-            {codeResult && (
-              <button onClick={() => onInsertText && onInsertText(`نتيجة تنفيذ الكود:\n\`\`\`\n${codeResult.output || codeResult.error}\n\`\`\``)}
-                className="px-3 py-1.5 bg-surface border border-line rounded-lg text-sm text-ink-muted hover:text-ink smooth">
-                إضافة للمحادثة
+      {showCodeRun && (
+        <div className="max-w-3xl mx-auto px-3 pb-3">
+          <div className="bg-white/80 rounded-xl border border-amber-200 p-3">
+            <textarea value={codeInput} onChange={e => setCodeInput(e.target.value)} rows={4}
+              placeholder="# اكتب كود Python هنا..."
+              className="w-full bg-gray-50 border border-line rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:border-amber-400 resize-none" />
+            <div className="flex items-center gap-2 mt-2">
+              <button onClick={runCode} disabled={codeRunning || !codeInput.trim()}
+                className="px-3 py-1.5 bg-amber-500 text-white rounded-lg text-sm font-medium hover:bg-amber-600 smooth disabled:opacity-50">
+                {codeRunning ? 'جاري...' : '▶ تشغيل'}
               </button>
+              <span className="text-[10px] text-ink-dim">❆ Python sandbox حقيقي</span>
+            </div>
+            {codeResult && (
+              <div className={`mt-2 p-2 rounded-lg text-xs font-mono ${
+                codeResult.success ? 'bg-green-50 text-green-800 border border-green-200' : 'bg-red-50 text-red-800 border border-red-200'
+              }`}>
+                {codeResult.output && <pre className="whitespace-pre-wrap">{codeResult.output}</pre>}
+                {codeResult.error && <pre className="whitespace-pre-wrap text-red-600">{codeResult.error}</pre>}
+                {codeResult.execution_time_seconds && (
+                  <div className="text-[10px] text-ink-dim mt-1">⏱ {codeResult.execution_time_seconds.toFixed(3)}s</div>
+                )}
+              </div>
             )}
           </div>
-          {codeResult && (
-            <div className={`rounded-lg p-2 text-xs font-mono ${codeResult.success ? 'bg-green-950/30 border border-green-800/30 text-green-300' : 'bg-red-950/30 border border-red-800/30 text-red-300'}`}>
-              <div className="flex justify-between mb-1">
-                <span className="font-bold">{codeResult.success ? '✓ نجح' : '✗ فشل'}</span>
-                {codeResult.execution_time_seconds && <span className="text-ink-dim">{codeResult.execution_time_seconds}s</span>}
-              </div>
-              <pre className="whitespace-pre-wrap max-h-32 overflow-y-auto">{codeResult.output || codeResult.error}</pre>
-            </div>
-          )}
         </div>
       )}
     </div>
   );
 }
 
-function InputBar({ onSend, disabled, placeholder, prefill }) {
+function InputBar({ onSend, disabled, placeholder, prefill, onOpenImageGen }) {
   const [text, setText] = useState('');
-  const [images, setImages] = useState([]);  // [{name, dataUrl}]
+  const [images, setImages] = useState([]);
+  const [recording, setRecording] = useState(false);
   const taRef = useRef(null);
   const fileRef = useRef(null);
+  const recogRef = useRef(null);
 
   useEffect(() => {
     if (prefill) {
@@ -1732,18 +1908,37 @@ function InputBar({ onSend, disabled, placeholder, prefill }) {
 
   const removeImage = (idx) => setImages(prev => prev.filter((_, i) => i !== idx));
 
-  const insertText = (t) => {
-    setText(prev => prev ? prev + '\n' + t : t);
-    if (taRef.current) {
-      taRef.current.style.height = 'auto';
-      taRef.current.style.height = Math.min(taRef.current.scrollHeight, 200) + 'px';
-      taRef.current.focus();
-    }
+  // STT - Web Speech API (مجاني، native للمتصفح)
+  const startRecording = () => {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) { alert('متصفحك لا يدعم التعرّف على الصوت. جرّب Chrome/Edge.'); return; }
+    const r = new SR();
+    r.lang = document.documentElement.lang === 'en' ? 'en-US' : 'ar-SA';
+    r.continuous = false;
+    r.interimResults = true;
+    r.onresult = (e) => {
+      let final = '', interim = '';
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        const t = e.results[i][0].transcript;
+        if (e.results[i].isFinal) final += t; else interim += t;
+      }
+      const newText = (text || '').trim() + (final || interim);
+      setText(newText);
+      if (taRef.current) {
+        taRef.current.style.height = 'auto';
+        taRef.current.style.height = Math.min(taRef.current.scrollHeight, 200) + 'px';
+      }
+    };
+    r.onend = () => setRecording(false);
+    r.onerror = () => setRecording(false);
+    recogRef.current = r;
+    r.start();
+    setRecording(true);
   };
+  const stopRecording = () => { if (recogRef.current) recogRef.current.stop(); setRecording(false); };
+
   return (
-    <div className="bg-paper">
-      <ManusExclusivePanel onInsertText={insertText} disabled={disabled} />
-      <div className="border-t border-line p-3 md:p-4">
+    <div className="border-t border-line p-3 md:p-4 bg-paper">
       <div className="max-w-3xl mx-auto">
         <div className="card-soft rounded-2xl p-3 focus-within:border-brand/50 smooth">
           {/* Image previews */}
@@ -1764,14 +1959,37 @@ function InputBar({ onSend, disabled, placeholder, prefill }) {
             placeholder={placeholder || 'اكتب سؤالك أو ارفع صورة...'} disabled={disabled} rows={1}
             className="w-full bg-transparent resize-none focus:outline-none text-ink placeholder-ink-dim min-h-[24px] max-h-[200px]" />
           <div className="flex items-center justify-between mt-2 pt-2 border-t border-line">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
               <input ref={fileRef} type="file" hidden multiple accept="image/*" onChange={onPickImage} />
               <button onClick={() => fileRef.current?.click()} disabled={disabled || images.length >= 4}
                 title="رفع صورة (Vision)"
                 className="p-1.5 rounded-lg hover:bg-paper-soft text-ink-muted hover:text-ink smooth disabled:opacity-40">
                 <Icon name="file" className="w-4 h-4" />
               </button>
-              <span className="text-xs text-ink-dim font-medium">{disabled ? 'النماذج تعمل...' : (images.length > 0 ? `${images.length} صورة جاهزة` : 'جاهز')}</span>
+              <button onClick={recording ? stopRecording : startRecording} disabled={disabled}
+                title={recording ? 'إيقاف' : 'تسجيل صوتي'}
+                className={`p-1.5 rounded-lg smooth ${recording ? 'bg-red-50 text-red-600 hover:bg-red-100' : 'hover:bg-paper-soft text-ink-muted hover:text-ink'}`}>
+                {recording ? (
+                  <span className="flex items-center gap-1">
+                    <span className="w-2 h-2 rounded-full bg-red-500 breathe"></span>
+                    <span className="text-[10px] font-bold">مسجّل</span>
+                  </span>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" />
+                  </svg>
+                )}
+              </button>
+              {onOpenImageGen && (
+                <button onClick={onOpenImageGen} disabled={disabled}
+                  title="توليد صورة بـ AI"
+                  className="p-1.5 rounded-lg hover:bg-paper-soft text-ink-muted hover:text-ink smooth disabled:opacity-40">
+                  <Icon name="sparkles" className="w-4 h-4" />
+                </button>
+              )}
+              <span className="text-xs text-ink-dim font-medium mr-2">
+                {recording ? '🔴 جارٍ التسجيل...' : disabled ? 'النماذج تعمل...' : (images.length > 0 ? `${images.length} صورة` : 'جاهز')}
+              </span>
             </div>
             <Btn variant="primary" size="sm" onClick={send} disabled={(!text.trim() && images.length === 0) || disabled}>
               <span>إرسال</span><Icon name="send" className="w-3.5 h-3.5" />
@@ -2487,6 +2705,357 @@ function AdminChatBubble({ msg }) {
 }
 
 // ============================================================
+// IMAGE GENERATOR MODAL
+// ============================================================
+function ImageGeneratorModal({ onClose, onGenerated }) {
+  const [prompt, setPrompt] = useState('');
+  const [size, setSize] = useState('1024x1024');
+  const [quality, setQuality] = useState('standard');
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState('');
+  const [quota, setQuota] = useState(null);
+
+  useEffect(() => { api('/images/quota').then(setQuota).catch(()=>{}); }, []);
+
+  async function generate() {
+    if (!prompt.trim()) return;
+    setBusy(true); setErr('');
+    try {
+      const r = await api('/images/generate', {
+        method: 'POST',
+        body: JSON.stringify({ prompt: prompt.trim(), size, quality }),
+      });
+      if (onGenerated) onGenerated(r);
+      onClose();
+    } catch (e) { setErr(e.message); }
+    finally { setBusy(false); }
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 bg-ink/60 flex items-center justify-center p-4 fade-in" onClick={onClose}>
+      <div className="card-elevated rounded-2xl max-w-lg w-full p-6 relative" onClick={e => e.stopPropagation()}>
+        <button onClick={onClose} className="absolute top-3 left-3 text-ink-dim hover:text-ink p-1"><Icon name="close" className="w-5 h-5" /></button>
+        <div className="flex items-center gap-2 mb-1">
+          <Icon name="sparkles" className="w-5 h-5 text-brand" strokeWidth={2} />
+          <h2 className="text-lg font-bold tracking-tight">توليد صورة بالـ AI</h2>
+        </div>
+        <p className="text-xs text-ink-muted mb-4">DALL-E 3 من OpenAI · جودة عالية</p>
+
+        <div className="space-y-3">
+          <div>
+            <label className="text-xs font-bold text-ink-muted uppercase tracking-widest mb-1.5 block">وصف الصورة (Prompt)</label>
+            <textarea value={prompt} onChange={e => setPrompt(e.target.value)} rows={4}
+              placeholder="مثال: قطة برتقالية تجلس على كرسي خشبي في مكتبة قديمة، ضوء طبيعي ناعم، تصوير فوتوغرافي واقعي"
+              className="w-full bg-paper-soft border border-line rounded-lg px-3 py-2.5 text-sm focus:border-brand focus-ring smooth resize-none" />
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="text-xs font-bold text-ink-muted uppercase tracking-widest mb-1.5 block">الحجم</label>
+              <select value={size} onChange={e => setSize(e.target.value)}
+                className="w-full bg-paper-soft border border-line rounded-lg px-3 py-2.5 text-sm focus:border-brand focus-ring smooth">
+                <option value="1024x1024">مربع 1:1 (1024×1024)</option>
+                <option value="1792x1024">عريض 16:9 (1792×1024)</option>
+                <option value="1024x1792">طولي 9:16 (1024×1792)</option>
+              </select>
+            </div>
+            <div>
+              <label className="text-xs font-bold text-ink-muted uppercase tracking-widest mb-1.5 block">الجودة</label>
+              <select value={quality} onChange={e => setQuality(e.target.value)}
+                className="w-full bg-paper-soft border border-line rounded-lg px-3 py-2.5 text-sm focus:border-brand focus-ring smooth">
+                <option value="standard">قياسي</option>
+                <option value="hd">HD (ضعف التكلفة)</option>
+              </select>
+            </div>
+          </div>
+
+          {quota && (
+            <div className="text-xs text-ink-dim bg-paper-soft rounded-lg p-2.5 flex items-center justify-between">
+              <span>الحصة هذا الشهر:</span>
+              <span className="font-bold font-mono">{quota.used_this_month}/{quota.quota_per_month}</span>
+            </div>
+          )}
+
+          {err && <div className="bg-red-50 border border-red-200 text-red-700 rounded-lg px-3 py-2 text-sm">{err}</div>}
+
+          <Btn variant="brand" size="lg" onClick={generate} disabled={busy || !prompt.trim()} className="w-full">
+            {busy ? 'جارٍ التوليد... (10-20 ثانية)' : '✨ توليد الصورة'}
+          </Btn>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// IMAGE LIBRARY PAGE
+// ============================================================
+function ImageLibrary({ onClose }) {
+  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState('');
+  const [zoom, setZoom] = useState(null);
+  const [showGen, setShowGen] = useState(false);
+
+  const reload = useCallback(() => {
+    setLoading(true);
+    api('/images/my').then(d => { setImages(d); setLoading(false); })
+      .catch(e => { setErr(e.message); setLoading(false); });
+  }, []);
+  useEffect(() => { reload(); }, [reload]);
+
+  return (
+    <div className="flex-1 overflow-y-auto bg-paper">
+      <header className="border-b border-line px-6 py-4 flex items-center justify-between sticky top-0 bg-paper z-10">
+        <div className="flex items-center gap-2">
+          <Icon name="sparkles" className="w-5 h-5 text-brand" strokeWidth={2} />
+          <h1 className="text-xl font-bold tracking-tight">مكتبة الصور</h1>
+        </div>
+        <div className="flex items-center gap-2">
+          <Btn variant="brand" size="sm" onClick={() => setShowGen(true)}>
+            <Icon name="plus" className="w-4 h-4" /><span>توليد صورة</span>
+          </Btn>
+          <button onClick={onClose} className="text-ink-dim hover:text-ink p-2"><Icon name="close" className="w-5 h-5" /></button>
+        </div>
+      </header>
+
+      <div className="px-6 py-6">
+        {loading ? (
+          <div className="text-center text-ink-dim py-12">جارٍ التحميل...</div>
+        ) : err ? (
+          <div className="bg-red-50 border border-red-200 text-red-700 rounded-lg p-4">{err}</div>
+        ) : images.length === 0 ? (
+          <div className="text-center py-16">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-paper-soft text-brand mb-4">
+              <Icon name="sparkles" className="w-7 h-7" strokeWidth={1.5} />
+            </div>
+            <h3 className="text-lg font-bold mb-2 tracking-tight">لا توجد صور بعد</h3>
+            <p className="text-sm text-ink-muted mb-5">ابدأ بتوليد أول صورة لك</p>
+            <Btn variant="brand" size="md" onClick={() => setShowGen(true)}>توليد أول صورة</Btn>
+          </div>
+        ) : (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {images.map(img => (
+              <button key={img.id} onClick={() => setZoom(img)}
+                className="card-soft rounded-xl overflow-hidden hover:border-line-strong smooth text-right group">
+                <div className="aspect-square bg-paper-soft overflow-hidden">
+                  <img src={img.image_url} alt="generated" loading="lazy"
+                    className="w-full h-full object-cover group-hover:scale-105 smooth" />
+                </div>
+                <div className="p-3">
+                  <p className="text-xs text-ink-muted line-clamp-2 leading-relaxed">{img.prompt}</p>
+                  <div className="flex items-center justify-between mt-2 text-[10px] text-ink-dim">
+                    <span>{img.size} · {img.quality}</span>
+                    <span className="font-mono">${img.cost_usd?.toFixed(3) || '0.000'}</span>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {zoom && (
+        <div className="fixed inset-0 z-50 bg-ink/80 flex items-center justify-center p-4 fade-in" onClick={() => setZoom(null)}>
+          <div className="bg-surface rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col" onClick={e => e.stopPropagation()}>
+            <div className="overflow-auto bg-paper-soft flex-1 flex items-center justify-center">
+              <img src={zoom.image_url} alt="" className="max-w-full max-h-[60vh] object-contain" />
+            </div>
+            <div className="p-4 border-t border-line">
+              <p className="text-sm text-ink-muted leading-relaxed mb-2">{zoom.prompt}</p>
+              {zoom.revised_prompt && <p className="text-xs text-ink-dim italic">ُحسّن: {zoom.revised_prompt}</p>}
+              <div className="flex items-center justify-between mt-3">
+                <div className="text-xs text-ink-dim font-mono">{zoom.size} · {zoom.quality} · ${zoom.cost_usd?.toFixed(3)}</div>
+                <div className="flex gap-2">
+                  <a href={zoom.image_url} download target="_blank">
+                    <Btn variant="secondary" size="sm">تنزيل</Btn>
+                  </a>
+                  <Btn variant="primary" size="sm" onClick={() => navigator.clipboard.writeText(zoom.prompt)}>نسخ Prompt</Btn>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showGen && <ImageGeneratorModal onClose={() => setShowGen(false)} onGenerated={reload} />}
+    </div>
+  );
+}
+
+// ============================================================
+// VIDEO LIBRARY + GENERATOR
+// ============================================================
+function VideoLibrary({ onClose }) {
+  const [videos, setVideos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState('');
+  const [showGen, setShowGen] = useState(false);
+  const [enabled, setEnabled] = useState(true);
+  const [models, setModels] = useState([]);
+
+  const reload = useCallback(() => {
+    setLoading(true);
+    Promise.all([api('/video/my').catch(() => []), api('/video/models').catch(() => ({models:[],enabled:false}))])
+      .then(([v, m]) => { setVideos(v); setModels(m.models || []); setEnabled(m.enabled); setLoading(false); });
+  }, []);
+  useEffect(() => { reload(); }, [reload]);
+
+  // Auto-poll for processing videos
+  useEffect(() => {
+    const proc = videos.filter(v => v.status === 'processing');
+    if (proc.length === 0) return;
+    const id = setInterval(async () => {
+      for (const v of proc) {
+        try {
+          const r = await api(`/video/status/${v.id}`);
+          if (r.status !== 'processing') reload();
+        } catch (e) {}
+      }
+    }, 5000);
+    return () => clearInterval(id);
+  }, [videos, reload]);
+
+  return (
+    <div className="flex-1 overflow-y-auto bg-paper">
+      <header className="border-b border-line px-6 py-4 flex items-center justify-between sticky top-0 bg-paper z-10">
+        <div className="flex items-center gap-2">
+          <Icon name="play" className="w-5 h-5 text-brand" strokeWidth={2} />
+          <h1 className="text-xl font-bold tracking-tight">مكتبة الفيديو</h1>
+        </div>
+        <div className="flex items-center gap-2">
+          <Btn variant="brand" size="sm" onClick={() => setShowGen(true)} disabled={!enabled}>
+            <Icon name="plus" className="w-4 h-4" /><span>توليد فيديو</span>
+          </Btn>
+          <button onClick={onClose} className="text-ink-dim hover:text-ink p-2"><Icon name="close" className="w-5 h-5" /></button>
+        </div>
+      </header>
+
+      <div className="px-6 py-6">
+        {!enabled && (
+          <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-5 mb-6">
+            <h3 className="font-bold text-yellow-900 mb-1">⚙️ توليد الفيديو يحتاج إعداد</h3>
+            <p className="text-sm text-yellow-800 leading-relaxed">
+              لتفعيل توليد الفيديو، أضف <code className="font-mono bg-yellow-100 px-1 rounded">REPLICATE_API_TOKEN</code> في ملف <code className="font-mono">.env</code>.
+              سجّل في <a href="https://replicate.com" target="_blank" className="underline font-semibold">replicate.com</a> واحصل على API token (المنح المجاني محدود لكن يكفي للاختبار).
+            </p>
+          </div>
+        )}
+
+        {loading ? <div className="text-center text-ink-dim py-12">...</div>
+         : err ? <div className="bg-red-50 border border-red-200 text-red-700 rounded-lg p-4">{err}</div>
+         : videos.length === 0 ? (
+          <div className="text-center py-16">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-paper-soft text-brand mb-4">
+              <Icon name="play" className="w-7 h-7" strokeWidth={1.5} />
+            </div>
+            <h3 className="text-lg font-bold mb-2 tracking-tight">لا توجد فيديوهات بعد</h3>
+            <p className="text-sm text-ink-muted mb-5">ابدأ بتوليد أول فيديو لك</p>
+            {enabled && <Btn variant="brand" size="md" onClick={() => setShowGen(true)}>توليد أول فيديو</Btn>}
+          </div>
+        ) : (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {videos.map(v => (
+              <div key={v.id} className="card-soft rounded-xl overflow-hidden">
+                <div className="aspect-video bg-paper-soft relative flex items-center justify-center">
+                  {v.video_url ? (
+                    <video src={v.video_url} controls className="w-full h-full object-cover" />
+                  ) : v.status === 'processing' ? (
+                    <div className="text-center">
+                      <div className="inline-block w-8 h-8 border-3 border-brand border-t-transparent rounded-full animate-spin mb-2"></div>
+                      <p className="text-xs text-ink-muted font-semibold">جارٍ التوليد... ~60 ثانية</p>
+                    </div>
+                  ) : (
+                    <p className="text-xs text-red-600">فشل: {v.status}</p>
+                  )}
+                </div>
+                <div className="p-3">
+                  <p className="text-xs text-ink-muted line-clamp-2 leading-relaxed">{v.prompt}</p>
+                  <div className="flex items-center justify-between mt-2 text-[10px] text-ink-dim">
+                    <span>{v.model.split('/')[1]}</span>
+                    <span className="font-mono">${v.cost_usd?.toFixed(2) || '0.00'}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {showGen && enabled && <VideoGeneratorModal models={models} onClose={() => setShowGen(false)} onGenerated={reload} />}
+    </div>
+  );
+}
+
+function VideoGeneratorModal({ models, onClose, onGenerated }) {
+  const [prompt, setPrompt] = useState('');
+  const [model, setModel] = useState(models[0]?.id || 'minimax/video-01');
+  const [aspect, setAspect] = useState('16:9');
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState('');
+
+  const selectedModel = models.find(m => m.id === model);
+
+  async function generate() {
+    setBusy(true); setErr('');
+    try {
+      await api('/video/generate', { method: 'POST',
+        body: JSON.stringify({ prompt: prompt.trim(), model, aspect_ratio: aspect }) });
+      onGenerated(); onClose();
+    } catch (e) { setErr(e.message); }
+    finally { setBusy(false); }
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 bg-ink/60 flex items-center justify-center p-4 fade-in" onClick={onClose}>
+      <div className="card-elevated rounded-2xl max-w-lg w-full p-6 relative" onClick={e => e.stopPropagation()}>
+        <button onClick={onClose} className="absolute top-3 left-3 text-ink-dim hover:text-ink p-1"><Icon name="close" className="w-5 h-5" /></button>
+        <div className="flex items-center gap-2 mb-1">
+          <Icon name="play" className="w-5 h-5 text-brand" strokeWidth={2} />
+          <h2 className="text-lg font-bold tracking-tight">توليد فيديو بالـ AI</h2>
+        </div>
+        <p className="text-xs text-ink-muted mb-4">عبر Replicate · يأخذ ~60 ثانية</p>
+
+        <div className="space-y-3">
+          <div>
+            <label className="text-xs font-bold text-ink-muted uppercase tracking-widest mb-1.5 block">وصف الفيديو</label>
+            <textarea value={prompt} onChange={e => setPrompt(e.target.value)} rows={4}
+              placeholder="مثال: قطة تسير ببطء في حديقة مزهرة، الكاميرا تتبعها، ضوء غروب الشمس الذهبي"
+              className="w-full bg-paper-soft border border-line rounded-lg px-3 py-2.5 text-sm focus:border-brand focus-ring smooth resize-none" />
+          </div>
+
+          <div>
+            <label className="text-xs font-bold text-ink-muted uppercase tracking-widest mb-1.5 block">النموذج</label>
+            <select value={model} onChange={e => setModel(e.target.value)}
+              className="w-full bg-paper-soft border border-line rounded-lg px-3 py-2.5 text-sm">
+              {models.map(m => <option key={m.id} value={m.id}>{m.label} · ${m.cost} · {m.duration}s</option>)}
+            </select>
+            {selectedModel && <p className="text-xs text-ink-dim mt-1">{selectedModel.desc}</p>}
+          </div>
+
+          <div>
+            <label className="text-xs font-bold text-ink-muted uppercase tracking-widest mb-1.5 block">الأبعاد</label>
+            <div className="grid grid-cols-3 gap-2">
+              {['16:9','9:16','1:1'].map(a => (
+                <button key={a} onClick={() => setAspect(a)} type="button"
+                  className={`px-3 py-2 rounded-lg border-2 smooth text-sm font-bold ${aspect===a ? 'border-brand bg-brand-soft text-brand' : 'border-line bg-paper-soft text-ink-muted'}`}>
+                  {a}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {err && <div className="bg-red-50 border border-red-200 text-red-700 rounded-lg px-3 py-2 text-sm">{err}</div>}
+
+          <Btn variant="brand" size="lg" onClick={generate} disabled={busy || !prompt.trim() || prompt.length < 10} className="w-full">
+            {busy ? 'جارٍ الإرسال...' : '🎬 توليد الفيديو'}
+          </Btn>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
 // MARKETING INSIGHTS — استهداف المستخدمين بحملات
 // ============================================================
 function MarketingInsights() {
@@ -2857,6 +3426,8 @@ function MainApp({ user: initialUser, onLogout }) {
         onSelect={(id) => { setCurrentId(id); setView('session'); }}
         onCreate={() => { setView('home'); setCurrentId(null); }}
         onHome={() => { setView('home'); setCurrentId(null); }}
+        onImages={() => { setView('images'); setCurrentId(null); }}
+        onVideos={() => { setView('videos'); setCurrentId(null); }}
         onDelete={deleteSession} onRename={renameSession}
         onSettings={() => setShowSettings(true)}
         onLogout={() => { setToken(null); onLogout(); }}
@@ -2866,6 +3437,10 @@ function MainApp({ user: initialUser, onLogout }) {
       <main className="flex-1 flex flex-col h-full overflow-hidden">
         {view === 'admin' ? (
           <AdminPage onClose={() => setView('home')} />
+        ) : view === 'images' ? (
+          <ImageLibrary onClose={() => setView('home')} />
+        ) : view === 'videos' ? (
+          <VideoLibrary onClose={() => setView('home')} />
         ) : view === 'session' && currentSession ? (
           <ChatView
             session={currentSession} agents={agents}

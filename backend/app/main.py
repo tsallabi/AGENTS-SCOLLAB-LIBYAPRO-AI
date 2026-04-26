@@ -1,5 +1,6 @@
 """
-AgentForge Main Server
+Agents Collab + Manus Edition - Main Server
+النسخة المحسّنة بوكيل Manus الحصري + 5 نماذج
 """
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -26,17 +27,18 @@ from app.routes_support import router as support_router
 from app.routes_auth_google import router as auth_google_router
 from app.routes_billing_lemon import router as billing_lemon_router
 from app.routes_images import router as images_router
+from app.routes_video import router as video_router
+from app.routes_audio import router as audio_router
+from app.routes_search import router as search_router
 from app.routes_manus_exclusive import router as manus_exclusive_router
+from app.routes_manus_tts import router as manus_tts_router
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """
-    تشغيل عند بدء/إيقاف السيرفر
-    """
-    print(f"🚀 Starting {settings.APP_NAME} ({settings.APP_ENV})")
+    """تشغيل عند بدء/إيقاف السيرفر"""
+    print(f"🚀 Starting {settings.APP_NAME} v2.1 ({settings.APP_ENV})")
     
-    # إنشاء الجداول إذا لم تكن موجودة (للتطوير - في الإنتاج استخدم Alembic)
     if settings.APP_ENV == "development":
         await init_db()
         print("✅ Database initialized")
@@ -51,13 +53,15 @@ async def lifespan(app: FastAPI):
     # Manus exclusive features status
     import os
     forge_key = os.environ.get("BUILT_IN_FORGE_API_KEY", "")
-    forge_status = "configured" if forge_key else "not configured (image gen disabled)"
+    forge_url = os.environ.get("BUILT_IN_FORGE_API_URL", "")
     forge_icon = "✅" if forge_key else "⚠️"
-    print("\n🤖 Manus Exclusive Features:")
-    print(f"   {forge_icon} Manus Forge API: {forge_status}")
-    print("   ✅ Manus Agent (5th model - free, no API key needed)")
+    print("\n✦ Manus Exclusive Features:")
+    print(f"   {forge_icon} Manus Forge API: {'configured' if forge_key else 'not configured'}")
+    print("   ✅ Manus Agent (5th model - FREE, no API key needed)")
+    print("   ✅ Web Search (DuckDuckGo - no API key needed)")
     print("   ✅ Code Execution (Python sandbox)")
-    print("   ✅ Web Search (DuckDuckGo)")
+    print("   ✅ Image Generation (Manus Image API - FREE)")
+    print("   ✅ Voice TTS (Manus TTS - FREE, no OpenAI key needed)")
     print(f"\n🌐 Server ready at http://{settings.HOST}:{settings.PORT}")
     yield
     
@@ -67,14 +71,14 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title=settings.APP_NAME,
-    description="منصة تعاون نماذج الذكاء الاصطناعي",
-    version="2.0.0",
+    description="منصة تعاون 5 نماذج ذكاء اصطناعي - النسخة المحسّنة بوكيل Manus",
+    version="2.1.0",
     debug=settings.DEBUG,
     lifespan=lifespan,
 )
 
 
-# Rate limiting (يجب أن يأتي قبل CORS)
+# Rate limiting
 app.add_middleware(RateLimitMiddleware)
 
 # CORS
@@ -87,7 +91,7 @@ app.add_middleware(
 )
 
 
-# Routes
+# Routes - Standard (same as Claude version)
 app.include_router(auth_router, prefix="/api")
 app.include_router(api_keys_router, prefix="/api")
 app.include_router(agents_router, prefix="/api")
@@ -103,16 +107,26 @@ app.include_router(support_router, prefix="/api")
 app.include_router(auth_google_router, prefix="/api")
 app.include_router(billing_lemon_router, prefix="/api")
 app.include_router(images_router, prefix="/api")
-app.include_router(manus_exclusive_router, prefix="/api")  # /api/manus/*
+app.include_router(video_router, prefix="/api")
+app.include_router(audio_router, prefix="/api")
+app.include_router(search_router, prefix="/api")
+
+# ✦ Manus Exclusive Routes - /api/manus/*
+app.include_router(manus_exclusive_router, prefix="/api")
+app.include_router(manus_tts_router, prefix="/api")  # /api/manus/tts/*
 
 
 @app.get("/api/health")
 async def health():
+    import os
     return {
         "status": "ok",
         "app": settings.APP_NAME,
+        "version": "2.1.0",
+        "edition": "Manus Enhanced",
         "env": settings.APP_ENV,
-        "version": "2.0.0",
+        "manus_forge": bool(os.environ.get("BUILT_IN_FORGE_API_KEY")),
+        "models": 5,
     }
 
 
@@ -127,18 +141,16 @@ async def root():
         return FileResponse(str(INDEX_HTML))
     return {
         "name": settings.APP_NAME,
-        "version": "2.0.0",
+        "version": "2.1.0",
+        "edition": "Manus Enhanced",
         "docs": "/docs",
-        "frontend": "not found at " + str(INDEX_HTML),
     }
 
 
-# Mount frontend static files (for any future assets)
 if FRONTEND_DIR.exists():
     app.mount("/static", StaticFiles(directory=str(FRONTEND_DIR)), name="static")
 
 
-# Global exception handler
 @app.exception_handler(Exception)
 async def global_exception_handler(request, exc):
     if settings.DEBUG:
