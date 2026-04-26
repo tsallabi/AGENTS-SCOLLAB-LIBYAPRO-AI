@@ -1,0 +1,3568 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Agents Collab + Manus — 5 عقول · إجماع واحد · من LibyaPro AI</title>
+<meta name="description" content="Agents Collab from LibyaPro AI — The first platform where Claude, GPT, and Gemini debate together as a council. Three minds. One verdict. Better than any single model." />
+<meta name="keywords" content="AI collaboration, multi-agent AI, Claude GPT Gemini, AI council, Arabic AI, LibyaPro" />
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Agents Collab — Three AI Minds. One Verdict." />
+<meta property="og:description" content="The first platform where Claude, GPT, and Gemini debate as a council. Better than any single model." />
+<meta property="og:url" content="https://libyapro.ai/" />
+<meta property="og:site_name" content="Agents Collab" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:locale:alternate" content="ar_LY" />
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Agents Collab — Three AI Minds. One Verdict." />
+<meta name="twitter:description" content="Claude, GPT, and Gemini debate as a council. From LibyaPro AI." />
+<!-- Favicon -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='35' cy='30' r='15' fill='%23C2410C'/%3E%3Ccircle cx='65' cy='30' r='15' fill='%231A1A1A'/%3E%3Ccircle cx='50' cy='65' r='15' fill='%232563EB'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.25.6/babel.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked@13.0.3/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.10.0/build/styles/atom-one-light.min.css">
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.10.0/build/highlight.min.js"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Cairo', 'Inter', 'system-ui', 'sans-serif'],
+          display: ['Cairo', 'Inter', 'system-ui', 'sans-serif'],
+          mono: ['JetBrains Mono', 'monospace'],
+        },
+        colors: {
+          // Off-white warm palette inspired by Claude/Anthropic
+          paper:   { DEFAULT: '#FAF9F5', soft: '#F5F4EE', tint: '#FCFBF7' },
+          surface: { DEFAULT: '#FFFFFF', soft: '#F8F7F2' },
+          line:    { DEFAULT: '#E8E5DD', soft: '#EFEDE5', strong: '#D6D2C5' },
+          ink:     { DEFAULT: '#1A1A1A', muted: '#5A5A5A', dim: '#9A9A9A' },
+          brand:   { DEFAULT: '#C2410C', hover: '#9A3412', soft: '#FFEDD5', glow: '#F97316' },
+          // Per-agent colors (used sparingly, as small dots)
+          claude: '#C2410C',
+          gpt:    '#16A34A',
+          gemini: '#2563EB',
+          deepseek: '#7C3AED',
+        },
+      }
+    }
+  };
+</script>
+<style>
+  html, body, #root { height: 100%; margin: 0; padding: 0; }
+  body {
+    background: #FAF9F5;
+    color: #1A1A1A;
+    font-family: 'Cairo', 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
+    font-feature-settings: 'cv11', 'ss01';
+  }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #D6D2C5; border-radius: 8px; border: 2px solid transparent; background-clip: padding-box; }
+  ::-webkit-scrollbar-thumb:hover { background: #9A9A9A; background-clip: padding-box; }
+
+  /* Selection */
+  ::selection { background: #C2410C; color: #fff; }
+
+  /* Subtle paper grain */
+  .paper-grain {
+    background-image: radial-gradient(circle at 25% 25%, rgba(0,0,0,0.012) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  /* Animations - subtle only */
+  .fade-in { animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+  .slide-up { animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  .typing::after { content: '·'; animation: blink 1s step-end infinite; color: #C2410C; margin-right: 2px; font-weight: 900; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* Subtle pulse */
+  .breathe { animation: breathe 2.4s ease-in-out infinite; }
+  @keyframes breathe { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+
+  /* Card with refined shadow */
+  .card-soft {
+    background: #FFFFFF;
+    border: 1px solid #E8E5DD;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.02), 0 4px 12px -4px rgba(0,0,0,0.04);
+  }
+  .card-elevated {
+    background: #FFFFFF;
+    border: 1px solid #E8E5DD;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.02), 0 8px 32px -12px rgba(0,0,0,0.08);
+  }
+
+  /* Hover transition standard */
+  .smooth { transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1); }
+
+  /* Markdown - light theme */
+  pre code.hljs {
+    background: #F8F7F2 !important;
+    border: 1px solid #E8E5DD;
+    border-radius: 10px;
+    padding: 18px !important;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.65;
+    direction: ltr;
+    text-align: left;
+    color: #1A1A1A;
+  }
+  .markdown-body { line-height: 1.78; color: #1A1A1A; }
+  .markdown-body p { margin-bottom: 0.85em; }
+  .markdown-body p:last-child { margin-bottom: 0; }
+  .markdown-body ul, .markdown-body ol { margin: 0.6em 0; padding-right: 1.6em; }
+  .markdown-body li { margin-bottom: 0.3em; }
+  .markdown-body code:not(.hljs) {
+    background: #F5F4EE;
+    border: 1px solid #E8E5DD;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88em;
+    direction: ltr;
+    display: inline-block;
+    color: #C2410C;
+  }
+  .markdown-body pre { margin: 0.85em 0; position: relative; }
+  .markdown-body h1, .markdown-body h2, .markdown-body h3 { font-weight: 800; margin: 1.1em 0 0.55em; letter-spacing: -0.01em; }
+  .markdown-body h1 { font-size: 1.5em; }
+  .markdown-body h2 { font-size: 1.3em; }
+  .markdown-body h3 { font-size: 1.12em; }
+  .markdown-body strong { font-weight: 700; color: #000; }
+  .markdown-body a { color: #C2410C; text-decoration: underline; text-underline-offset: 3px; }
+  .markdown-body blockquote { border-right: 3px solid #C2410C; padding-right: 14px; color: #5A5A5A; margin: 0.85em 0; }
+
+  /* Hero glow */
+  .hero-glow {
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 0%, rgba(194,65,12,0.08) 0%, transparent 70%),
+      #FAF9F5;
+  }
+
+  /* Logo mark */
+  .lp-mark {
+    position: relative;
+    display: inline-flex;
+    width: 32px; height: 32px;
+    align-items: center; justify-content: center;
+  }
+  .lp-mark::before, .lp-mark::after, .lp-mark > span {
+    content: ''; position: absolute; border-radius: 50%;
+    width: 12px; height: 12px;
+  }
+  .lp-mark::before { background: #C2410C; top: 0; right: 4px; }
+  .lp-mark::after  { background: #1A1A1A; bottom: 0; right: 12px; }
+  .lp-mark > span  { background: #2563EB; bottom: 0; right: -4px; opacity: 0.85; }
+
+  /* Shadow on focus */
+  .focus-ring:focus { outline: 2px solid rgba(194,65,12,0.4); outline-offset: 2px; }
+  input:focus, textarea:focus, select:focus { outline: none; }
+
+  /* Sidebar nav active */
+  .nav-active { background: #FFFFFF; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+
+  /* Iframe preview */
+  .preview-frame { background: white; border: 0; width: 100%; height: 100%; }
+
+  /* Headlines: tight tracking like Anthropic */
+  h1, h2, h3 { letter-spacing: -0.02em; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useRef, useCallback, useMemo } = React;
+
+// ============================================================
+// API Client
+// ============================================================
+const API_BASE = window.location.origin + '/api';
+const WS_BASE = (window.location.protocol === 'https:' ? 'wss:' : 'ws:') + '//' + window.location.host + '/api';
+
+const getToken = () => localStorage.getItem('lp_token');
+const setToken = (t) => t ? localStorage.setItem('lp_token', t) : localStorage.removeItem('lp_token');
+
+async function api(path, options = {}) {
+  const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
+  const t = getToken();
+  if (t) headers['Authorization'] = `Bearer ${t}`;
+  const res = await fetch(API_BASE + path, { ...options, headers });
+  if (res.status === 204) return null;
+  const text = await res.text();
+  let body;
+  try { body = text ? JSON.parse(text) : null; } catch { body = text; }
+  if (!res.ok) {
+    const err = new Error(typeof body === 'object' && body?.detail ? body.detail : (text || res.statusText));
+    err.status = res.status; throw err;
+  }
+  return body;
+}
+
+// ============================================================
+// SVG Icons (refined, no emoji)
+// ============================================================
+const Icon = ({ name, className = "w-5 h-5", strokeWidth = 1.5 }) => {
+  const paths = {
+    chat: <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 0 1-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />,
+    code: <path strokeLinecap="round" strokeLinejoin="round" d="m10 20-1.25-2.5L10 15M14 20l1.25-2.5L14 15M10 9l-1.25 2.5L10 14M14 9l1.25 2.5L14 14" />,
+    sparkles: <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.847.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456Z" />,
+    plus: <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />,
+    settings: <><path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" /><path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></>,
+    user: <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />,
+    logout: <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />,
+    edit: <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />,
+    trash: <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />,
+    send: <path strokeLinecap="round" strokeLinejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />,
+    download: <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />,
+    close: <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />,
+    check: <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />,
+    chevron: <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />,
+    menu: <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />,
+    file: <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />,
+    eye: <><path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" /><path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></>,
+    play: <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />,
+    arrow_left: <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />,
+    arrow_right: <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />,
+    home: <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />,
+    shield: <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />,
+    pause: <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" />,
+    folder: <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-8.69-6.44-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18v-9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z" />,
+    mobile: <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />,
+    globe: <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" />,
+    bolt: <path strokeLinecap="round" strokeLinejoin="round" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" />,
+    desktop: <path strokeLinecap="round" strokeLinejoin="round" d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25" />,
+    rocket: <path strokeLinecap="round" strokeLinejoin="round" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.448 14.9 14.9 0 0 1 .06-.312m-2.24 2.39a4.493 4.493 0 0 0-1.757 4.306 4.493 4.493 0 0 0 4.306-1.758M16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />,
+    lock: <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />,
+  };
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={strokeWidth} stroke="currentColor" className={className}>
+      {paths[name]}
+    </svg>
+  );
+};
+
+// ============================================================
+// Catalog
+// ============================================================
+const AGENT_META = {
+  claude:   { name: 'Claude',   color: '#C2410C', desc: 'المحلل الناقد' },
+  gpt:      { name: 'GPT',      color: '#16A34A', desc: 'المبرمج العملي' },
+  gemini:   { name: 'Gemini',   color: '#2563EB', desc: 'الباحث المبتكر' },
+  deepseek: { name: 'DeepSeek', color: '#7C3AED', desc: 'الرياضي والكود' },
+  manus:    { name: 'Manus',    color: '#0EA5E9', desc: 'المنسق الذكي ✦ مجاني', exclusive: true, badge: '✦ حصري' },
+};
+
+const MODES = {
+  solo:        { label: 'مفرد', desc: 'نموذج واحد يرد', minAgents: 1 },
+  round_robin: { label: 'تناوب', desc: 'كل نموذج يرد بدوره', minAgents: 2 },
+  consensus:   { label: 'إجماع', desc: 'اقتراحات → نقد → توافق', minAgents: 2 },
+};
+
+const PHASE_LABELS = {
+  proposals: { label: 'الاقتراحات', desc: 'كل نموذج يقترح بشكل مستقل' },
+  critique:  { label: 'النقد الجماعي', desc: 'كل نموذج ينتقد الآخرين' },
+  synthesis: { label: 'التوافق', desc: 'الحل النهائي المدمج' },
+};
+
+const VIEW_KINDS = {
+  chat:      { label: 'محادثة',     iconName: 'chat',     desc: 'حوار جماعي سريع',         color: '#C2410C', mode: 'round_robin', minAgents: 2 },
+  code:      { label: 'برمجة',      iconName: 'code',     desc: 'بناء كود مع preview',     color: '#16A34A', mode: 'consensus',   minAgents: 2 },
+  assistant: { label: 'مساعد ذكي',  iconName: 'sparkles', desc: 'تحليل + ملفات + تخطيط',   color: '#7C3AED', mode: 'consensus',   minAgents: 2 },
+};
+
+// Prompt suggestions لكل وضع - تساعد المستخدم البسيط
+const PROMPTS_BY_KIND = {
+  chat: [
+    'ساعدوني أتخذ قراراً: هل أبدأ بمشروع تجارة إلكترونية أم تطبيق جوال؟',
+    'اشرحوا لي blockchain بطريقة بسيطة كأني طفل',
+    'ترجموا لي هذا النص للعربية الفصحى بأسلوب احترافي',
+    'لخّصوا لي أفكار كتاب "Atomic Habits" في 5 نقاط',
+    'ما رأيكم في فكرة مشروع: تطبيق توصيل أكل بيتي؟',
+    'كيف أتعامل مع عميل صعب يطلب تخفيض السعر باستمرار؟',
+  ],
+  code: [
+    'صمّموا لي تطبيق Todo List بـ HTML+CSS+JS بسيط وأنيق',
+    'اكتبوا لي API بـ FastAPI لإدارة المنتجات في متجر',
+    'صمّموا لي صفحة هبوط احترافية لشركة استشارات',
+    'ابنوا لي bot على Telegram يرد تلقائياً على الأسئلة',
+    'حوّلوا لي هذا التصميم Figma إلى HTML/Tailwind',
+    'اشرحوا لي async/await في JavaScript مع أمثلة',
+  ],
+  assistant: [
+    'خطّطوا لي يومي حسب هذه المهام: ...',
+    'اكتبوا لي خطة عمل مُفصّلة لمشروع جديد في مجال التعليم',
+    'حلّلوا لي بيانات هذا الملف Excel واستخرجوا الأنماط',
+    'اكتبوا لي رسالة بريد احترافية لطلب تأجيل دفعة',
+    'اقترحوا لي استراتيجية تسويق رقمية بميزانية 1000 دينار',
+    'لخّصوا محتوى هذا التقرير في صفحة واحدة',
+  ],
+};
+
+// ============================================================
+// Markdown
+// ============================================================
+marked.setOptions({
+  highlight: (code, lang) => {
+    if (lang && hljs.getLanguage(lang)) {
+      try { return hljs.highlight(code, { language: lang }).value; } catch (e) {}
+    }
+    try { return hljs.highlightAuto(code).value; } catch (e) { return code; }
+  },
+  breaks: true, gfm: true,
+});
+
+const renderMarkdown = (text) => DOMPurify.sanitize(marked.parse(text || ''), { ADD_ATTR: ['target'] });
+
+function extractCodeBlocks(text) {
+  if (!text) return [];
+  const re = /```(\w+)?\n([\s\S]*?)```/g;
+  const blocks = []; let m;
+  while ((m = re.exec(text)) !== null) {
+    blocks.push({ lang: m[1] || 'text', code: m[2].trim() });
+  }
+  return blocks;
+}
+
+// ============================================================
+// i18n - Bilingual support (Arabic + English)
+// ============================================================
+const TRANSLATIONS = {
+  ar: {
+    nav_features: 'المميزات', nav_how: 'كيف يعمل', nav_pricing: 'الأسعار', nav_contact: 'تواصل',
+    nav_login: 'دخول', nav_signup: 'ابدأ مجاناً',
+    hero_badge: 'حيث تتداول نماذج الذكاء الاصطناعي وتقرّر',
+    hero_h1_a: 'ثلاثة عقول.',
+    hero_h1_b: 'قرار واحد. أفضل من أي نموذج منفرد.',
+    hero_p: 'Claude · GPT · Gemini · DeepSeek · Manus — خمسة نماذج من خمس شركات مختلفة. في هذه النسخة يجلسون كأعضاء مجلس واحد: يقترحون، ينتقدون اقتراحات بعضهم، ويتنازلون — حتى يصل إليك أفضل قرار. Manus مجاني بالكامل ولا يحتاج API key.',
+    hero_cta_signup: 'ابدأ مجاناً — بدون بطاقة ائتمان',
+    hero_cta_compare: 'لماذا أفضل من Claude منفرداً؟',
+    hero_p1: '3 نماذج من 3 شركات', hero_p2: 'تعاون حقيقي - لا وهم', hero_p3: '50 رسالة مجاناً',
+    compare_label: 'المقارنة',
+    compare_h: 'لماذا 3 عقول > عقل واحد؟',
+    compare_sub: 'عندما تطرح سؤالاً مهماً على نموذج واحد، تحصل على وجهة نظر واحدة. هنا، تحصل على نقاش حقيقي.',
+    compare_old_label: 'الحلول التقليدية', compare_old_h: 'نموذج واحد · رأي واحد',
+    compare_new_label: 'Agents Collab + Manus', compare_new_h: '5 عقول · 5 شركات · إجماع واحد',
+    how_label: 'آلية العمل', how_h: 'كيف تتفق النماذج؟',
+    how_sub: 'ثلاث مراحل تجعل الإجابة أفضل من أي نموذج منفرد',
+    features_label: 'الاستخدامات', features_h: 'ثلاث طرق للاستخدام',
+    features_sub: 'منصة واحدة، استخدامات متعددة - كلها تستفيد من قوة التعاون',
+    pricing_label: 'الأسعار', pricing_h: 'مصمّم للسوق الليبي والعالمي',
+    pricing_sub: 'ابدأ مجاناً · ادفع فقط لما تستخدمه',
+    contact_label: 'تواصل', contact_h: 'للأعمال والشراكات',
+    contact_sub: 'للأعمال، الشراكات، أو الاستفسارات التقنية',
+    foot_made_in: 'صُنع في ليبيا', foot_for: 'للعالم',
+    lang_switch: 'English',
+  },
+  en: {
+    nav_features: 'Features', nav_how: 'How it works', nav_pricing: 'Pricing', nav_contact: 'Contact',
+    nav_login: 'Sign in', nav_signup: 'Get started free',
+    hero_badge: 'Where AI models deliberate and decide',
+    hero_h1_a: 'Three minds.',
+    hero_h1_b: 'One verdict. Better than any single model.',
+    hero_p: 'Claude · GPT · Gemini · DeepSeek · Manus — five models from five companies. In this edition they sit as a council: they propose, critique each other, and concede — so you receive the best decision. Manus is free and needs no API key.',
+    hero_cta_signup: 'Start free — no credit card',
+    hero_cta_compare: 'Why better than Claude alone?',
+    hero_p1: '3 models from 3 companies', hero_p2: 'Real collaboration - no illusion', hero_p3: '50 messages free',
+    compare_label: 'COMPARISON',
+    compare_h: 'Why 3 minds > 1 mind?',
+    compare_sub: 'When you ask a single model an important question, you get one viewpoint. Here, you get real debate.',
+    compare_old_label: 'Traditional', compare_old_h: 'One model · One opinion',
+    compare_new_label: 'Agents Collab + Manus', compare_new_h: '5 minds · 5 companies · 1 consensus',
+    how_label: 'HOW IT WORKS', how_h: 'How do the models reach agreement?',
+    how_sub: 'Three phases that make the answer better than any single model',
+    features_label: 'USE CASES', features_h: 'Three ways to use it',
+    features_sub: 'One platform, many use cases — all powered by real collaboration',
+    pricing_label: 'PRICING', pricing_h: 'Built for global users',
+    pricing_sub: 'Start free · pay only for what you use',
+    contact_label: 'CONTACT', contact_h: 'For business & partnerships',
+    contact_sub: 'For business, partnerships, or technical inquiries',
+    foot_made_in: 'Built in Libya', foot_for: 'for the world',
+    lang_switch: 'العربية',
+  },
+};
+
+function useLang() {
+  const [lang, setLang] = useState(() => localStorage.getItem('lp_lang') || 'ar');
+  const change = (l) => {
+    localStorage.setItem('lp_lang', l);
+    setLang(l);
+    document.documentElement.lang = l;
+    document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+  };
+  useEffect(() => {
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  }, [lang]);
+  const t = (key) => TRANSLATIONS[lang][key] || TRANSLATIONS.ar[key] || key;
+  return { lang, t, setLang: change };
+}
+
+// ============================================================
+// Hash router (simple SPA routing without dependencies)
+// ============================================================
+function useHashRoute() {
+  const [hash, setHash] = useState(() => window.location.hash || '#/');
+  useEffect(() => {
+    const onChange = () => setHash(window.location.hash || '#/');
+    window.addEventListener('hashchange', onChange);
+    return () => window.removeEventListener('hashchange', onChange);
+  }, []);
+  return hash.replace(/^#/, '') || '/';
+}
+const navigate = (path) => { window.location.hash = path; };
+
+// ============================================================
+// SISTER COMPANIES (correct names + descriptions)
+// ============================================================
+const SISTER_BRANDS = [
+  { name: 'منصة ماكينا',       desc: 'استيراد السيارات',     url: 'https://www.macchinaa.com/',     short: 'Macchina' },
+  { name: 'أمان برو',           desc: 'المعاملات المالية',     url: 'https://amanpro.onrender.com',   short: 'AmanPro' },
+  { name: 'مزاد ليبيا أوتو برو', desc: 'مزادات السيارات الليبية', url: 'https://www.autopro.ac/',       short: 'AutoPro' },
+];
+
+// ============================================================
+// SHARED — Logo
+// ============================================================
+function Logo({ size = 'md', showText = true }) {
+  const s = size === 'lg' ? 44 : size === 'sm' ? 26 : 34;
+  return (
+    <div className="flex items-center gap-2.5" dir="ltr">
+      <span className="lp-mark" style={{ width: s, height: s }}>
+        <span></span>
+      </span>
+      {showText && (
+        <div className="leading-none">
+          <div className="font-display font-extrabold text-[16px] text-ink tracking-tight whitespace-nowrap">
+            AGENTS<span className="text-brand mx-1">COLLAB</span>
+          </div>
+          <div className="text-[9px] text-ink-dim font-bold tracking-[0.18em] mt-1">FROM LIBYAPRO AI</div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Btn({ variant = 'primary', size = 'md', children, ...props }) {
+  const base = 'inline-flex items-center justify-center gap-2 font-semibold smooth disabled:opacity-50 disabled:cursor-not-allowed';
+  const sizes = { sm: 'text-xs px-3 py-1.5 rounded-lg', md: 'text-sm px-4 py-2 rounded-lg', lg: 'text-sm px-5 py-2.5 rounded-xl' };
+  const variants = {
+    primary: 'bg-ink text-paper hover:bg-ink-muted',
+    brand: 'bg-brand text-white hover:bg-brand-hover',
+    secondary: 'bg-surface border border-line text-ink hover:bg-paper-soft',
+    ghost: 'text-ink-muted hover:text-ink hover:bg-paper-soft',
+    danger: 'text-red-600 hover:bg-red-50',
+  };
+  return <button {...props} className={`${base} ${sizes[size]} ${variants[variant]} ${props.className || ''}`}>{children}</button>;
+}
+
+// ============================================================
+// LANDING
+// ============================================================
+function Landing({ onCTA }) {
+  const { lang, t, setLang } = useLang();
+  const [contactSent, setContactSent] = useState(false);
+  const [contactBusy, setContactBusy] = useState(false);
+  const [contactErr, setContactErr] = useState('');
+  const [plans, setPlans] = useState(null);
+  const [showLPTModal, setShowLPTModal] = useState(false);
+
+  useEffect(() => {
+    api('/billing/plans').then(setPlans).catch(() => {});
+  }, []);
+
+  async function submitContact(e) {
+    e.preventDefault();
+    setContactBusy(true); setContactErr('');
+    const fd = new FormData(e.target);
+    try {
+      await api('/support/threads', {
+        method: 'POST',
+        body: JSON.stringify({
+          name: fd.get('name'), email: fd.get('email'),
+          phone: fd.get('phone') || null, subject: fd.get('subject') || null,
+          message: fd.get('message'),
+        }),
+      });
+      setContactSent(true); e.target.reset();
+    } catch (err) { setContactErr(err.message); }
+    finally { setContactBusy(false); }
+  }
+
+  return (
+    <div className="h-full overflow-y-auto bg-paper">
+      {/* Top nav */}
+      <nav className="sticky top-0 z-40 bg-paper/85 backdrop-blur border-b border-line/60">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+          <Logo />
+          <div className="flex items-center gap-1">
+            <a href="#features" className="hidden sm:inline-block text-sm text-ink-muted hover:text-ink px-3 py-2 smooth">{t('nav_features')}</a>
+            <a href="#how" className="hidden sm:inline-block text-sm text-ink-muted hover:text-ink px-3 py-2 smooth">{t('nav_how')}</a>
+            <a href="#pricing" className="hidden sm:inline-block text-sm text-ink-muted hover:text-ink px-3 py-2 smooth">{t('nav_pricing')}</a>
+            <a href="#contact" className="hidden sm:inline-block text-sm text-ink-muted hover:text-ink px-3 py-2 smooth">{t('nav_contact')}</a>
+            <button onClick={() => setLang(lang === 'ar' ? 'en' : 'ar')}
+              className="text-xs text-ink-muted hover:text-ink px-3 py-2 smooth font-bold border border-line rounded-lg hover:bg-paper-soft">
+              {t('lang_switch')}
+            </button>
+            <Btn variant="ghost" size="md" onClick={() => onCTA('login')}>{t('nav_login')}</Btn>
+            <Btn variant="primary" size="md" onClick={() => onCTA('signup')}>{t('nav_signup')}</Btn>
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero */}
+      <section className="relative hero-glow">
+        <div className="max-w-5xl mx-auto px-6 pt-20 pb-12 md:pt-28 md:pb-20 text-center">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-line bg-surface text-ink-muted text-xs font-semibold mb-7 fade-in">
+            <span className="w-1.5 h-1.5 rounded-full bg-brand breathe"></span>
+            <span>{t('hero_badge')}</span>
+          </div>
+          <h1 className="font-display text-[40px] sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.08] mb-7 slide-up tracking-tight">
+            {t('hero_h1_a')}<br/>
+            <span className="text-brand">{t('hero_h1_b')}</span>
+          </h1>
+          <p className="text-base md:text-xl text-ink-muted max-w-2xl mx-auto leading-relaxed mb-10 slide-up" style={{animationDelay:'.08s'}}>
+            {t('hero_p')}
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center slide-up" style={{animationDelay:'.16s'}}>
+            <Btn variant="brand" size="lg" onClick={() => onCTA('signup')}>
+              {t('hero_cta_signup')}
+              <Icon name="arrow_left" className="w-4 h-4" />
+            </Btn>
+            <Btn variant="secondary" size="lg" onClick={() => document.getElementById('compare').scrollIntoView({behavior:'smooth'})}>
+              {t('hero_cta_compare')}
+            </Btn>
+          </div>
+          <div className="mt-10 flex items-center justify-center gap-x-8 gap-y-2 flex-wrap text-xs text-ink-dim slide-up" style={{animationDelay:'.24s'}}>
+            <span className="flex items-center gap-1.5"><Icon name="check" className="w-3.5 h-3.5 text-brand" /><span>{t('hero_p1')}</span></span>
+            <span className="flex items-center gap-1.5"><Icon name="check" className="w-3.5 h-3.5 text-brand" /><span>{t('hero_p2')}</span></span>
+            <span className="flex items-center gap-1.5"><Icon name="check" className="w-3.5 h-3.5 text-brand" /><span>{t('hero_p3')}</span></span>
+          </div>
+        </div>
+
+        {/* Hero Chat Box - Try it now */}
+        <div className="max-w-3xl mx-auto px-6 pb-12 slide-up" style={{animationDelay:'.3s'}}>
+          <HeroChatBox onCTA={onCTA} lang={lang} t={t} />
+        </div>
+
+        {/* Demo */}
+        <div className="max-w-3xl mx-auto px-6 pb-20 slide-up" style={{animationDelay:'.42s'}}>
+          <DemoConversation />
+        </div>
+      </section>
+
+      {/* Compare: 3 models vs 1 model */}
+      <section id="compare" className="py-24 border-t border-line">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-14">
+            <div className="text-xs font-bold uppercase tracking-widest text-ink-dim mb-3">المقارنة</div>
+            <h2 className="text-3xl md:text-5xl font-display font-extrabold mb-4 tracking-tight">لماذا 3 عقول &gt; عقل واحد؟</h2>
+            <p className="text-ink-muted text-lg max-w-2xl mx-auto">عندما تطرح سؤالاً مهماً على نموذج واحد، تحصل على وجهة نظر واحدة. هنا، تحصل على نقاش حقيقي.</p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-5 mb-10">
+            {/* Single model */}
+            <div className="card-soft rounded-2xl p-7 opacity-90">
+              <div className="text-xs font-bold uppercase tracking-widest text-ink-dim mb-3">الحلول التقليدية</div>
+              <h3 className="text-xl font-bold mb-5 tracking-tight">نموذج واحد · رأي واحد</h3>
+              <ul className="space-y-3 text-sm">
+                <li className="flex gap-2 text-ink-muted"><span className="text-ink-dim mt-1">○</span><span>تثق بنموذج واحد - لا تعرف نقاط ضعفه</span></li>
+                <li className="flex gap-2 text-ink-muted"><span className="text-ink-dim mt-1">○</span><span>لا أحد يُراجع إجابته أو يكتشف أخطاءها</span></li>
+                <li className="flex gap-2 text-ink-muted"><span className="text-ink-dim mt-1">○</span><span>قد يجزم بشيء خاطئ بثقة عالية</span></li>
+                <li className="flex gap-2 text-ink-muted"><span className="text-ink-dim mt-1">○</span><span>تكلفة ~$20/شهر للنموذج الواحد</span></li>
+              </ul>
+            </div>
+            {/* LibyaPro AI */}
+            <div className="card-elevated rounded-2xl p-7 border-2 border-brand">
+              <div className="text-xs font-bold uppercase tracking-widest text-brand mb-3">ليبيا برو AI</div>
+              <h3 className="text-xl font-bold mb-5 tracking-tight">3 عقول · 3 شركات · إجماع واحد</h3>
+              <ul className="space-y-3 text-sm">
+                <li className="flex gap-2"><Icon name="check" className="w-4 h-4 text-brand mt-0.5 flex-shrink-0" strokeWidth={2.5} /><span className="text-ink">كل نموذج يكشف أخطاء النماذج الأخرى علناً</span></li>
+                <li className="flex gap-2"><Icon name="check" className="w-4 h-4 text-brand mt-0.5 flex-shrink-0" strokeWidth={2.5} /><span className="text-ink">3 منظورات مختلفة من 3 شركات (ليس نفس المصدر)</span></li>
+                <li className="flex gap-2"><Icon name="check" className="w-4 h-4 text-brand mt-0.5 flex-shrink-0" strokeWidth={2.5} /><span className="text-ink">الجواب النهائي مدمج من أفضل ما عند كل نموذج</span></li>
+                <li className="flex gap-2"><Icon name="check" className="w-4 h-4 text-brand mt-0.5 flex-shrink-0" strokeWidth={2.5} /><span className="text-ink">95 د.ل/شهر — ثلاث عقول بأقل من سعر عقل واحد</span></li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Real example */}
+          <div className="card-soft rounded-2xl p-7">
+            <div className="text-xs font-bold uppercase tracking-widest text-ink-dim mb-3">مثال حقيقي · لقطة من المنصة</div>
+            <h4 className="text-base font-bold mb-5 tracking-tight">السؤال: "صمّم لي تطبيق ويب بسيط ومفيد"</h4>
+            <div className="space-y-4">
+              <div className="flex gap-3 pb-4 border-b border-line">
+                <div className="w-7 h-7 rounded-lg flex-shrink-0 flex items-center justify-center text-xs font-bold border" style={{background:'#2563EB12', color:'#2563EB', borderColor:'#2563EB30'}}>G</div>
+                <div className="flex-1 text-sm">
+                  <div className="text-xs mb-1"><span className="font-bold" style={{color:'#2563EB'}}>Gemini</span><span className="text-ink-dim mx-2">·</span><span className="text-ink-dim">اقتراح</span></div>
+                  <p className="text-ink-muted leading-relaxed">"أقترح تطبيق ويب لتحديد الملفات والصور القديمة على جهاز المستخدم لتنظيف المساحة..."</p>
+                </div>
+              </div>
+              <div className="flex gap-3 pb-4 border-b border-line">
+                <div className="w-7 h-7 rounded-lg flex-shrink-0 flex items-center justify-center text-xs font-bold border" style={{background:'#C2410C12', color:'#C2410C', borderColor:'#C2410C30'}}>C</div>
+                <div className="flex-1 text-sm">
+                  <div className="text-xs mb-1"><span className="font-bold" style={{color:'#C2410C'}}>Claude</span><span className="text-ink-dim mx-2">·</span><span className="text-ink-dim">نقد</span></div>
+                  <p className="text-ink leading-relaxed font-medium">"<strong>أختلف مع Gemini</strong>: هذه الفكرة تحتاج وصولاً لنظام الملفات المحلي، وهو ما لا يدعمه المتصفح بشكل كافٍ — مما يجعلها تطبيقاً سطحياً..."</p>
+                  <p className="text-ink-muted mt-2 text-xs italic">→ نقد تقني صحيح كشفه نموذج آخر</p>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <div className="w-7 h-7 rounded-lg flex-shrink-0 flex items-center justify-center text-xs font-bold border" style={{background:'#16A34A12', color:'#16A34A', borderColor:'#16A34A30'}}>P</div>
+                <div className="flex-1 text-sm">
+                  <div className="text-xs mb-1"><span className="font-bold" style={{color:'#16A34A'}}>GPT</span><span className="text-ink-dim mx-2">·</span><span className="text-ink-dim">اقتراح بديل</span></div>
+                  <p className="text-ink-muted leading-relaxed">"موافق على نقد Claude. أقترح بديلاً عملياً: تطبيق إدارة الاشتراكات الشهرية يحسب التكلفة السنوية ويُنبّه عن الاشتراكات غير المُستخدمة..."</p>
+                </div>
+              </div>
+            </div>
+            <div className="mt-6 pt-5 border-t border-line text-xs text-ink-dim font-medium">
+              💡 لو سألت Gemini وحده، كنت ستحصل على فكرته الأولى دون أي نقد. هنا حصلت على فكرة <strong className="text-ink">أفضل وأكثر واقعية</strong> لأن النماذج تحاورت.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section id="how" className="py-24 border-t border-line bg-paper-soft">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-14">
+            <div className="text-xs font-bold uppercase tracking-widest text-ink-dim mb-3">آلية العمل</div>
+            <h2 className="text-3xl md:text-5xl font-display font-extrabold mb-4 tracking-tight">كيف تتفق النماذج؟</h2>
+            <p className="text-ink-muted text-lg max-w-2xl mx-auto">ثلاث مراحل تجعل الإجابة أفضل من أي نموذج منفرد</p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-5">
+            <PhaseCard num="1" title="الاقتراحات" desc="كل نموذج يقترح حلاً بشكل مستقل ودون رؤية اقتراحات الآخرين. كل واحد يأتي بمنظوره الخاص." />
+            <PhaseCard num="2" title="النقد الجماعي" desc="كل نموذج يقرأ اقتراحات الآخرين وينتقدها بصدق. يكشف الأخطاء ويبرز نقاط القوة." />
+            <PhaseCard num="3" title="التوافق" desc="الحل النهائي يدمج أفضل الأفكار، يعالج النقد، ويُسلَّم لك كقرار جماعي محكم." />
+          </div>
+        </div>
+      </section>
+
+      {/* Features */}
+      <section id="features" className="py-24 border-t border-line">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <div className="text-xs font-bold uppercase tracking-widest text-ink-dim mb-3">الاستخدامات</div>
+            <h2 className="text-3xl md:text-5xl font-display font-extrabold mb-4 tracking-tight">ثلاث طرق للاستخدام</h2>
+            <p className="text-ink-muted text-lg">منصة واحدة، استخدامات متعددة - كلها تستفيد من قوة التعاون</p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-4">
+            <FeatureCard iconName="chat"     title="محادثة" desc="حوار جماعي مع 2-4 نماذج لاستكشاف فكرة أو حل سؤال معقد." />
+            <FeatureCard iconName="code"     title="برمجة"  desc="بناء كود مع preview حي. النماذج يكتبون، يراجعون، ويتفقون على الأفضل." />
+            <FeatureCard iconName="sparkles" title="مساعد ذكي" desc="تحليل عميق وأبحاث ومستندات وتخطيط - كل ما تحتاجه يومياً مع رفع الملفات." />
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing */}
+      <section id="pricing" className="py-24 border-t border-line bg-paper-soft">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <div className="text-xs font-bold uppercase tracking-widest text-ink-dim mb-3">الأسعار</div>
+            <h2 className="text-3xl md:text-5xl font-display font-extrabold mb-4 tracking-tight">مصمّم للسوق الليبي</h2>
+            <p className="text-ink-muted text-lg">أسعار واقعية بالدينار الليبي والدولار · ابدأ مجاناً</p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {plans && Object.entries(plans).filter(([k]) => k !== '_meta').map(([key, p]) => (
+              <PricingCard key={key} plan={key} name={p.name}
+                priceLyd={p.price_lyd} priceUsd={p.price_usd}
+                features={p.features} highlight={key === 'pro'}
+                onCTA={() => onCTA('signup')} />
+            ))}
+          </div>
+          <p className="text-center text-xs text-ink-dim mt-7 leading-relaxed max-w-2xl mx-auto">
+            الأسعار بالدولار للدفع عبر Stripe. ما يعادلها بالدينار الليبي حسب
+            {' '}<a href="https://cbl.gov.ly" target="_blank" rel="noopener" className="text-brand hover:text-brand-hover smooth font-semibold">
+              المصرف المركزي الليبي
+            </a>
+            {plans?._meta && <> (1$ = {plans._meta.lyd_per_usd} د.ل)</>}
+            {' '}— يُحدَّث دورياً.
+          </p>
+        </div>
+      </section>
+
+      {/* Contact */}
+      <section id="contact" className="py-24 border-t border-line">
+        <div className="max-w-3xl mx-auto px-6">
+          <div className="text-center mb-10">
+            <div className="text-xs font-bold uppercase tracking-widest text-ink-dim mb-3">تواصل</div>
+            <h2 className="text-3xl md:text-5xl font-display font-extrabold mb-4 tracking-tight">للأعمال والشراكات</h2>
+            <p className="text-ink-muted text-lg">للأعمال، الشراكات، أو الاستفسارات التقنية</p>
+          </div>
+          {contactSent ? (
+            <div className="text-center card-soft rounded-2xl p-10 fade-in">
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-brand-soft text-brand mb-4">
+                <Icon name="check" className="w-6 h-6" strokeWidth={2.5} />
+              </div>
+              <h3 className="text-xl font-bold mb-2">تم استلام رسالتك</h3>
+              <p className="text-ink-muted text-sm">سنرد عليك خلال 24 ساعة عبر البريد الإلكتروني.</p>
+            </div>
+          ) : (
+            <form onSubmit={submitContact} className="card-soft rounded-2xl p-6 md:p-8 space-y-3.5">
+              <div className="grid md:grid-cols-2 gap-3.5">
+                <input name="name" required placeholder="الاسم الكامل *" className="bg-surface border border-line rounded-lg px-4 py-3 smooth focus:border-brand text-sm focus-ring" />
+                <input name="phone" type="tel" placeholder="+218 ..." dir="ltr" className="bg-surface border border-line rounded-lg px-4 py-3 smooth focus:border-brand text-sm focus-ring" />
+              </div>
+              <input name="email" type="email" required placeholder="البريد الإلكتروني *" dir="ltr" className="w-full bg-surface border border-line rounded-lg px-4 py-3 smooth focus:border-brand text-sm focus-ring" />
+              <input name="subject" placeholder="الموضوع" className="w-full bg-surface border border-line rounded-lg px-4 py-3 smooth focus:border-brand text-sm focus-ring" />
+              <textarea name="message" required minLength={10} rows={5} placeholder="رسالتك *" className="w-full bg-surface border border-line rounded-lg px-4 py-3 smooth focus:border-brand text-sm focus-ring resize-none" />
+              {contactErr && <div className="bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-2.5 text-sm">{contactErr}</div>}
+              <Btn type="submit" variant="primary" size="lg" disabled={contactBusy} className="w-full">
+                {contactBusy ? '...' : 'إرسال الرسالة'}
+              </Btn>
+            </form>
+          )}
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-line bg-surface-soft">
+        <div className="max-w-6xl mx-auto px-6 py-14">
+          <div className="grid md:grid-cols-4 gap-10 mb-10">
+            <div className="md:col-span-1">
+              <Logo />
+              <p className="text-sm text-ink-muted mt-4 leading-relaxed">
+                أول منصة ذكاء اصطناعي ليبية تجمع نماذج AI للتعاون والوصول لأفضل الحلول.
+              </p>
+              <a href="#/contact" className="inline-flex items-center gap-2 mt-5 text-xs font-bold text-brand hover:text-brand-hover smooth">
+                <span>اطلب حلاً مخصّصاً</span>
+                <Icon name="arrow_left" className="w-3.5 h-3.5" />
+              </a>
+            </div>
+            <div>
+              <h4 className="font-bold text-xs uppercase tracking-widest text-ink-dim mb-5">المنصة</h4>
+              <ul className="space-y-3 text-sm text-ink-muted">
+                <li><a href="#features" className="hover:text-brand smooth">المميزات</a></li>
+                <li><a href="#how" className="hover:text-brand smooth">كيف يعمل</a></li>
+                <li><a href="#pricing" className="hover:text-brand smooth">الأسعار</a></li>
+                <li><a href="#/contact" className="hover:text-brand smooth">اطلب تطبيقك</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-bold text-xs uppercase tracking-widest text-ink-dim mb-5">الشركات الشقيقة</h4>
+              <ul className="space-y-3 text-sm text-ink-muted">
+                {SISTER_BRANDS.map((b, i) => (
+                  <li key={i}>
+                    <a href={b.url} target="_blank" rel="noopener" className="hover:text-brand smooth group block">
+                      <span className="block font-semibold text-ink group-hover:text-brand smooth">{b.name}</span>
+                      <span className="text-xs text-ink-dim">{b.desc}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-bold text-xs uppercase tracking-widest text-ink-dim mb-5">قانوني</h4>
+              <ul className="space-y-3 text-sm text-ink-muted">
+                <li><a href="#/privacy" className="hover:text-brand smooth">سياسة الخصوصية</a></li>
+                <li><a href="#/terms" className="hover:text-brand smooth">شروط الاستخدام</a></li>
+                <li><a href="#/contact" className="hover:text-brand smooth">تواصل معنا</a></li>
+              </ul>
+            </div>
+          </div>
+          <div className="border-t border-line pt-6 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-ink-dim">
+            <div>
+              © {new Date().getFullYear()} منصة ماكينا للمزادات من تصميم{' '}
+              <button onClick={() => setShowLPTModal(true)}
+                className="text-brand hover:text-brand-hover smooth font-bold underline underline-offset-2 decoration-brand/40 hover:decoration-brand">
+                ليبيا برو للتقنية
+              </button>
+              ، جميع الحقوق محفوظة
+            </div>
+            <div className="flex items-center gap-2 text-ink-dim">
+              <span>صُنع في ليبيا</span>
+              <span className="text-brand">·</span>
+              <span>للعالم العربي</span>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+      {showLPTModal && <LibyaProTechModal onClose={() => setShowLPTModal(false)} />}
+    </div>
+  );
+}
+
+// Hero chat input - lets visitors try the platform before signing up
+const HERO_PROMPTS = {
+  ar: [
+    'صمّموا لي تطبيق ويب بسيط ومفيد لإدارة المصاريف اليومية',
+    'ساعدوني أتخذ قراراً: هل أبدأ متجراً إلكترونياً أم تطبيقاً؟',
+    'حلّلوا فكرة مشروعي: منصة ربط أصحاب المهن بالعملاء',
+    'اكتبوا لي خطة تسويقية بميزانية 500 دولار شهرياً',
+    'ما الفرق بين Vue و React بطريقة عملية؟',
+    'اشرحوا لي blockchain كأني طفل عمره 10 سنوات',
+  ],
+  en: [
+    'Design a simple web app for tracking daily expenses',
+    'Help me decide: should I start an e-commerce store or an app?',
+    'Critique my business idea: connecting freelancers with clients',
+    'Write me a marketing plan with $500/month budget',
+    'What\'s the practical difference between Vue and React?',
+    'Explain blockchain like I\'m a 10-year-old',
+  ],
+};
+
+function HeroChatBox({ onCTA, lang, t }) {
+  const [text, setText] = useState('');
+  const taRef = useRef(null);
+  const prompts = HERO_PROMPTS[lang] || HERO_PROMPTS.ar;
+
+  const submit = () => {
+    const v = text.trim();
+    if (!v) return;
+    // احفظ الـ prompt → بعد التسجيل سيُرسَل تلقائياً في أول جلسة
+    localStorage.setItem('lp_pending_prompt', v);
+    onCTA('signup');
+  };
+
+  const onKey = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      submit();
+    }
+  };
+
+  const onChange = (e) => {
+    setText(e.target.value);
+    if (taRef.current) {
+      taRef.current.style.height = 'auto';
+      taRef.current.style.height = Math.min(taRef.current.scrollHeight, 160) + 'px';
+    }
+  };
+
+  const pickPrompt = (p) => {
+    setText(p);
+    if (taRef.current) {
+      taRef.current.focus();
+      setTimeout(() => {
+        taRef.current.style.height = 'auto';
+        taRef.current.style.height = Math.min(taRef.current.scrollHeight, 160) + 'px';
+        taRef.current.setSelectionRange(p.length, p.length);
+      }, 0);
+    }
+  };
+
+  const placeholder = lang === 'ar'
+    ? 'اطرح سؤالك هنا — وسترى Claude و GPT و Gemini يتداولون للوصول لأفضل إجابة...'
+    : 'Ask anything — and watch Claude, GPT, and Gemini deliberate to find the best answer...';
+
+  const tryItLabel = lang === 'ar' ? 'جرّب الآن مجاناً' : 'Try it now — free';
+  const suggestionLabel = lang === 'ar' ? '✦ أمثلة لتجربتها' : '✦ Examples to try';
+
+  return (
+    <div>
+      {/* Input box */}
+      <div className="card-elevated rounded-2xl p-3 md:p-4 hover:border-brand/40 smooth focus-within:border-brand/60">
+        <textarea
+          ref={taRef}
+          value={text}
+          onChange={onChange}
+          onKeyDown={onKey}
+          rows={2}
+          placeholder={placeholder}
+          className="w-full bg-transparent resize-none focus:outline-none text-ink placeholder-ink-dim text-base leading-relaxed min-h-[56px] max-h-[160px]"
+        />
+        <div className="flex items-center justify-between mt-2 pt-2 border-t border-line">
+          <div className="flex items-center gap-2 text-xs text-ink-dim font-medium">
+            <span className="w-1.5 h-1.5 rounded-full bg-brand breathe"></span>
+            <span>{lang === 'ar' ? '3 نماذج مستعدّة للتداول' : '3 models ready to debate'}</span>
+          </div>
+          <Btn variant="brand" size="md" onClick={submit} disabled={!text.trim()}>
+            <span>{tryItLabel}</span>
+            <Icon name="arrow_left" className="w-4 h-4" />
+          </Btn>
+        </div>
+      </div>
+
+      {/* Suggestions */}
+      <div className="mt-5">
+        <div className="text-center text-[11px] text-ink-dim font-bold tracking-widest uppercase mb-3">{suggestionLabel}</div>
+        <div className="grid sm:grid-cols-2 gap-2">
+          {prompts.map((p, i) => (
+            <button key={i} onClick={() => pickPrompt(p)}
+              className="card-soft hover:border-brand/40 hover:bg-paper-soft text-right p-3 rounded-xl smooth text-sm text-ink-muted hover:text-ink leading-relaxed group">
+              <span className="text-brand opacity-50 group-hover:opacity-100 smooth ml-1.5">✦</span>
+              <span>{p}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function DemoConversation() {
+  const messages = [
+    { agent: 'gemini', phase: 'اقتراح', text: 'أقترح بناء التطبيق بـ Vue + Firebase للسرعة.' },
+    { agent: 'claude', phase: 'نقد',    text: 'Vue ممتاز، لكن Firebase يربطك بمنصة واحدة. أُفضّل Postgres + Stripe لاستقلالية أكبر.' },
+    { agent: 'gpt',    phase: 'اقتراح', text: 'موافق على نقد Claude. أقترح FastAPI خلف Vue، Postgres للبيانات، Stripe للدفع.' },
+    { agent: 'claude', phase: 'توافق',  text: 'إذاً: Vue 3 + FastAPI + Postgres + Stripe. خيار متين قابل للنشر بـ$10/شهر.' },
+  ];
+  const [shown, setShown] = useState(1);
+  useEffect(() => {
+    if (shown < messages.length) {
+      const t = setTimeout(() => setShown(s => s + 1), 1700);
+      return () => clearTimeout(t);
+    }
+    const t = setTimeout(() => setShown(1), 3000);
+    return () => clearTimeout(t);
+  }, [shown]);
+
+  return (
+    <div className="card-elevated rounded-2xl p-6 max-w-2xl mx-auto">
+      <div className="flex items-center justify-between mb-5 pb-4 border-b border-line">
+        <div className="text-xs font-semibold uppercase tracking-widest text-ink-dim">حوار حقيقي بين النماذج</div>
+        <div className="flex gap-1">
+          {[1,2,3,4].map(i => (
+            <span key={i} className={`w-1.5 h-1.5 rounded-full smooth ${i <= shown ? 'bg-brand' : 'bg-line-strong'}`}></span>
+          ))}
+        </div>
+      </div>
+      <div className="space-y-4">
+        {messages.slice(0, shown).map((m, i) => (
+          <div key={i} className="flex gap-3 fade-in">
+            <span className="w-2 h-2 rounded-full mt-2 flex-shrink-0" style={{ background: AGENT_META[m.agent].color }}></span>
+            <div className="flex-1 text-sm">
+              <div className="text-xs mb-1">
+                <span className="font-semibold" style={{color: AGENT_META[m.agent].color}}>{AGENT_META[m.agent].name}</span>
+                <span className="text-ink-dim mx-2">·</span>
+                <span className="text-ink-dim">{m.phase}</span>
+              </div>
+              <div className="text-ink-muted leading-relaxed">{m.text}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function PhaseCard({ num, title, desc }) {
+  return (
+    <div className="card-soft rounded-2xl p-7 hover:border-line-strong smooth">
+      <div className="text-5xl font-display font-extrabold text-brand mb-4 leading-none">{num}</div>
+      <h3 className="text-xl font-bold mb-2 tracking-tight">{title}</h3>
+      <p className="text-ink-muted text-sm leading-relaxed">{desc}</p>
+    </div>
+  );
+}
+
+function FeatureCard({ iconName, title, desc }) {
+  return (
+    <div className="card-soft rounded-2xl p-6 hover:border-line-strong smooth">
+      <div className="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-paper-soft text-ink mb-4">
+        <Icon name={iconName} className="w-5 h-5" strokeWidth={1.8} />
+      </div>
+      <h3 className="font-bold text-lg mb-2 tracking-tight">{title}</h3>
+      <p className="text-sm text-ink-muted leading-relaxed">{desc}</p>
+    </div>
+  );
+}
+
+function PricingCard({ plan, name, priceLyd, priceUsd, features, highlight, onCTA }) {
+  return (
+    <div className={`relative rounded-2xl p-6 smooth ${highlight ? 'card-elevated border-2 border-brand' : 'card-soft'}`}>
+      {highlight && (
+        <div className="absolute -top-3 right-1/2 translate-x-1/2 bg-brand text-white text-[10px] font-bold px-3 py-1 rounded-full whitespace-nowrap tracking-wider uppercase">الأكثر شعبية</div>
+      )}
+      <div className="text-xs font-bold uppercase tracking-widest text-ink-dim mb-2">{name}</div>
+      <div className="leading-none mb-1">
+        <span className="text-4xl font-display font-extrabold text-ink">{priceLyd}</span>
+        <span className="text-ink-muted text-sm font-semibold mr-1">د.ل</span>
+        <span className="text-ink-dim text-xs mr-1">/شهر</span>
+      </div>
+      <div className="text-xs text-ink-dim mb-5">≈ ${priceUsd} USD/شهر</div>
+      <ul className="space-y-2 mb-6 text-sm">
+        {features?.map((f, i) => (
+          <li key={i} className="flex items-start gap-2 text-ink-muted">
+            <Icon name="check" className="w-3.5 h-3.5 text-brand mt-1 flex-shrink-0" strokeWidth={2.5} />
+            <span>{f}</span>
+          </li>
+        ))}
+      </ul>
+      <Btn variant={highlight ? 'brand' : 'secondary'} size="md" onClick={onCTA} className="w-full">
+        {plan === 'free' ? 'ابدأ مجاناً' : 'اشترك الآن'}
+      </Btn>
+    </div>
+  );
+}
+
+// ============================================================
+// AUTH MODAL
+// ============================================================
+function AuthModal({ initialMode, onAuth, onClose }) {
+  const [mode, setMode] = useState(initialMode || 'login');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [googleEnabled, setGoogleEnabled] = useState(false);
+
+  // تحقق من توفّر Google OAuth في الـ backend
+  useEffect(() => {
+    api('/auth/google/status').then(s => setGoogleEnabled(!!s.enabled)).catch(() => {});
+  }, []);
+
+  async function submit(e) {
+    e.preventDefault(); setError(''); setLoading(true);
+    try {
+      const path = mode === 'login' ? '/auth/login' : '/auth/signup';
+      const body = mode === 'login' ? { email, password } : { email, password, full_name: name || null };
+      const data = await api(path, { method: 'POST', body: JSON.stringify(body) });
+      setToken(data.access_token); onAuth(data.user);
+    } catch (e) { setError(e.message); }
+    finally { setLoading(false); }
+  }
+
+  function googleLogin() {
+    // ارجع إلى الصفحة الرئيسية بعد تسجيل الدخول
+    window.location.href = `${API_BASE}/auth/google/login`;
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 bg-ink/50 flex items-center justify-center p-4 fade-in" onClick={onClose}>
+      <div className="card-elevated rounded-2xl max-w-md w-full p-8 relative" onClick={e => e.stopPropagation()}>
+        <button onClick={onClose} className="absolute top-3 left-3 text-ink-dim hover:text-ink p-2 smooth"><Icon name="close" className="w-5 h-5" /></button>
+        <div className="flex items-center justify-center mb-6"><Logo /></div>
+
+        <div className="flex bg-paper-soft rounded-lg p-1 mb-6">
+          <button type="button" onClick={() => setMode('login')}
+            className={`flex-1 py-2 rounded-md smooth text-sm font-semibold ${mode === 'login' ? 'bg-surface text-ink shadow-sm' : 'text-ink-muted'}`}>
+            تسجيل دخول
+          </button>
+          <button type="button" onClick={() => setMode('signup')}
+            className={`flex-1 py-2 rounded-md smooth text-sm font-semibold ${mode === 'signup' ? 'bg-surface text-ink shadow-sm' : 'text-ink-muted'}`}>
+            حساب جديد
+          </button>
+        </div>
+
+        {/* Google sign-in button */}
+        {googleEnabled && (
+          <>
+            <button type="button" onClick={googleLogin}
+              className="w-full bg-surface border border-line hover:border-line-strong hover:bg-paper-soft rounded-lg py-2.5 px-4 text-sm font-semibold text-ink smooth flex items-center justify-center gap-2.5">
+              <svg width="18" height="18" viewBox="0 0 48 48">
+                <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/>
+                <path fill="#FF3D00" d="m6.306 14.691 6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/>
+                <path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/>
+                <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/>
+              </svg>
+              <span>المتابعة بحساب Google</span>
+            </button>
+            <div className="flex items-center gap-3 my-5">
+              <div className="flex-1 h-px bg-line"></div>
+              <span className="text-xs text-ink-dim font-semibold">أو</span>
+              <div className="flex-1 h-px bg-line"></div>
+            </div>
+          </>
+        )}
+
+        <form onSubmit={submit} className="space-y-3">
+          {mode === 'signup' && (
+            <input type="text" value={name} onChange={e => setName(e.target.value)} placeholder="الاسم (اختياري)"
+              className="w-full bg-paper-soft border border-line rounded-lg px-4 py-3 smooth focus:border-brand focus-ring text-sm" />
+          )}
+          <input type="email" required value={email} onChange={e => setEmail(e.target.value)} placeholder="البريد الإلكتروني" dir="ltr"
+            className="w-full bg-paper-soft border border-line rounded-lg px-4 py-3 smooth focus:border-brand focus-ring text-sm" />
+          <input type="password" required minLength={8} value={password} onChange={e => setPassword(e.target.value)} placeholder="كلمة المرور (8+ أحرف)"
+            className="w-full bg-paper-soft border border-line rounded-lg px-4 py-3 smooth focus:border-brand focus-ring text-sm" />
+          {error && <div className="bg-red-50 border border-red-200 text-red-700 rounded-lg px-3 py-2 text-sm">{error}</div>}
+          <Btn type="submit" variant="primary" size="lg" disabled={loading} className="w-full">
+            {loading ? '...' : (mode === 'login' ? 'دخول' : 'إنشاء الحساب')}
+          </Btn>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// SIDEBAR
+// ============================================================
+function Sidebar({ user, sessions, currentId, view, onSelect, onCreate, onDelete, onRename, onSettings, onLogout, usage, onAdmin, onHome }) {
+  const [collapsed, setCollapsed] = useState(false);
+
+  return (
+    <aside className={`bg-surface-soft border-l border-line flex flex-col h-full smooth ${collapsed ? 'w-16' : 'w-72'}`}>
+      <div className="p-4 flex items-center justify-between">
+        {collapsed ? (
+          <span className="lp-mark mx-auto" style={{ width: 28, height: 28 }}><span></span></span>
+        ) : <Logo />}
+        <button onClick={() => setCollapsed(c => !c)} className="text-ink-dim hover:text-ink p-1 rounded smooth">
+          <Icon name={collapsed ? 'arrow_left' : 'arrow_right'} className="w-4 h-4" />
+        </button>
+      </div>
+
+      {!collapsed && (
+        <div className="px-2 pb-1.5">
+          <button onClick={onHome}
+            className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm smooth ${view==='home' ? 'nav-active text-ink' : 'text-ink-muted hover:bg-surface hover:text-ink'}`}>
+            <Icon name="home" className="w-4 h-4" />
+            <span className="font-semibold">الرئيسية</span>
+          </button>
+        </div>
+      )}
+
+      <div className="px-3 pb-3">
+        <Btn variant="primary" size="md" onClick={onCreate} className={`w-full ${collapsed ? '' : ''}`}>
+          <Icon name="plus" className="w-4 h-4" />
+          {!collapsed && <span>محادثة جديدة</span>}
+        </Btn>
+      </div>
+
+      {!collapsed && (
+        <div className="flex-1 overflow-y-auto py-1">
+          <div className="px-4 pb-2 text-[10px] uppercase tracking-widest font-bold text-ink-dim">المحادثات</div>
+          {sessions.length === 0 ? (
+            <div className="px-4 py-6 text-center text-ink-dim text-xs">لا توجد محادثات</div>
+          ) : (
+            <div className="space-y-0.5 px-2">
+              {sessions.map(s => (
+                <SessionItem key={s.id} session={s}
+                  active={s.id === currentId && view === 'session'}
+                  onSelect={() => onSelect(s.id)}
+                  onDelete={() => onDelete(s.id)}
+                  onRename={(t) => onRename(s.id, t)} />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+      {collapsed && <div className="flex-1" />}
+
+      {!collapsed && usage && (
+        <div className="p-3">
+          <button onClick={onSettings} className="w-full card-soft rounded-xl p-3 text-right smooth hover:border-line-strong">
+            <div className="flex justify-between text-xs mb-1.5">
+              <span className="text-ink-muted font-semibold">الاستخدام الشهري</span>
+              <span className="font-mono font-semibold">{usage.total_messages}/{usage.limit}</span>
+            </div>
+            <div className="h-1 bg-paper-soft rounded-full overflow-hidden">
+              <div className={`h-full rounded-full smooth ${usage.limit_reached ? 'bg-red-500' : 'bg-brand'}`}
+                style={{ width: `${Math.min(100, (usage.total_messages / Math.max(1, usage.limit)) * 100)}%` }} />
+            </div>
+            <div className="flex justify-between mt-1.5 text-[10px] text-ink-dim">
+              <span className="uppercase font-semibold">{usage.plan}</span>
+              <span>${(usage.total_cost_usd || 0).toFixed(4)}</span>
+            </div>
+          </button>
+        </div>
+      )}
+
+      <div className="p-2 border-t border-line space-y-0.5">
+        {user.is_admin && (
+          <button onClick={onAdmin} className="w-full text-right px-3 py-2 rounded-lg text-ink-muted hover:bg-surface hover:text-ink smooth flex items-center gap-3 text-sm">
+            <Icon name="shield" className="w-4 h-4" />{!collapsed && <span className="font-medium">لوحة الإدارة</span>}
+          </button>
+        )}
+        <button onClick={onSettings} className="w-full text-right px-3 py-2 rounded-lg text-ink-muted hover:bg-surface hover:text-ink smooth flex items-center gap-3 text-sm">
+          <Icon name="settings" className="w-4 h-4" />{!collapsed && <span className="font-medium">الإعدادات</span>}
+        </button>
+        <button onClick={onLogout} className="w-full text-right px-3 py-2 rounded-lg text-ink-muted hover:bg-surface hover:text-ink smooth flex items-center gap-3 text-sm">
+          <Icon name="logout" className="w-4 h-4" />{!collapsed && <span className="font-medium">خروج</span>}
+        </button>
+        {!collapsed && <div className="px-3 py-1 text-[10px] text-ink-dim truncate">{user.email}</div>}
+      </div>
+    </aside>
+  );
+}
+
+function SessionItem({ session, active, onSelect, onDelete, onRename }) {
+  const [editing, setEditing] = useState(false);
+  const [title, setTitle] = useState(session.title);
+  return (
+    <div className={`group rounded-lg smooth ${active ? 'bg-surface border border-line' : 'hover:bg-surface/60'}`}>
+      <div className="flex items-center px-2 py-1.5 gap-1">
+        {editing ? (
+          <input autoFocus value={title} onChange={e => setTitle(e.target.value)}
+            onBlur={() => { setEditing(false); if (title.trim() && title !== session.title) onRename(title.trim()); else setTitle(session.title); }}
+            onKeyDown={e => { if (e.key === 'Enter') e.target.blur(); if (e.key === 'Escape') { setTitle(session.title); setEditing(false); } }}
+            className="flex-1 bg-paper-soft border border-brand rounded px-2 py-1 text-sm focus:outline-none focus-ring" />
+        ) : (
+          <button onClick={onSelect} className="flex-1 text-right truncate text-sm py-0.5 px-1 flex items-center gap-2">
+            <Icon name={VIEW_KINDS[session.kind]?.iconName || 'chat'} className="w-3.5 h-3.5 text-ink-dim flex-shrink-0" />
+            <span className="truncate">{session.title}</span>
+          </button>
+        )}
+        {!editing && (
+          <div className="opacity-0 group-hover:opacity-100 flex gap-0.5 smooth">
+            <button onClick={() => setEditing(true)} className="p-1 rounded hover:bg-paper-soft text-ink-dim hover:text-ink smooth"><Icon name="edit" className="w-3 h-3" /></button>
+            <button onClick={() => { if (confirm('حذف هذه المحادثة؟')) onDelete(); }} className="p-1 rounded hover:bg-red-50 text-ink-dim hover:text-red-600 smooth"><Icon name="trash" className="w-3 h-3" /></button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// HOME
+// ============================================================
+function Home({ user, onCreate, agents, sessions }) {
+  const recent = sessions.slice(0, 6);
+  return (
+    <div className="flex-1 overflow-y-auto bg-paper paper-grain">
+      <div className="max-w-5xl mx-auto px-6 py-12 md:py-16">
+        <div className="mb-10 fade-in">
+          <h1 className="text-3xl md:text-5xl font-display font-extrabold mb-2 tracking-tight">
+            مرحباً <span className="text-brand">{user.full_name || user.email.split('@')[0]}</span>
+          </h1>
+          <p className="text-ink-muted text-base md:text-lg">ماذا تريد أن تنجز اليوم؟</p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-4 mb-12">
+          {Object.entries(VIEW_KINDS).map(([k, v]) => (
+            <button key={k} onClick={() => onCreate(k)}
+              className="card-soft rounded-2xl p-6 text-right smooth hover:border-line-strong hover:-translate-y-0.5 group">
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-paper-soft group-hover:bg-brand-soft smooth mb-4">
+                <Icon name={v.iconName} className="w-5 h-5 text-ink group-hover:text-brand smooth" strokeWidth={1.8} />
+              </div>
+              <h3 className="font-bold text-lg mb-1 tracking-tight">{v.label}</h3>
+              <p className="text-sm text-ink-muted mb-4 leading-relaxed">{v.desc}</p>
+              <div className="text-[10px] text-ink-dim flex items-center gap-1.5 uppercase tracking-widest font-semibold">
+                <span className="w-1 h-1 rounded-full" style={{background: v.color}}></span>
+                <span>{MODES[v.mode]?.label}</span>
+                <span>·</span>
+                <span>{v.minAgents}+ نماذج</span>
+              </div>
+            </button>
+          ))}
+        </div>
+
+        {recent.length > 0 && (
+          <section>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xs font-bold uppercase tracking-widest text-ink-dim">آخر المحادثات</h2>
+            </div>
+            <div className="grid md:grid-cols-2 gap-3">
+              {recent.map(s => (
+                <button key={s.id} onClick={() => window.location.hash = `#session-${s.id}`}
+                  className="card-soft hover:border-line-strong rounded-xl p-4 text-right smooth">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Icon name={VIEW_KINDS[s.kind]?.iconName || 'chat'} className="w-3.5 h-3.5 text-ink-dim flex-shrink-0" />
+                    <span className="font-medium truncate">{s.title}</span>
+                  </div>
+                  <div className="text-xs text-ink-dim">{s.message_count} رسالة · {MODES[s.default_mode]?.label}</div>
+                </button>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {agents.filter(a => a.available).length === 0 && (
+          <div className="mt-10 card-soft border-yellow-200 bg-yellow-50 rounded-2xl p-5 text-sm">
+            <div className="font-bold text-yellow-800 mb-1">لا يوجد نموذج متاح</div>
+            <p className="text-yellow-700">ترقّ خطتك للوصول لجميع النماذج، أو أضف مفاتيحك من <strong>الإعدادات</strong>.</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// CHAT VIEW
+// ============================================================
+function ChatView({ session, agents, onUpdate, onExport, hasSidePanel, sidePanel, onTogglePanel, messages, currentPhase, isThinking, awaitingChunks, onSend, onCloseSession }) {
+  const [prefill, setPrefill] = useState('');
+  const onPromptPick = (p) => setPrefill(p + ' '); // مسافة في النهاية لـ cursor placement
+  return (
+    <div className="flex-1 flex flex-col h-full overflow-hidden bg-paper">
+      <header className="border-b border-line px-4 md:px-6 py-3 flex items-center justify-between gap-3 bg-paper/80 backdrop-blur z-10">
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-0.5">
+            <Icon name={VIEW_KINDS[session.kind]?.iconName || 'chat'} className="w-4 h-4 text-ink-dim flex-shrink-0" />
+            <h2 className="font-semibold truncate text-ink">{session.title}</h2>
+          </div>
+          <p className="text-xs text-ink-dim font-medium">
+            {VIEW_KINDS[session.kind]?.label || 'محادثة'} · {MODES[session.default_mode]?.label} · {(session.default_agents || []).length} نماذج
+          </p>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <ModePicker value={session.default_mode} onChange={(m) => onUpdate({ default_mode: m })} agentCount={(session.default_agents || []).length} />
+          <AgentPicker available={agents} selected={session.default_agents || []} onChange={(a) => onUpdate({ default_agents: a })} minRequired={MODES[session.default_mode]?.minAgents || 1} />
+          {hasSidePanel && (
+            <button onClick={onTogglePanel} className="p-2 rounded-lg hover:bg-paper-soft text-ink-muted hover:text-ink smooth" title="تبديل اللوحة">
+              <Icon name="eye" className="w-4 h-4" />
+            </button>
+          )}
+          <button onClick={onExport} title="تصدير Markdown" className="p-2 rounded-lg hover:bg-paper-soft text-ink-muted hover:text-ink smooth"><Icon name="download" className="w-4 h-4" /></button>
+          <button onClick={onCloseSession} title="إغلاق" className="p-2 rounded-lg hover:bg-paper-soft text-ink-muted hover:text-ink smooth"><Icon name="close" className="w-4 h-4" /></button>
+        </div>
+      </header>
+
+      <div className="flex-1 flex overflow-hidden">
+        <div className={`flex flex-col h-full overflow-hidden ${sidePanel ? 'w-2/5 border-l border-line' : 'flex-1'}`}>
+          <ChatMessages messages={messages} currentPhase={currentPhase} isThinking={isThinking} awaitingChunks={awaitingChunks}
+            sessionKind={session.kind} onPromptPick={onPromptPick} />
+          <InputBar onSend={onSend} disabled={isThinking || awaitingChunks} prefill={prefill} />
+        </div>
+        {sidePanel && (
+          <div className="flex-1 h-full overflow-hidden bg-surface-soft">
+            {session.kind === 'code' ? <CodePreviewPanel messages={messages} session={session} />
+             : session.kind === 'assistant' ? <FilesPanel sessionId={session.id} />
+             : null}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function ModePicker({ value, onChange, agentCount }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="relative">
+      <button onClick={() => setOpen(!open)} className="px-3 py-1.5 rounded-lg bg-surface hover:bg-paper-soft border border-line text-sm flex items-center gap-1.5 smooth font-medium">
+        <span>{MODES[value]?.label}</span><Icon name="chevron" className="w-3 h-3 text-ink-dim" />
+      </button>
+      {open && (<>
+        <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
+        <div className="absolute top-full mt-1 left-0 card-elevated rounded-lg py-1 z-20 w-56">
+          {Object.entries(MODES).map(([k, m]) => {
+            const disabled = agentCount < m.minAgents;
+            return (
+              <button key={k} disabled={disabled}
+                onClick={() => { if (!disabled) { onChange(k); setOpen(false); } }}
+                className={`w-full text-right px-3 py-2 text-sm smooth ${disabled ? 'opacity-40 cursor-not-allowed' : value === k ? 'bg-brand-soft text-brand' : 'hover:bg-paper-soft'}`}>
+                <div className="font-semibold">{m.label}</div>
+                <div className="text-xs text-ink-dim">{m.desc}</div>
+              </button>
+            );
+          })}
+        </div>
+      </>)}
+    </div>
+  );
+}
+
+function AgentPicker({ available, selected, onChange, minRequired }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="relative">
+      <button onClick={() => setOpen(!open)} className="px-3 py-1.5 rounded-lg bg-surface hover:bg-paper-soft border border-line text-sm flex items-center gap-1.5 smooth font-medium">
+        <span>{selected.length} نماذج</span><Icon name="chevron" className="w-3 h-3 text-ink-dim" />
+      </button>
+      {open && (<>
+        <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
+        <div className="absolute top-full mt-1 left-0 card-elevated rounded-lg p-2 z-20 w-72">
+          <div className="text-xs text-ink-dim mb-2 px-2 uppercase tracking-widest font-bold">النماذج المشاركة</div>
+          {available.map(a => {
+            const meta = AGENT_META[a.id] || {};
+            const isSel = selected.includes(a.id);
+            return (
+              <label key={a.id} className={`flex items-center gap-3 px-2 py-2 rounded-lg cursor-pointer smooth ${!a.available ? 'opacity-40' : 'hover:bg-paper-soft'}`}>
+                <input type="checkbox" disabled={!a.available} checked={isSel}
+                  onChange={() => onChange(isSel ? selected.filter(x => x !== a.id) : [...selected, a.id])}
+                  className="accent-brand" />
+                <span className="w-2 h-2 rounded-full" style={{background: meta.color}}></span>
+                <div className="flex-1">
+                  <div className="text-sm font-semibold">{meta.name || a.name}</div>
+                  <div className="text-xs text-ink-dim">{a.available ? meta.desc : 'غير متاح'}</div>
+                </div>
+              </label>
+            );
+          })}
+          <div className="text-xs text-ink-dim mt-2 px-2 border-t border-line pt-2">
+            {selected.length < minRequired ? `يحتاج ${minRequired} نماذج على الأقل` : 'جاهز'}
+          </div>
+        </div>
+      </>)}
+    </div>
+  );
+}
+
+function ChatMessages({ messages, currentPhase, isThinking, awaitingChunks, sessionKind, onPromptPick }) {
+  const ref = useRef(null);
+  useEffect(() => { if (ref.current) ref.current.scrollTop = ref.current.scrollHeight; }, [messages, currentPhase]);
+
+  if (messages.length === 0) {
+    const kind = sessionKind || 'chat';
+    const meta = VIEW_KINDS[kind] || VIEW_KINDS.chat;
+    const prompts = PROMPTS_BY_KIND[kind] || [];
+    return (
+      <div ref={ref} className="flex-1 overflow-y-auto px-4 md:px-6 py-10 paper-grain">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-4"
+              style={{ background: meta.color + '12', color: meta.color, border: `1px solid ${meta.color}30` }}>
+              <Icon name={meta.iconName} className="w-6 h-6" strokeWidth={1.5} />
+            </div>
+            <h3 className="text-2xl font-display font-extrabold mb-2 tracking-tight">ابدأ تعاوناً مع المَجلِس</h3>
+            <p className="text-sm text-ink-muted max-w-md mx-auto">
+              اكتب موضوعاً أو سؤالاً، وستتداول النماذج معاً للوصول لأفضل إجابة. أو ابدأ بأحد الأمثلة:
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-2 gap-2.5 max-w-2xl mx-auto">
+            {prompts.map((p, i) => (
+              <button key={i} onClick={() => onPromptPick && onPromptPick(p)}
+                className="card-soft hover:border-line-strong hover:bg-paper-soft text-right p-4 rounded-xl smooth text-sm leading-relaxed text-ink-muted hover:text-ink group">
+                <span className="text-brand opacity-60 group-hover:opacity-100 smooth ml-1">✦</span>
+                <span>{p}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div ref={ref} className="flex-1 overflow-y-auto px-4 md:px-6 py-6 paper-grain">
+      <div className="max-w-3xl mx-auto space-y-6">
+        {messages.map((m, i) => (
+          <React.Fragment key={m.id || `temp-${i}`}>
+            {m.phase && (i === 0 || messages[i-1]?.phase !== m.phase) && <PhaseBanner phase={m.phase} />}
+            <Bubble msg={m} isStreaming={m._streaming} />
+          </React.Fragment>
+        ))}
+        {isThinking && !awaitingChunks && (
+          <div className="flex gap-3 fade-in">
+            <span className="w-2 h-2 rounded-full bg-brand mt-2 breathe"></span>
+            <div className="text-ink-muted text-sm">النماذج تفكّر...</div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function PhaseBanner({ phase }) {
+  const p = PHASE_LABELS[phase];
+  if (!p) return null;
+  return (
+    <div className="flex items-center gap-3 my-3 px-4 py-2.5 bg-brand-soft border border-brand/20 rounded-lg fade-in">
+      <span className="w-1.5 h-1.5 rounded-full bg-brand breathe"></span>
+      <div className="flex-1">
+        <div className="text-sm font-bold text-brand">{p.label}</div>
+        <div className="text-xs text-ink-muted">{p.desc}</div>
+      </div>
+    </div>
+  );
+}
+
+function Bubble({ msg, isStreaming }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    if (!ref.current) return;
+    ref.current.querySelectorAll('pre code').forEach(b => {
+      if (!b.dataset.highlighted) { hljs.highlightElement(b); b.dataset.highlighted = 'true'; }
+    });
+    ref.current.querySelectorAll('pre').forEach(pre => {
+      if (pre.dataset.copyAdded) return;
+      pre.dataset.copyAdded = 'true';
+      pre.style.position = 'relative';
+      const btn = document.createElement('button');
+      btn.textContent = 'نسخ';
+      btn.style.cssText = 'position:absolute;top:8px;left:8px;font-size:11px;padding:3px 9px;background:#FFFFFF;color:#5A5A5A;border-radius:6px;border:1px solid #E8E5DD;cursor:pointer;font-family:Cairo;font-weight:600;';
+      btn.onmouseover = () => { btn.style.background = '#1A1A1A'; btn.style.color = '#fff'; btn.style.borderColor = '#1A1A1A'; };
+      btn.onmouseout = () => { btn.style.background = '#FFFFFF'; btn.style.color = '#5A5A5A'; btn.style.borderColor = '#E8E5DD'; };
+      btn.onclick = () => {
+        navigator.clipboard.writeText(pre.querySelector('code').innerText);
+        btn.textContent = '✓ تم'; setTimeout(() => btn.textContent = 'نسخ', 1500);
+      };
+      pre.appendChild(btn);
+    });
+  }, [msg.content, isStreaming]);
+
+  if (msg.role === 'user') {
+    return (
+      <div className="flex gap-3 fade-in">
+        <div className="w-7 h-7 rounded-lg bg-paper-soft flex items-center justify-center flex-shrink-0 text-ink">
+          <Icon name="user" className="w-4 h-4" strokeWidth={1.8} />
+        </div>
+        <div className="flex-1 min-w-0 pt-0.5">
+          <div className="text-xs text-ink-dim mb-1 font-semibold">أنت</div>
+          <div className="markdown-body text-ink whitespace-pre-wrap">{msg.content}</div>
+        </div>
+      </div>
+    );
+  }
+
+  const meta = AGENT_META[msg.agent_id] || { name: msg.agent_id, color: '#888' };
+  const isManusAgent = msg.agent_id === 'manus';
+  return (
+    <div className="flex gap-3 fade-in">
+      <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 text-xs font-bold border"
+        style={{ background: meta.color + '12', color: meta.color, borderColor: meta.color + '30' }}>
+        {meta.name.charAt(0)}
+      </div>
+      <div className="flex-1 min-w-0 pt-0.5">
+        <div className="flex items-center gap-2 text-xs mb-1">
+          <span style={{ color: meta.color }} className="font-bold">{meta.name}</span>
+          <span className="text-ink-dim">·</span>
+          <span className="text-ink-dim">{meta.desc}</span>
+        </div>
+        <div ref={ref} className={`markdown-body ${isStreaming ? 'typing' : ''}`}
+          dangerouslySetInnerHTML={{ __html: renderMarkdown(msg.content) }} />
+        {msg.cost_usd != null && !isStreaming && (
+          <div className="text-[10px] text-ink-dim mt-2 font-mono">
+            {msg.input_tokens}↓ {msg.output_tokens}↑ · ${(msg.cost_usd || 0).toFixed(6)}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function InputBar({ onSend, disabled, placeholder, prefill }) {
+  const [text, setText] = useState('');
+  const [images, setImages] = useState([]);  // [{name, dataUrl}]
+  const taRef = useRef(null);
+  const fileRef = useRef(null);
+
+  useEffect(() => {
+    if (prefill) {
+      setText(prefill);
+      if (taRef.current) {
+        taRef.current.style.height = 'auto';
+        taRef.current.style.height = Math.min(taRef.current.scrollHeight, 200) + 'px';
+        taRef.current.focus();
+        taRef.current.setSelectionRange(prefill.length, prefill.length);
+      }
+    }
+  }, [prefill]);
+
+  const send = () => {
+    const tval = text.trim();
+    if ((!tval && images.length === 0) || disabled) return;
+    onSend(tval, images.map(i => i.dataUrl));
+    setText('');
+    setImages([]);
+    if (taRef.current) taRef.current.style.height = 'auto';
+  };
+  const onKey = e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } };
+  const onChange = e => {
+    setText(e.target.value);
+    if (taRef.current) { taRef.current.style.height = 'auto'; taRef.current.style.height = Math.min(taRef.current.scrollHeight, 200) + 'px'; }
+  };
+
+  const onPickImage = (e) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+    // حد أقصى 4 صور، 5MB لكل واحدة
+    const MAX_BYTES = 5 * 1024 * 1024;
+    files.slice(0, 4 - images.length).forEach(f => {
+      if (!f.type.startsWith('image/')) { alert('اختر ملفات صور فقط'); return; }
+      if (f.size > MAX_BYTES) { alert(`الصورة ${f.name} أكبر من 5MB`); return; }
+      const reader = new FileReader();
+      reader.onload = () => setImages(prev => [...prev, { name: f.name, dataUrl: reader.result }]);
+      reader.readAsDataURL(f);
+    });
+    e.target.value = '';
+  };
+
+  const removeImage = (idx) => setImages(prev => prev.filter((_, i) => i !== idx));
+
+  return (
+    <div className="border-t border-line p-3 md:p-4 bg-paper">
+      <div className="max-w-3xl mx-auto">
+        <div className="card-soft rounded-2xl p-3 focus-within:border-brand/50 smooth">
+          {/* Image previews */}
+          {images.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-3 pb-3 border-b border-line">
+              {images.map((img, idx) => (
+                <div key={idx} className="relative group">
+                  <img src={img.dataUrl} alt={img.name} className="w-16 h-16 rounded-lg object-cover border border-line" />
+                  <button onClick={() => removeImage(idx)}
+                    className="absolute -top-1.5 -left-1.5 w-5 h-5 rounded-full bg-ink text-white text-xs flex items-center justify-center hover:bg-brand smooth">
+                    ×
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+          <textarea ref={taRef} value={text} onChange={onChange} onKeyDown={onKey}
+            placeholder={placeholder || 'اكتب سؤالك أو ارفع صورة...'} disabled={disabled} rows={1}
+            className="w-full bg-transparent resize-none focus:outline-none text-ink placeholder-ink-dim min-h-[24px] max-h-[200px]" />
+          <div className="flex items-center justify-between mt-2 pt-2 border-t border-line">
+            <div className="flex items-center gap-2">
+              <input ref={fileRef} type="file" hidden multiple accept="image/*" onChange={onPickImage} />
+              <button onClick={() => fileRef.current?.click()} disabled={disabled || images.length >= 4}
+                title="رفع صورة (Vision)"
+                className="p-1.5 rounded-lg hover:bg-paper-soft text-ink-muted hover:text-ink smooth disabled:opacity-40">
+                <Icon name="file" className="w-4 h-4" />
+              </button>
+              <span className="text-xs text-ink-dim font-medium">{disabled ? 'النماذج تعمل...' : (images.length > 0 ? `${images.length} صورة جاهزة` : 'جاهز')}</span>
+            </div>
+            <Btn variant="primary" size="sm" onClick={send} disabled={(!text.trim() && images.length === 0) || disabled}>
+              <span>إرسال</span><Icon name="send" className="w-3.5 h-3.5" />
+            </Btn>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// CODE PREVIEW PANEL
+// ============================================================
+function CodePreviewPanel({ messages, session }) {
+  const [tab, setTab] = useState('preview');
+  const [running, setRunning] = useState(false);
+  const [runResult, setRunResult] = useState(null);
+  const [selectedIdx, setSelectedIdx] = useState(0);
+
+  const codeBlocks = useMemo(() => {
+    const out = [];
+    for (const m of messages) {
+      if (m.role === 'agent') {
+        const blocks = extractCodeBlocks(m.content);
+        for (const b of blocks) out.push({ ...b, agent: m.agent_id, phase: m.phase });
+      }
+    }
+    return out;
+  }, [messages]);
+
+  const current = codeBlocks[selectedIdx] || null;
+  useEffect(() => {
+    if (codeBlocks.length > 0 && selectedIdx >= codeBlocks.length) setSelectedIdx(codeBlocks.length - 1);
+  }, [codeBlocks.length]);
+
+  async function run() {
+    if (!current) return;
+    setRunning(true); setRunResult(null);
+    try {
+      const result = await api('/code/execute', { method: 'POST', body: JSON.stringify({ language: current.lang, code: current.code }) });
+      setRunResult(result);
+    } catch (e) {
+      setRunResult({ stderr: e.message, stdout: '', exit_code: -1, timed_out: false, runtime_ms: 0 });
+    } finally { setRunning(false); }
+  }
+
+  const htmlPreview = current?.lang === 'html' ? current.code : null;
+  const codeRef = useRef(null);
+  useEffect(() => {
+    if (codeRef.current) {
+      codeRef.current.querySelectorAll('code').forEach(b => { delete b.dataset.highlighted; hljs.highlightElement(b); });
+    }
+  }, [current?.code]);
+
+  return (
+    <div className="h-full flex flex-col bg-surface">
+      <div className="flex items-center justify-between border-b border-line px-4 py-2.5">
+        <div className="flex gap-1">
+          <TabBtn active={tab==='preview'} onClick={() => setTab('preview')}><Icon name="eye" className="w-3.5 h-3.5" /> Preview</TabBtn>
+          <TabBtn active={tab==='code'} onClick={() => setTab('code')}><Icon name="code" className="w-3.5 h-3.5" /> Code</TabBtn>
+          <TabBtn active={tab==='output'} onClick={() => setTab('output')}><Icon name="play" className="w-3.5 h-3.5" /> Output</TabBtn>
+        </div>
+        <div className="flex items-center gap-2 text-xs">
+          {codeBlocks.length > 1 && (
+            <select value={selectedIdx} onChange={e => setSelectedIdx(parseInt(e.target.value))}
+              className="bg-paper-soft border border-line rounded-md px-2 py-1 text-xs">
+              {codeBlocks.map((b, i) => <option key={i} value={i}>كتلة {i+1} ({b.lang})</option>)}
+            </select>
+          )}
+          {current && current.lang !== 'html' && (
+            <Btn variant="brand" size="sm" onClick={run} disabled={running}>
+              {running ? '...' : <><Icon name="play" className="w-3 h-3" />تشغيل</>}
+            </Btn>
+          )}
+        </div>
+      </div>
+
+      <div className="flex-1 overflow-hidden">
+        {!current ? (
+          <div className="h-full flex items-center justify-center text-ink-dim text-sm">
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-paper-soft text-ink mb-3">
+                <Icon name="code" className="w-5 h-5" />
+              </div>
+              <p className="font-medium">اطلب من النماذج كتابة كود</p>
+              <p className="text-xs text-ink-dim mt-1">سيظهر هنا للمعاينة والتشغيل</p>
+            </div>
+          </div>
+        ) : tab === 'preview' ? (
+          htmlPreview ? (
+            <iframe className="preview-frame" sandbox="allow-scripts" srcDoc={htmlPreview} />
+          ) : (
+            <div className="h-full overflow-auto p-4 bg-paper-soft">
+              <div className="text-xs text-ink-dim mb-2 font-semibold">Preview غير متاح لهذه اللغة. اضغط ▶ تشغيل.</div>
+              <pre ref={codeRef}><code className={`language-${current.lang}`}>{current.code}</code></pre>
+            </div>
+          )
+        ) : tab === 'code' ? (
+          <div className="h-full overflow-auto p-4 bg-paper-soft">
+            <div className="text-xs text-ink-dim mb-2 flex items-center justify-between font-semibold">
+              <span>{current.lang}{current.agent ? ` · ${AGENT_META[current.agent]?.name}` : ''}{current.phase ? ` · ${PHASE_LABELS[current.phase]?.label || current.phase}` : ''}</span>
+              <button onClick={() => navigator.clipboard.writeText(current.code)}
+                className="text-xs bg-surface hover:bg-paper border border-line px-2 py-0.5 rounded smooth">نسخ</button>
+            </div>
+            <pre ref={codeRef}><code className={`language-${current.lang}`}>{current.code}</code></pre>
+          </div>
+        ) : (
+          <div className="h-full overflow-auto p-4 font-mono text-xs bg-paper-soft">
+            {!runResult ? (
+              <div className="text-ink-dim">لم يُشغّل بعد. اضغط ▶ تشغيل.</div>
+            ) : (
+              <div>
+                <div className={`mb-3 px-3 py-1.5 rounded-lg inline-block text-xs font-semibold ${runResult.exit_code === 0 ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200'}`}>
+                  exit={runResult.exit_code} · {runResult.runtime_ms}ms{runResult.timed_out ? ' · TIMEOUT' : ''}
+                </div>
+                {runResult.stdout && (
+                  <div className="mb-3">
+                    <div className="text-ink-dim mb-1 font-semibold">STDOUT</div>
+                    <pre className="bg-surface border border-line rounded-lg p-3 overflow-auto whitespace-pre-wrap text-ink">{runResult.stdout}</pre>
+                  </div>
+                )}
+                {runResult.stderr && (
+                  <div>
+                    <div className="text-red-600 mb-1 font-semibold">STDERR</div>
+                    <pre className="bg-red-50 border border-red-200 rounded-lg p-3 overflow-auto whitespace-pre-wrap text-red-700">{runResult.stderr}</pre>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function TabBtn({ active, onClick, children }) {
+  return (
+    <button onClick={onClick} className={`px-2.5 py-1 rounded-md text-xs font-semibold smooth flex items-center gap-1.5 ${active ? 'bg-ink text-paper' : 'text-ink-muted hover:bg-paper-soft hover:text-ink'}`}>{children}</button>
+  );
+}
+
+// ============================================================
+// FILES PANEL
+// ============================================================
+function FilesPanel({ sessionId }) {
+  const [files, setFiles] = useState([]);
+  const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState('');
+
+  const load = useCallback(async () => {
+    try { const fs = await api(`/files?session_id=${sessionId}`); setFiles(fs); }
+    catch (e) { setError(e.message); }
+  }, [sessionId]);
+  useEffect(() => { load(); }, [load]);
+
+  async function upload(e) {
+    const file = e.target.files?.[0]; if (!file) return;
+    setUploading(true); setError('');
+    try {
+      const fd = new FormData(); fd.append('file', file);
+      const t = getToken();
+      const res = await fetch(`${API_BASE}/files?session_id=${sessionId}`, { method: 'POST', headers: { Authorization: `Bearer ${t}` }, body: fd });
+      if (!res.ok) throw new Error((await res.json()).detail || 'upload failed');
+      e.target.value = ''; load();
+    } catch (e) { setError(e.message); }
+    finally { setUploading(false); }
+  }
+  async function remove(uuid) {
+    if (!confirm('حذف الملف؟')) return;
+    try { await api(`/files/${uuid}`, { method: 'DELETE' }); load(); }
+    catch (e) { setError(e.message); }
+  }
+
+  return (
+    <div className="h-full flex flex-col bg-surface">
+      <div className="border-b border-line px-4 py-3 flex items-center justify-between">
+        <h3 className="font-bold tracking-tight">ملفات المشروع</h3>
+        <label className="cursor-pointer">
+          <Btn variant="primary" size="sm" as="span">
+            <Icon name="plus" className="w-3.5 h-3.5" />
+            {uploading ? '...' : 'رفع'}
+          </Btn>
+          <input type="file" hidden onChange={upload} />
+        </label>
+      </div>
+      {error && <div className="m-4 bg-red-50 border border-red-200 text-red-700 rounded-lg px-3 py-2 text-xs">{error}</div>}
+      <div className="flex-1 overflow-y-auto p-3">
+        {files.length === 0 ? (
+          <div className="text-center text-ink-dim py-12 text-sm">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-paper-soft text-ink mb-3">
+              <Icon name="folder" className="w-5 h-5" />
+            </div>
+            <p className="font-medium">لا توجد ملفات</p>
+            <p className="text-xs text-ink-dim mt-1">حد أقصى 10MB · text/image/pdf/json/zip</p>
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {files.map(f => (
+              <div key={f.id} className="card-soft rounded-lg p-3 flex items-center gap-3 smooth hover:border-line-strong">
+                <div className="w-9 h-9 rounded-lg bg-paper-soft flex items-center justify-center flex-shrink-0 text-ink">
+                  <Icon name="file" className="w-4 h-4" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="font-semibold text-sm truncate">{f.name}</div>
+                  <div className="text-xs text-ink-dim">{(f.size_bytes / 1024).toFixed(1)} KB · {f.mime_type}</div>
+                </div>
+                <a href={`${API_BASE}/files/${f.file_uuid}`} target="_blank" className="text-xs text-brand hover:underline font-semibold">↓</a>
+                <button onClick={() => remove(f.file_uuid)} className="text-xs text-red-500 hover:text-red-700 smooth"><Icon name="trash" className="w-3.5 h-3.5" /></button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// SETTINGS MODAL
+// ============================================================
+function SettingsModal({ user, onClose }) {
+  const [keys, setKeys] = useState([]);
+  const [usage, setUsage] = useState(null);
+  const [plans, setPlans] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [provider, setProvider] = useState('anthropic');
+  const [keyInput, setKeyInput] = useState('');
+  const [adding, setAdding] = useState(false);
+  const [error, setError] = useState('');
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    try {
+      const [k, u, p] = await Promise.all([api('/api-keys'), api('/usage/me'), api('/billing/plans')]);
+      setKeys(k); setUsage(u); setPlans(p);
+    } catch (e) { setError(e.message); }
+    finally { setLoading(false); }
+  }, []);
+  useEffect(() => { load(); }, [load]);
+
+  async function addKey(e) {
+    e.preventDefault(); setAdding(true); setError('');
+    try { await api('/api-keys', { method: 'POST', body: JSON.stringify({ provider, key: keyInput }) }); setKeyInput(''); load(); }
+    catch (e) { setError(e.message); } finally { setAdding(false); }
+  }
+  async function delKey(prov) {
+    if (!confirm(`حذف مفتاح ${prov}؟`)) return;
+    try { await api(`/api-keys/${prov}`, { method: 'DELETE' }); load(); } catch (e) { setError(e.message); }
+  }
+  async function upgradeTo(plan) {
+    try {
+      const r = await api('/billing/checkout', { method: 'POST', body: JSON.stringify({ plan }) });
+      if (r.checkout_url) window.location.href = r.checkout_url;
+    } catch (e) { alert(e.message); }
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 bg-ink/50 flex items-center justify-center p-4 fade-in" onClick={onClose}>
+      <div className="card-elevated rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+        <div className="sticky top-0 bg-surface border-b border-line px-6 py-4 flex items-center justify-between z-10">
+          <h2 className="text-lg font-bold tracking-tight">الإعدادات</h2>
+          <button onClick={onClose} className="text-ink-dim hover:text-ink p-1 smooth"><Icon name="close" className="w-5 h-5" /></button>
+        </div>
+
+        <div className="p-6 space-y-8">
+          <section>
+            <div className="text-xs font-bold uppercase tracking-widest text-ink-dim mb-3">الخطة الحالية</div>
+            <div className="bg-paper-soft rounded-xl p-5">
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <div className="text-2xl font-display font-extrabold uppercase tracking-tight">{user.plan}</div>
+                  <div className="text-xs text-ink-dim">{user.plan === 'free' ? 'الخطة المجانية' : 'مدفوعة'}</div>
+                </div>
+                {user.plan === 'free' && plans && plans.basic && plans.pro && (
+                  <div className="flex flex-wrap gap-2">
+                    <Btn variant="secondary" size="sm" onClick={() => upgradeTo('basic')}>شخصي · {plans.basic.price_lyd} د.ل</Btn>
+                    <Btn variant="brand" size="sm" onClick={() => upgradeTo('pro')}>محترف · {plans.pro.price_lyd} د.ل</Btn>
+                  </div>
+                )}
+              </div>
+              {usage && (<>
+                <div className="text-xs text-ink-muted mb-1.5 flex justify-between font-semibold">
+                  <span>{usage.total_messages} / {usage.limit} رسالة</span>
+                  <span>${(usage.total_cost_usd || 0).toFixed(4)}</span>
+                </div>
+                <div className="h-1.5 bg-surface rounded-full overflow-hidden">
+                  <div className={`h-full ${usage.limit_reached ? 'bg-red-500' : 'bg-brand'}`}
+                    style={{ width: `${Math.min(100, (usage.total_messages / Math.max(1, usage.limit)) * 100)}%` }} />
+                </div>
+              </>)}
+            </div>
+          </section>
+
+          <section>
+            <div className="text-xs font-bold uppercase tracking-widest text-ink-dim mb-3">مفاتيح API الخاصة بك</div>
+            <p className="text-sm text-ink-muted mb-4 leading-relaxed">
+              أضف مفاتيحك للاستخدام بحسابك. <a href="https://aistudio.google.com/apikey" target="_blank" className="text-brand hover:underline">Gemini مجاناً</a> · <a href="https://console.anthropic.com" target="_blank" className="text-brand hover:underline">Anthropic</a> · <a href="https://platform.openai.com/api-keys" target="_blank" className="text-brand hover:underline">OpenAI</a>
+            </p>
+            <form onSubmit={addKey} className="flex gap-2 mb-3">
+              <select value={provider} onChange={e => setProvider(e.target.value)} className="bg-paper-soft border border-line rounded-lg px-3 py-2 text-sm focus:border-brand focus-ring">
+                <option value="anthropic">Anthropic</option><option value="openai">OpenAI</option>
+                <option value="gemini">Gemini</option><option value="deepseek">DeepSeek</option>
+              </select>
+              <input type="password" value={keyInput} onChange={e => setKeyInput(e.target.value)} placeholder="sk-..." required minLength={10}
+                className="flex-1 bg-paper-soft border border-line rounded-lg px-3 py-2 text-sm focus:border-brand focus-ring font-mono" />
+              <Btn type="submit" variant="primary" size="md" disabled={adding}>{adding ? '...' : 'إضافة'}</Btn>
+            </form>
+            {loading ? <div className="text-center text-ink-dim text-sm py-4">...</div> :
+             keys.length === 0 ? <div className="text-center text-ink-dim text-sm py-4">لا توجد مفاتيح</div> : (
+              <div className="space-y-2">
+                {keys.map(k => (
+                  <div key={k.id} className="flex items-center justify-between bg-paper-soft rounded-lg px-3 py-2">
+                    <div><div className="font-bold text-sm uppercase tracking-tight">{k.provider}</div><div className="font-mono text-xs text-ink-dim">{k.masked_key}</div></div>
+                    <button onClick={() => delKey(k.provider)} className="text-red-500 hover:text-red-700 text-xs font-semibold smooth">حذف</button>
+                  </div>
+                ))}
+              </div>
+            )}
+            {error && <div className="bg-red-50 border border-red-200 text-red-700 rounded-lg px-3 py-2 mt-3 text-sm">{error}</div>}
+          </section>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// LIMIT MODAL
+// ============================================================
+function LimitModal({ info, onClose }) {
+  return (
+    <div className="fixed inset-0 z-50 bg-ink/50 flex items-center justify-center p-4 fade-in">
+      <div className="card-elevated rounded-2xl max-w-md p-7 text-center">
+        <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-brand-soft text-brand mb-4">
+          <Icon name="pause" className="w-6 h-6" strokeWidth={2.5} />
+        </div>
+        <h2 className="text-xl font-bold mb-2 tracking-tight">انتهى حد هذا الشهر</h2>
+        <p className="text-ink-muted mb-4">استخدمت <strong className="text-brand">{info.used}</strong> من <strong>{info.limit}</strong> رسالة في خطة <strong className="uppercase">{info.plan}</strong>.</p>
+        <p className="text-sm text-ink-dim mb-6">اشترك للحصول على مزيد من الرسائل.</p>
+        <div className="flex gap-2">
+          <Btn variant="secondary" size="lg" onClick={onClose} className="flex-1">إغلاق</Btn>
+          <Btn variant="brand" size="lg" onClick={onClose} className="flex-1">ترقية</Btn>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// ADMIN
+// ============================================================
+function AdminPage({ onClose }) {
+  const [stats, setStats] = useState(null);
+  const [users, setUsers] = useState([]);
+  const [threads, setThreads] = useState([]);
+  const [supportStats, setSupportStats] = useState(null);
+  const [tab, setTab] = useState('stats');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    try {
+      const [s, u, t, ss] = await Promise.all([
+        api('/admin/stats'), api('/admin/users'),
+        api('/support/admin/threads'), api('/support/admin/stats'),
+      ]);
+      setStats(s); setUsers(u); setThreads(t); setSupportStats(ss);
+    } catch (e) { setError(e.message); }
+    finally { setLoading(false); }
+  }, []);
+  useEffect(() => { load(); }, [load]);
+
+  // Auto-refresh threads every 10s while on inbox tab
+  useEffect(() => {
+    if (tab !== 'inbox') return;
+    const id = setInterval(async () => {
+      try {
+        const [t, ss] = await Promise.all([
+          api('/support/admin/threads'), api('/support/admin/stats')
+        ]);
+        setThreads(t); setSupportStats(ss);
+      } catch (e) {}
+    }, 10000);
+    return () => clearInterval(id);
+  }, [tab]);
+
+  async function changePlan(userId, plan) {
+    try { await api(`/admin/users/${userId}?plan=${plan}`, { method: 'PATCH' }); load(); } catch (e) { alert(e.message); }
+  }
+
+  if (loading) return <div className="flex-1 flex items-center justify-center text-ink-dim">...</div>;
+  if (error) return <div className="flex-1 p-8 text-red-600">{error}</div>;
+
+  return (
+    <div className="flex-1 overflow-y-auto bg-paper">
+      <header className="border-b border-line px-6 py-4 flex items-center justify-between sticky top-0 bg-paper z-10">
+        <div className="flex items-center gap-2">
+          <Icon name="shield" className="w-5 h-5 text-brand" />
+          <h1 className="text-xl font-bold tracking-tight">لوحة الإدارة</h1>
+        </div>
+        <button onClick={onClose} className="text-ink-dim hover:text-ink p-2 smooth"><Icon name="close" className="w-5 h-5" /></button>
+      </header>
+
+      <div className="px-6 pt-5">
+        <div className="flex gap-1 mb-6 border-b border-line">
+          <AdminTab active={tab==='stats'} onClick={() => setTab('stats')}>إحصائيات</AdminTab>
+          <AdminTab active={tab==='users'} onClick={() => setTab('users')}>المستخدمون · {users.length}</AdminTab>
+          <AdminTab active={tab==='inbox'} onClick={() => setTab('inbox')}>
+            مركز الرسائل
+            {supportStats?.open > 0 && <span className="mr-2 inline-flex items-center justify-center min-w-[20px] h-5 rounded-full bg-brand text-white text-[10px] font-bold px-1.5">{supportStats.open}</span>}
+          </AdminTab>
+          <AdminTab active={tab==='insights'} onClick={() => setTab('insights')}>إحصائيات تسويقية</AdminTab>
+        </div>
+
+        {tab === 'stats' && stats && (
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <StatCard label="مستخدمون" value={stats.users.total} sub={`${stats.users.active_30d} نشط`} />
+            <StatCard label="مدفوعون" value={stats.users.paid} sub={`MRR $${stats.revenue.mrr_estimate_usd}`} />
+            <StatCard label="رسائل هذا الشهر" value={stats.this_month.messages} />
+            <StatCard label="تكلفة هذا الشهر" value={`$${stats.this_month.cost_usd.toFixed(2)}`} sub={`${(stats.this_month.input_tokens + stats.this_month.output_tokens).toLocaleString()} tokens`} />
+            <div className="col-span-full card-soft rounded-2xl p-6">
+              <h3 className="font-bold mb-4 tracking-tight">حسب النموذج</h3>
+              <div className="grid md:grid-cols-4 gap-3">
+                {Object.entries(stats.this_month.by_agent).map(([id, info]) => (
+                  <div key={id} className="bg-paper-soft rounded-lg p-4">
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full" style={{background: AGENT_META[id]?.color}}></span>
+                      <span className="text-xs font-bold uppercase tracking-wider" style={{color: AGENT_META[id]?.color}}>{AGENT_META[id]?.name || id}</span>
+                    </div>
+                    <div className="text-xl font-display font-extrabold">{info.count}</div>
+                    <div className="text-xs text-ink-dim">${info.cost.toFixed(4)}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {tab === 'users' && (
+          <div className="card-soft rounded-2xl overflow-hidden mb-8">
+            <table className="w-full text-sm">
+              <thead className="bg-paper-soft text-xs uppercase tracking-widest text-ink-dim">
+                <tr>
+                  <th className="text-right p-3 font-bold">البريد</th>
+                  <th className="text-right p-3 font-bold">الاسم</th>
+                  <th className="text-right p-3 font-bold">الخطة</th>
+                  <th className="text-right p-3 font-bold">رسائل</th>
+                  <th className="text-right p-3 font-bold">تكلفة</th>
+                  <th className="text-right p-3 font-bold">إنشاء</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map(u => (
+                  <tr key={u.id} className="border-t border-line hover:bg-paper-soft/50">
+                    <td className="p-3 font-mono text-xs">{u.email}{u.is_admin && <Icon name="shield" className="w-3 h-3 inline mr-1 text-brand" />}</td>
+                    <td className="p-3">{u.full_name || '-'}</td>
+                    <td className="p-3">
+                      <select value={u.plan} onChange={e => changePlan(u.id, e.target.value)} className="bg-surface border border-line rounded px-2 py-1 text-xs uppercase">
+                        <option value="free">free</option><option value="basic">basic</option><option value="pro">pro</option>
+                      </select>
+                    </td>
+                    <td className="p-3 font-semibold">{u.total_messages}</td>
+                    <td className="p-3 font-mono text-xs">${u.total_cost_usd.toFixed(4)}</td>
+                    <td className="p-3 text-xs text-ink-dim">{new Date(u.created_at).toLocaleDateString('ar')}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {tab === 'inbox' && (
+          <MessageCenter threads={threads} onRefresh={load} />
+        )}
+
+        {tab === 'insights' && (
+          <MarketingInsights />
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// MESSAGE CENTER (admin) — master/detail
+// ============================================================
+function MessageCenter({ threads, onRefresh }) {
+  const [selectedId, setSelectedId] = useState(null);
+  const [filter, setFilter] = useState('all'); // all | open | closed | unread | chat | contact
+  const [thread, setThread] = useState(null);
+  const [reply, setReply] = useState('');
+  const [sending, setSending] = useState(false);
+  const [err, setErr] = useState('');
+  const scrollRef = useRef(null);
+
+  const filtered = useMemo(() => {
+    return threads.filter(t => {
+      if (filter === 'open')    return t.status === 'open';
+      if (filter === 'closed')  return t.status === 'closed';
+      if (filter === 'unread')  return t.is_unread;
+      if (filter === 'chat')    return t.channel === 'chat';
+      if (filter === 'contact') return t.channel === 'contact';
+      return true;
+    });
+  }, [threads, filter]);
+
+  // Auto-select first thread
+  useEffect(() => {
+    if (!selectedId && filtered.length > 0) setSelectedId(filtered[0].id);
+  }, [filtered, selectedId]);
+
+  // Load selected thread (with messages)
+  useEffect(() => {
+    if (!selectedId) { setThread(null); return; }
+    api(`/support/admin/threads/${selectedId}`).then(setThread).catch(() => {});
+  }, [selectedId]);
+
+  // Auto-refresh selected thread every 5s
+  useEffect(() => {
+    if (!selectedId) return;
+    const id = setInterval(() => {
+      api(`/support/admin/threads/${selectedId}`).then(setThread).catch(() => {});
+    }, 5000);
+    return () => clearInterval(id);
+  }, [selectedId]);
+
+  // Scroll to bottom on new messages
+  useEffect(() => {
+    if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+  }, [thread?.messages?.length]);
+
+  async function sendReply() {
+    if (!reply.trim() || sending || !selectedId) return;
+    setSending(true); setErr('');
+    try {
+      await api(`/support/admin/threads/${selectedId}/reply`, {
+        method: 'POST',
+        body: JSON.stringify({ content: reply.trim() }),
+      });
+      setReply('');
+      const t = await api(`/support/admin/threads/${selectedId}`);
+      setThread(t);
+      onRefresh();
+    } catch (e) { setErr(e.message); }
+    finally { setSending(false); }
+  }
+
+  async function toggleStatus() {
+    if (!thread) return;
+    const newStatus = thread.status === 'open' ? 'closed' : 'open';
+    try {
+      await api(`/support/admin/threads/${selectedId}`, {
+        method: 'PATCH', body: JSON.stringify({ status: newStatus }),
+      });
+      const t = await api(`/support/admin/threads/${selectedId}`);
+      setThread(t); onRefresh();
+    } catch (e) { alert(e.message); }
+  }
+
+  return (
+    <div className="card-soft rounded-2xl overflow-hidden mb-8" style={{height: 'calc(100vh - 220px)', minHeight: 500}}>
+      <div className="flex h-full">
+        {/* LEFT: Thread list */}
+        <div className="w-80 border-l border-line bg-paper-soft flex flex-col">
+          {/* Filters */}
+          <div className="p-3 border-b border-line flex flex-wrap gap-1">
+            {[
+              {k:'all', l:'الكل'}, {k:'unread', l:'غير مقروء'},
+              {k:'open', l:'مفتوح'}, {k:'chat', l:'دردشة'}, {k:'contact', l:'تواصل'}
+            ].map(f => (
+              <button key={f.k} onClick={() => setFilter(f.k)}
+                className={`px-2.5 py-1 text-[11px] rounded-md font-semibold smooth ${
+                  filter === f.k ? 'bg-ink text-paper' : 'bg-surface text-ink-muted hover:text-ink'
+                }`}>
+                {f.l}
+              </button>
+            ))}
+          </div>
+
+          {/* List */}
+          <div className="flex-1 overflow-y-auto">
+            {filtered.length === 0 ? (
+              <div className="text-center text-ink-dim text-sm py-12">لا توجد رسائل</div>
+            ) : filtered.map(t => (
+              <button key={t.id} onClick={() => setSelectedId(t.id)}
+                className={`w-full text-right px-4 py-3 border-b border-line/50 smooth ${
+                  selectedId === t.id ? 'bg-surface' : 'hover:bg-surface/50'
+                }`}>
+                <div className="flex items-start justify-between gap-2 mb-1">
+                  <div className="font-bold text-sm truncate flex items-center gap-2">
+                    {t.is_unread && <span className="w-2 h-2 rounded-full bg-brand flex-shrink-0"></span>}
+                    <span className="truncate">{t.name}</span>
+                  </div>
+                  <span className="text-[10px] text-ink-dim flex-shrink-0">
+                    {new Date(t.last_message_at).toLocaleDateString('ar', {month:'short', day:'numeric'})}
+                  </span>
+                </div>
+                <div className="text-xs text-ink-dim truncate mb-1 font-mono">{t.email}</div>
+                {t.subject && <div className="text-xs font-semibold truncate">{t.subject}</div>}
+                {t.preview && <div className="text-xs text-ink-muted truncate mt-0.5">{t.preview}</div>}
+                <div className="flex items-center gap-1.5 mt-1.5">
+                  <span className={`text-[9px] uppercase tracking-widest font-bold px-1.5 py-0.5 rounded ${
+                    t.channel === 'chat' ? 'bg-blue-50 text-blue-700' : 'bg-paper text-ink-muted'
+                  }`}>
+                    {t.channel === 'chat' ? 'دردشة' : 'تواصل'}
+                  </span>
+                  {t.status === 'closed' && (
+                    <span className="text-[9px] uppercase tracking-widest font-bold px-1.5 py-0.5 rounded bg-paper text-ink-dim">مغلق</span>
+                  )}
+                  <span className="text-[9px] text-ink-dim">{t.message_count} رسالة</span>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* RIGHT: Conversation */}
+        <div className="flex-1 flex flex-col bg-paper">
+          {!thread ? (
+            <div className="flex-1 flex items-center justify-center text-ink-dim text-sm">
+              اختر محادثة من اليمين
+            </div>
+          ) : (
+            <>
+              {/* Thread header */}
+              <div className="border-b border-line p-4 flex items-center justify-between">
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2 mb-0.5">
+                    <h3 className="font-bold tracking-tight truncate">{thread.name}</h3>
+                    <span className={`text-[10px] uppercase tracking-widest font-bold px-1.5 py-0.5 rounded ${
+                      thread.channel === 'chat' ? 'bg-blue-50 text-blue-700' : 'bg-paper-soft text-ink-muted'
+                    }`}>
+                      {thread.channel === 'chat' ? 'دردشة' : 'تواصل'}
+                    </span>
+                  </div>
+                  <div className="text-xs text-ink-dim font-mono">{thread.email}{thread.phone && ` · ${thread.phone}`}</div>
+                  {thread.subject && <div className="text-xs font-semibold mt-0.5">{thread.subject}</div>}
+                </div>
+                <div className="flex items-center gap-2">
+                  <a href={`mailto:${thread.email}`} title="إرسال بريد">
+                    <Btn variant="secondary" size="sm">بريد</Btn>
+                  </a>
+                  <Btn variant={thread.status === 'open' ? 'secondary' : 'brand'} size="sm" onClick={toggleStatus}>
+                    {thread.status === 'open' ? 'إغلاق' : 'إعادة فتح'}
+                  </Btn>
+                </div>
+              </div>
+
+              {/* Messages */}
+              <div ref={scrollRef} className="flex-1 overflow-y-auto p-5 space-y-4 paper-grain">
+                {thread.messages.length === 0 ? (
+                  <div className="text-center text-ink-dim text-sm">لا توجد رسائل بعد</div>
+                ) : thread.messages.map(m => (
+                  <AdminChatBubble key={m.id} msg={m} />
+                ))}
+              </div>
+
+              {/* Reply box */}
+              {thread.status === 'open' ? (
+                <div className="border-t border-line p-4 bg-surface-soft">
+                  {err && <div className="bg-red-50 border border-red-200 text-red-700 rounded-md px-2 py-1 text-xs mb-2">{err}</div>}
+                  <div className="flex gap-2 items-end">
+                    <textarea
+                      value={reply} onChange={e => setReply(e.target.value)}
+                      onKeyDown={e => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); sendReply(); } }}
+                      placeholder="اكتب ردّك... (Ctrl+Enter للإرسال)" rows={3}
+                      className="flex-1 bg-surface border border-line rounded-lg px-3 py-2 text-sm focus:border-brand focus-ring smooth resize-none" />
+                    <Btn variant="primary" size="md" onClick={sendReply} disabled={!reply.trim() || sending}>
+                      {sending ? '...' : <><Icon name="send" className="w-4 h-4" /><span>إرسال</span></>}
+                    </Btn>
+                  </div>
+                </div>
+              ) : (
+                <div className="border-t border-line p-4 bg-paper-soft text-center text-sm text-ink-dim">
+                  هذا الخيط مغلق · أعد فتحه للرد
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AdminChatBubble({ msg }) {
+  const isAdmin = msg.sender === 'admin';
+  return (
+    <div className={`flex gap-2.5 fade-in ${isAdmin ? 'flex-row-reverse' : ''}`}>
+      <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-xs font-bold ${
+        isAdmin ? 'bg-brand text-white' : 'bg-paper-soft text-ink border border-line'
+      }`}>
+        {isAdmin ? 'L' : (msg.sender_name?.charAt(0) || '?')}
+      </div>
+      <div className="max-w-[70%]">
+        <div className={`px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${
+          isAdmin
+            ? 'bg-brand-soft border border-brand/20 text-ink rounded-tr-md'
+            : 'bg-surface border border-line text-ink rounded-tl-md'
+        }`}>
+          <div className="whitespace-pre-wrap">{msg.content}</div>
+        </div>
+        <div className={`text-[10px] text-ink-dim mt-1 ${isAdmin ? 'text-left' : ''}`}>
+          {isAdmin ? `${msg.sender_name || 'Admin'} · ` : ''}
+          {new Date(msg.created_at).toLocaleString('ar', {hour:'2-digit', minute:'2-digit', day:'numeric', month:'short'})}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// MARKETING INSIGHTS — استهداف المستخدمين بحملات
+// ============================================================
+function MarketingInsights() {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState('');
+
+  useEffect(() => {
+    api('/admin/insights').then(d => { setData(d); setLoading(false); })
+      .catch(e => { setErr(e.message); setLoading(false); });
+  }, []);
+
+  if (loading) return <div className="text-center text-ink-dim py-12">جارٍ تحميل التحليلات...</div>;
+  if (err) return <div className="bg-red-50 border border-red-200 text-red-700 rounded-lg p-4">{err}</div>;
+  if (!data) return null;
+
+  const exportCSV = () => {
+    const rows = [['Email', 'Name', 'Plan', 'Messages 30d']];
+    data.top_active_users.forEach(u =>
+      rows.push([u.email, u.full_name || '', u.plan, u.messages_30d])
+    );
+    const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
+    const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'libyapro_users_30d.csv'; a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  return (
+    <div className="space-y-6 mb-8">
+      {/* Summary cards */}
+      <div className="grid md:grid-cols-4 gap-4">
+        <StatCard label="فترة التحليل" value={`${data.period_days} يوم`} />
+        <StatCard label="المستخدمون النشطون" value={data.top_active_users.length} sub="آخر 30 يوم" />
+        <StatCard label="ملفات مرفوعة" value={data.files_uploaded_30d} sub="آخر 30 يوم" />
+        <StatCard label="مرشحون للترقية" value={data.free_users_for_targeting.length} sub="مستخدمون مجانيون نشطون" />
+      </div>
+
+      {/* Plans distribution */}
+      <div className="card-soft rounded-2xl p-6">
+        <h3 className="font-bold mb-4 tracking-tight">توزيع الخطط</h3>
+        <div className="grid md:grid-cols-4 gap-3">
+          {Object.entries(data.users_by_plan).map(([plan, count]) => (
+            <div key={plan} className="bg-paper-soft rounded-lg p-4">
+              <div className="text-xs uppercase tracking-widest text-ink-dim mb-1 font-bold">{plan}</div>
+              <div className="text-2xl font-display font-extrabold text-ink">{count}</div>
+              <div className="text-xs text-ink-dim mt-1">مستخدم</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Conversation modes */}
+      <div className="card-soft rounded-2xl p-6">
+        <h3 className="font-bold mb-4 tracking-tight">أنماط المحادثة الأكثر استخداماً</h3>
+        <div className="space-y-2">
+          {Object.entries(data.by_conversation_mode).sort((a,b) => b[1] - a[1]).map(([mode, count]) => {
+            const total = Object.values(data.by_conversation_mode).reduce((s,n) => s+n, 0) || 1;
+            const pct = (count / total) * 100;
+            return (
+              <div key={mode} className="flex items-center gap-3">
+                <div className="w-24 text-sm font-semibold">{MODES[mode]?.label || mode}</div>
+                <div className="flex-1 h-7 bg-paper-soft rounded-md overflow-hidden relative">
+                  <div className="h-full bg-brand smooth" style={{ width: `${pct}%` }}></div>
+                  <div className="absolute inset-0 flex items-center px-3 text-xs font-bold text-ink">
+                    {count} ({pct.toFixed(0)}%)
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Top topics (keywords) */}
+      <div className="card-soft rounded-2xl p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-bold tracking-tight">ما يبحث عنه المستخدمون (Top 50 keywords)</h3>
+          <span className="text-xs text-ink-dim">للاستهداف الإعلاني المُحدَّد</span>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {data.top_topics.slice(0, 50).map((t, i) => (
+            <span key={i} className="inline-flex items-center gap-1.5 bg-paper-soft hover:bg-brand-soft hover:text-brand smooth border border-line rounded-full px-3 py-1 text-xs font-medium">
+              <span>{t.keyword}</span>
+              <span className="text-[10px] font-mono text-ink-dim">{t.count}</span>
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Top active users */}
+      <div className="card-soft rounded-2xl overflow-hidden">
+        <div className="p-6 flex items-center justify-between border-b border-line">
+          <h3 className="font-bold tracking-tight">أكثر المستخدمين نشاطاً (آخر 30 يوم)</h3>
+          <Btn variant="secondary" size="sm" onClick={exportCSV}>تصدير CSV</Btn>
+        </div>
+        <table className="w-full text-sm">
+          <thead className="bg-paper-soft text-xs uppercase tracking-widest text-ink-dim">
+            <tr>
+              <th className="text-right p-3 font-bold">البريد</th>
+              <th className="text-right p-3 font-bold">الاسم</th>
+              <th className="text-right p-3 font-bold">الخطة</th>
+              <th className="text-right p-3 font-bold">رسائل 30 يوم</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.top_active_users.map(u => (
+              <tr key={u.id} className="border-t border-line hover:bg-paper-soft/50">
+                <td className="p-3 font-mono text-xs">{u.email}</td>
+                <td className="p-3">{u.full_name || '-'}</td>
+                <td className="p-3"><span className="text-xs uppercase font-bold">{u.plan}</span></td>
+                <td className="p-3 font-semibold">{u.messages_30d}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Targeting candidates */}
+      {data.free_users_for_targeting.length > 0 && (
+        <div className="card-soft rounded-2xl p-6 border-2 border-brand/30">
+          <h3 className="font-bold mb-2 tracking-tight">🎯 مرشحون للترقية</h3>
+          <p className="text-sm text-ink-muted mb-4">
+            هؤلاء مستخدمون مجانيون استخدموا المنصة 5+ مرات. مرشحون قويون لحملة ترقية لخطة شخصي/محترف.
+          </p>
+          <div className="space-y-2">
+            {data.free_users_for_targeting.map(u => (
+              <div key={u.id} className="flex items-center justify-between bg-paper-soft rounded-lg p-3">
+                <div>
+                  <div className="font-medium text-sm">{u.full_name || u.email.split('@')[0]}</div>
+                  <div className="text-xs text-ink-dim font-mono">{u.email}</div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="text-xs text-ink-muted">{u.messages_30d} رسالة</div>
+                  <a href={`mailto:${u.email}?subject=ترقية%20حسابك%20في%20Agents%20Collab`}>
+                    <Btn variant="brand" size="sm">إرسال عرض</Btn>
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function AdminTab({ active, onClick, children }) {
+  return (
+    <button onClick={onClick}
+      className={`px-4 py-2.5 text-sm font-semibold smooth border-b-2 -mb-px ${active ? 'text-ink border-brand' : 'text-ink-muted border-transparent hover:text-ink'}`}>
+      {children}
+    </button>
+  );
+}
+
+function StatCard({ label, value, sub }) {
+  return (
+    <div className="card-soft rounded-2xl p-5">
+      <div className="text-xs font-bold uppercase tracking-widest text-ink-dim mb-1.5">{label}</div>
+      <div className="text-3xl font-display font-extrabold text-ink tracking-tight">{value}</div>
+      {sub && <div className="text-xs text-ink-dim mt-1">{sub}</div>}
+    </div>
+  );
+}
+
+// ============================================================
+// MAIN APP
+// ============================================================
+function MainApp({ user: initialUser, onLogout }) {
+  const [user, setUser] = useState(initialUser);
+  const [view, setView] = useState('home');
+  const [sessions, setSessions] = useState([]);
+  const [currentId, setCurrentId] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const [agents, setAgents] = useState([]);
+  const [usage, setUsage] = useState(null);
+  const [showSettings, setShowSettings] = useState(false);
+  const [limitInfo, setLimitInfo] = useState(null);
+  const [currentPhase, setCurrentPhase] = useState(null);
+  const [isThinking, setIsThinking] = useState(false);
+  const [awaitingChunks, setAwaitingChunks] = useState(false);
+  const [sidePanel, setSidePanel] = useState(true);
+  const wsRef = useRef(null);
+
+  const currentSession = useMemo(() => sessions.find(s => s.id === currentId), [sessions, currentId]);
+
+  const loadAll = useCallback(async () => {
+    try {
+      const [s, a, u] = await Promise.all([api('/sessions'), api('/agents'), api('/usage/me')]);
+      const stored = JSON.parse(sessionStorage.getItem('lp_kinds') || '{}');
+      setSessions(s.map(x => ({ ...x, kind: stored[x.id] || 'chat' })));
+      setAgents(a); setUsage(u);
+    } catch (e) { if (e.status === 401) onLogout(); }
+  }, [onLogout]);
+  useEffect(() => { loadAll(); }, [loadAll]);
+
+  // إذا فيه prompt محفوظ من Hero chat box → أنشئ جلسة تلقائياً وارسله
+  const [pendingPrompt, setPendingPrompt] = useState(() => localStorage.getItem('lp_pending_prompt'));
+  useEffect(() => {
+    if (!pendingPrompt || agents.length === 0) return;
+    const availableAgents = agents.filter(a => a.available).map(a => a.id);
+    if (availableAgents.length === 0) return;
+    // أنشئ جلسة جديدة وادخلها
+    (async () => {
+      try {
+        const defaults = availableAgents.slice(0, Math.max(2, availableAgents.length >= 2 ? 2 : 1));
+        const v = VIEW_KINDS.chat;
+        const s = await api('/sessions', { method: 'POST', body: JSON.stringify({
+          title: pendingPrompt.slice(0, 60),
+          default_mode: defaults.length >= 2 ? 'consensus' : 'solo',
+          default_agents: defaults,
+        })});
+        const stored = JSON.parse(sessionStorage.getItem('lp_kinds') || '{}');
+        stored[s.id] = 'chat'; sessionStorage.setItem('lp_kinds', JSON.stringify(stored));
+        setSessions(prev => [{ ...s, kind: 'chat' }, ...prev]);
+        setCurrentId(s.id);
+        setView('session');
+        // امسح الـ prompt - سيُرسل بعد ما الـ WebSocket يفتح
+        localStorage.removeItem('lp_pending_prompt');
+        // احفظه مؤقتاً لإرساله بعد فتح WS
+        sessionStorage.setItem('lp_auto_send', pendingPrompt);
+        setPendingPrompt(null);
+      } catch (e) { localStorage.removeItem('lp_pending_prompt'); setPendingPrompt(null); }
+    })();
+  }, [pendingPrompt, agents]);
+
+  useEffect(() => {
+    if (!currentId) { setMessages([]); return; }
+    api(`/sessions/${currentId}`).then(b => setMessages(b.messages));
+  }, [currentId]);
+
+  useEffect(() => {
+    if (!currentId) return;
+    const ws = new WebSocket(`${WS_BASE}/chat/ws/${currentId}?token=${getToken()}`);
+    wsRef.current = ws;
+    ws.onmessage = (e) => {
+      const evt = JSON.parse(e.data);
+      handleEvent(evt);
+      // عند ready: لو فيه prompt محفوظ، ارسله تلقائياً
+      if (evt.type === 'ready') {
+        const pending = sessionStorage.getItem('lp_auto_send');
+        if (pending) {
+          sessionStorage.removeItem('lp_auto_send');
+          setTimeout(() => sendMessage(pending), 200);
+        }
+      }
+    };
+    ws.onclose = () => { wsRef.current = null; };
+    return () => { try { ws.close(); } catch (e) {} };
+  }, [currentId]);
+
+  function handleEvent(evt) {
+    if (evt.type === 'ready') return;
+    if (evt.type === 'auth_failed') { onLogout(); return; }
+    if (evt.type === 'phase_change') { setCurrentPhase(evt.phase); return; }
+    if (evt.type === 'turn_start') {
+      setIsThinking(false); setAwaitingChunks(true);
+      setMessages(m => [...m, { id: `temp-${Date.now()}-${evt.agent_id}`, role: 'agent', agent_id: evt.agent_id, agent_name: evt.agent_name, phase: evt.phase, content: '', _streaming: true, _temp: true }]);
+      return;
+    }
+    if (evt.type === 'chunk') {
+      setMessages(m => {
+        const out = [...m];
+        for (let i = out.length - 1; i >= 0; i--) {
+          if (out[i]._temp && out[i].agent_id === evt.agent_id && out[i]._streaming) {
+            out[i] = { ...out[i], content: out[i].content + evt.text }; break;
+          }
+        }
+        return out;
+      });
+      return;
+    }
+    if (evt.type === 'turn_complete') {
+      setMessages(m => {
+        const out = [...m];
+        for (let i = out.length - 1; i >= 0; i--) {
+          if (out[i]._temp && out[i].agent_id === evt.agent_id && out[i]._streaming) {
+            out[i] = { ...out[i], id: evt.message_id, _streaming: false, _temp: false, input_tokens: evt.input_tokens, output_tokens: evt.output_tokens, cost_usd: evt.cost_usd };
+            break;
+          }
+        }
+        return out;
+      });
+      return;
+    }
+    if (evt.type === 'complete') {
+      setIsThinking(false); setAwaitingChunks(false); setCurrentPhase(null);
+      api('/usage/me').then(setUsage).catch(() => {});
+      return;
+    }
+    if (evt.type === 'limit_reached') {
+      setIsThinking(false); setAwaitingChunks(false); setLimitInfo(evt);
+      setMessages(m => m.filter(x => !x._temp));
+      return;
+    }
+    if (evt.type === 'error') {
+      setIsThinking(false); setAwaitingChunks(false);
+      setMessages(m => [...m.filter(x => !x._temp), { id: `err-${Date.now()}`, role: 'agent', agent_id: evt.agent_id || 'system', agent_name: 'خطأ', content: `**خطأ:** ${evt.error}` }]);
+    }
+  }
+
+  async function createSession(kind = 'chat') {
+    const v = VIEW_KINDS[kind] || VIEW_KINDS.chat;
+    const availableAgents = agents.filter(a => a.available).map(a => a.id);
+    const defaults = availableAgents.slice(0, Math.max(v.minAgents, 2));
+    try {
+      const s = await api('/sessions', { method: 'POST', body: JSON.stringify({ title: `${v.label} جديد`, default_mode: v.mode, default_agents: defaults }) });
+      const stored = JSON.parse(sessionStorage.getItem('lp_kinds') || '{}');
+      stored[s.id] = kind; sessionStorage.setItem('lp_kinds', JSON.stringify(stored));
+      setSessions(prev => [{ ...s, kind }, ...prev]);
+      setCurrentId(s.id); setView('session');
+    } catch (e) { alert(e.message); }
+  }
+
+  async function deleteSession(id) {
+    try {
+      await api(`/sessions/${id}`, { method: 'DELETE' });
+      setSessions(prev => prev.filter(s => s.id !== id));
+      if (currentId === id) { setCurrentId(null); setView('home'); }
+    } catch (e) { alert(e.message); }
+  }
+  async function renameSession(id, title) {
+    try {
+      const updated = await api(`/sessions/${id}`, { method: 'PATCH', body: JSON.stringify({ title }) });
+      setSessions(prev => prev.map(s => s.id === id ? { ...s, ...updated } : s));
+    } catch (e) { alert(e.message); }
+  }
+  async function updateSessionConfig(patch) {
+    if (!currentId) return;
+    try {
+      const updated = await api(`/sessions/${currentId}`, { method: 'PATCH', body: JSON.stringify(patch) });
+      setSessions(prev => prev.map(s => s.id === currentId ? { ...s, ...updated } : s));
+    } catch (e) { alert(e.message); }
+  }
+  async function exportSession() {
+    if (!currentId) return;
+    const t = getToken();
+    const res = await fetch(`${API_BASE}/sessions/${currentId}/export?format=markdown`, { method: 'POST', headers: { Authorization: `Bearer ${t}` } });
+    const text = await res.text();
+    const blob = new Blob([text], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = `${currentSession?.title || 'session'}.md`; a.click();
+    URL.revokeObjectURL(url);
+  }
+  function sendMessage(content, images = []) {
+    if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) { alert('الاتصال منقطع'); return; }
+    if (!currentSession) return;
+    const agentsList = currentSession.default_agents || [];
+    if (agentsList.length === 0) { alert('اختر نموذج واحد على الأقل'); return; }
+    setMessages(m => [...m, {
+      id: `temp-user-${Date.now()}`, role: 'user', content, images,
+      _temp: true,
+    }]);
+    setIsThinking(true);
+    wsRef.current.send(JSON.stringify({
+      type: 'message', content, images,
+      mode: currentSession.default_mode, agents: agentsList,
+    }));
+  }
+  const hasSidePanel = currentSession && (currentSession.kind === 'code' || currentSession.kind === 'assistant');
+
+  return (
+    <div className="flex h-full bg-paper">
+      <Sidebar
+        user={user} sessions={sessions} currentId={currentId} view={view}
+        onSelect={(id) => { setCurrentId(id); setView('session'); }}
+        onCreate={() => { setView('home'); setCurrentId(null); }}
+        onHome={() => { setView('home'); setCurrentId(null); }}
+        onDelete={deleteSession} onRename={renameSession}
+        onSettings={() => setShowSettings(true)}
+        onLogout={() => { setToken(null); onLogout(); }}
+        onAdmin={() => setView('admin')}
+        usage={usage} />
+
+      <main className="flex-1 flex flex-col h-full overflow-hidden">
+        {view === 'admin' ? (
+          <AdminPage onClose={() => setView('home')} />
+        ) : view === 'session' && currentSession ? (
+          <ChatView
+            session={currentSession} agents={agents}
+            onUpdate={updateSessionConfig} onExport={exportSession}
+            hasSidePanel={hasSidePanel} sidePanel={hasSidePanel && sidePanel}
+            onTogglePanel={() => setSidePanel(p => !p)}
+            messages={messages} currentPhase={currentPhase}
+            isThinking={isThinking} awaitingChunks={awaitingChunks}
+            onSend={sendMessage}
+            onCloseSession={() => { setCurrentId(null); setView('home'); }} />
+        ) : (
+          <Home user={user} agents={agents} sessions={sessions} onCreate={createSession} />
+        )}
+      </main>
+
+      {showSettings && <SettingsModal user={user} onClose={() => setShowSettings(false)} />}
+      {limitInfo && <LimitModal info={limitInfo} onClose={() => setLimitInfo(null)} />}
+    </div>
+  );
+}
+
+// ============================================================
+// PUBLIC PAGE SHELL (used by /privacy, /terms, /contact)
+// ============================================================
+function PublicPageShell({ children }) {
+  return (
+    <div className="h-full overflow-y-auto bg-paper">
+      <nav className="sticky top-0 z-40 bg-paper/85 backdrop-blur border-b border-line/60">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+          <a href="#/" className="smooth"><Logo /></a>
+          <div className="flex items-center gap-1">
+            <a href="#/" className="text-sm text-ink-muted hover:text-ink px-3 py-2 smooth flex items-center gap-1.5">
+              <Icon name="arrow_right" className="w-4 h-4" />
+              <span className="hidden sm:inline">العودة للرئيسية</span>
+            </a>
+            <Btn variant="primary" size="md" onClick={() => navigate('/')}>ابدأ مجاناً</Btn>
+          </div>
+        </div>
+      </nav>
+      {children}
+      <footer className="border-t border-line bg-surface-soft">
+        <div className="max-w-6xl mx-auto px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-ink-dim">
+          <Logo size="sm" />
+          <div className="flex gap-6">
+            <a href="#/privacy" className="hover:text-brand smooth">الخصوصية</a>
+            <a href="#/terms" className="hover:text-brand smooth">الشروط</a>
+            <a href="#/contact" className="hover:text-brand smooth">تواصل</a>
+          </div>
+          <div>© {new Date().getFullYear()} ليبيا برو AI</div>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+// ============================================================
+// PRIVACY PAGE
+// ============================================================
+function PrivacyPage() {
+  return (
+    <PublicPageShell>
+      <article className="max-w-3xl mx-auto px-6 py-16 md:py-24">
+        <div className="text-xs font-bold uppercase tracking-widest text-ink-dim mb-3">قانوني</div>
+        <h1 className="text-4xl md:text-6xl font-display font-extrabold mb-4 tracking-tight">سياسة الخصوصية</h1>
+        <p className="text-ink-muted text-lg mb-12">آخر تحديث: {new Date().toLocaleDateString('ar', {year:'numeric', month:'long', day:'numeric'})}</p>
+
+        <div className="markdown-body text-ink-muted text-base leading-loose space-y-7">
+          <p className="text-lg text-ink">
+            في <strong>ليبيا برو AI</strong>، خصوصيتك ليست بنداً قانونياً — هي مبدأ تأسيسي. هذه السياسة تشرح بوضوح ما نجمعه، ما نفعله به، وما لا نفعله.
+          </p>
+
+          <section>
+            <h2 className="text-2xl font-bold text-ink mt-10 mb-4">١. البيانات التي نجمعها</h2>
+            <ul className="space-y-2.5">
+              <li><strong>بيانات الحساب:</strong> البريد الإلكتروني، الاسم، كلمة المرور (مُشفّرة بـ bcrypt — لا نراها أبداً).</li>
+              <li><strong>محتوى المحادثات:</strong> الرسائل التي ترسلها للنماذج وردودها — لتقديم الخدمة وحفظ تاريخ محادثاتك.</li>
+              <li><strong>مفاتيح API:</strong> إن أدخلتها، نُخزّنها مُشفّرة بـ Fernet (AES-128) باستخدام مفتاح سري لا يخرج من سيرفرنا.</li>
+              <li><strong>بيانات الاستخدام:</strong> عدد الرسائل، التكلفة، النموذج المستخدم — لإدارة حدود الخطة والفوترة.</li>
+              <li><strong>بيانات الدفع:</strong> معالَجة بالكامل عبر <strong>Stripe</strong> — لا نرى ولا نُخزّن بيانات بطاقتك.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-ink mt-10 mb-4">٢. كيف نستخدم بياناتك</h2>
+            <ul className="space-y-2.5">
+              <li>تشغيل المنصة وتسليمك الردود من نماذج الذكاء الاصطناعي.</li>
+              <li>إدارة اشتراكك وحدود الاستخدام.</li>
+              <li>تحسين الخدمة (مجمّع وغير مرتبط بهويتك).</li>
+              <li>مراسلتك بشأن الفوترة والتحديثات الأمنية فقط — لا تسويق غير مرغوب فيه.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-ink mt-10 mb-4">٣. مزوّدو الذكاء الاصطناعي (طرف ثالث)</h2>
+            <p>عند استخدامك للمنصة، تُرسَل رسالتك لمزوّد النموذج المختار:</p>
+            <ul className="space-y-2 mt-3">
+              <li><strong>Anthropic</strong> (Claude) — <a href="https://www.anthropic.com/privacy" target="_blank" rel="noopener">سياسة الخصوصية</a></li>
+              <li><strong>OpenAI</strong> (GPT) — <a href="https://openai.com/privacy" target="_blank" rel="noopener">سياسة الخصوصية</a></li>
+              <li><strong>Google</strong> (Gemini) — <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">سياسة الخصوصية</a></li>
+              <li><strong>DeepSeek</strong> — <a href="https://www.deepseek.com/privacy" target="_blank" rel="noopener">سياسة الخصوصية</a></li>
+            </ul>
+            <p className="mt-3">هؤلاء يلتزمون بعدم استخدام بياناتك للتدريب على نماذجهم وفق سياساتهم الـ API الرسمية.</p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-ink mt-10 mb-4">٤. الأمان</h2>
+            <ul className="space-y-2.5">
+              <li>اتصالات HTTPS مشفّرة TLS 1.3.</li>
+              <li>كلمات المرور بـ bcrypt (لا يمكن استرجاعها حتى منّا).</li>
+              <li>مفاتيح API مشفّرة بـ Fernet.</li>
+              <li>الـ JWT ينتهي بعد 7 أيام.</li>
+              <li>نسخ احتياطية يومية مُشفّرة.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-ink mt-10 mb-4">٥. حقوقك</h2>
+            <ul className="space-y-2.5">
+              <li><strong>الوصول:</strong> تصدير كل محادثاتك بصيغة Markdown في أي وقت.</li>
+              <li><strong>الحذف:</strong> احذف حسابك من الإعدادات — كل بياناتك تُحذف فوراً.</li>
+              <li><strong>التصحيح:</strong> عدّل ملفك الشخصي من الإعدادات.</li>
+              <li><strong>الاعتراض:</strong> اتصل بنا لإيقاف أي معالجة معيّنة.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-ink mt-10 mb-4">٦. ملفات تعريف الارتباط</h2>
+            <p>نستخدم cookie واحد فقط: <code className="font-mono">lp_token</code> لحفظ جلسة دخولك. لا نستخدم cookies للتتبع الإعلاني.</p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-ink mt-10 mb-4">٧. الأطفال</h2>
+            <p>الخدمة غير مخصّصة لمن هم دون 16 عاماً. إن اكتشفنا أن مستخدماً قاصراً أنشأ حساباً بدون موافقة وليّ أمر، نحذف الحساب فوراً.</p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-ink mt-10 mb-4">٨. التواصل بشأن الخصوصية</h2>
+            <p>أسئلة أو طلبات بشأن خصوصيتك؟ راسلنا عبر <a href="#/contact">صفحة التواصل</a> وسنرد خلال 7 أيام كحدّ أقصى.</p>
+          </section>
+
+          <p className="text-sm text-ink-dim border-t border-line pt-6 mt-12">
+            هذه السياسة قد تُحدَّث. ستُعلَم بأي تغيير جوهري عبر بريدك الإلكتروني قبل 30 يوماً من تطبيقه.
+          </p>
+        </div>
+      </article>
+    </PublicPageShell>
+  );
+}
+
+// ============================================================
+// TERMS PAGE
+// ============================================================
+function TermsPage() {
+  return (
+    <PublicPageShell>
+      <article className="max-w-3xl mx-auto px-6 py-16 md:py-24">
+        <div className="text-xs font-bold uppercase tracking-widest text-ink-dim mb-3">قانوني</div>
+        <h1 className="text-4xl md:text-6xl font-display font-extrabold mb-4 tracking-tight">شروط الاستخدام</h1>
+        <p className="text-ink-muted text-lg mb-12">آخر تحديث: {new Date().toLocaleDateString('ar', {year:'numeric', month:'long', day:'numeric'})}</p>
+
+        <div className="markdown-body text-ink-muted text-base leading-loose space-y-7">
+          <p className="text-lg text-ink">
+            باستخدامك <strong>ليبيا برو AI</strong>، فإنك توافق على هذه الشروط. اقرأها بعناية — كُتبت بلغة بسيطة ومباشرة.
+          </p>
+
+          <section>
+            <h2 className="text-2xl font-bold text-ink mt-10 mb-4">١. وصف الخدمة</h2>
+            <p>ليبيا برو AI منصة سحابية تتيح لك التحاور مع نماذج ذكاء اصطناعي متعددة (Claude، GPT، Gemini، وغيرها) في حوار جماعي للوصول لأفضل الحلول.</p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-ink mt-10 mb-4">٢. حسابك</h2>
+            <ul className="space-y-2.5">
+              <li>يجب أن تكون 16 عاماً أو أكبر لإنشاء حساب.</li>
+              <li>أنت مسؤول عن سرّية كلمة مرورك.</li>
+              <li>حساب واحد لكل شخص — مشاركة الحسابات ممنوعة.</li>
+              <li>يجب أن تكون البيانات التي تُقدّمها صحيحة.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-ink mt-10 mb-4">٣. الاستخدام المقبول</h2>
+            <p className="mb-3">يُمنع استخدام المنصة لـ:</p>
+            <ul className="space-y-2.5">
+              <li>توليد محتوى غير قانوني (احتيال، تشهير، تحريض).</li>
+              <li>توليد محتوى ضار للأطفال أو محتوى جنسي صريح.</li>
+              <li>هندسة عكسية للنماذج أو محاولة تجاوز قيود الاستخدام.</li>
+              <li>الإضرار بالخدمة أو مستخدميها (DDoS، scraping مكثّف، spam).</li>
+              <li>انتحال شخصية أو شركة.</li>
+              <li>استخدام الخدمة لاتخاذ قرارات قانونية أو طبية أو مالية حاسمة دون مراجعة بشرية متخصّصة.</li>
+            </ul>
+            <p className="mt-3">المخالفة تؤدي لإيقاف الحساب فوراً ودون ردّ المبالغ المدفوعة.</p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-ink mt-10 mb-4">٤. الاشتراكات والدفع</h2>
+            <ul className="space-y-2.5">
+              <li>الخطط شهرية، تتجدّد تلقائياً ما لم تُلغها.</li>
+              <li>الإلغاء في أي وقت من <strong>الإعدادات</strong> — تظل الخدمة متاحة حتى نهاية الفترة المدفوعة.</li>
+              <li>الأسعار قد تتغيّر — ستُعلَم قبل 30 يوماً من تطبيق أي زيادة.</li>
+              <li>لا استرداد للمبالغ بعد الاستخدام، ما لم يكن خللاً تقنياً من جانبنا.</li>
+              <li>المعالجة عبر Stripe — تنطبق <a href="https://stripe.com/legal" target="_blank" rel="noopener">شروط Stripe</a>.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-ink mt-10 mb-4">٥. حدود الاستخدام</h2>
+            <p>كل خطة لها حدّ شهري بالرسائل (موضّح في <a href="#/#pricing">صفحة الأسعار</a>). الحد يُعاد ضبطه أول كل شهر ميلادي. الإفراط في الاستخدام بطرق آلية يُعدّ مخالفة.</p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-ink mt-10 mb-4">٦. الملكية الفكرية</h2>
+            <ul className="space-y-2.5">
+              <li><strong>المحتوى الذي تُدخله:</strong> ملكك. نحن نُعالجه فقط لتقديم الخدمة.</li>
+              <li><strong>ردود النماذج:</strong> ملكك أيضاً (وفق سياسات مزوّدي النماذج).</li>
+              <li><strong>الكود والتصميم والعلامة التجارية لـ ليبيا برو AI:</strong> ملكنا.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-ink mt-10 mb-4">٧. تحديد المسؤولية</h2>
+            <p>الخدمة مقدّمة "كما هي". نماذج الذكاء الاصطناعي قد تُخطئ — لا نضمن دقة الردود. لا نتحمّل مسؤولية أي قرار اتخذته بناءً على ردّ نموذج. حدّ مسؤوليتنا الإجمالي يساوي قيمة اشتراكك للشهر الأخير.</p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-ink mt-10 mb-4">٨. التعديلات</h2>
+            <p>قد نُعدّل هذه الشروط. التغييرات الجوهرية تُبَلَّغ بالبريد قبل 30 يوماً من تطبيقها. استخدامك للخدمة بعد ذلك يعتبر موافقة.</p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-ink mt-10 mb-4">٩. الإنهاء</h2>
+            <p>لك الحق في حذف حسابك في أي وقت. لنا الحق في إيقاف أي حساب يُخالف هذه الشروط، مع إخطار مسبق إن كان ممكناً.</p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-ink mt-10 mb-4">١٠. القانون المعمول به</h2>
+            <p>تخضع هذه الشروط للقوانين المعمول بها في ليبيا. أي نزاع يُحلّ في محاكم طرابلس.</p>
+          </section>
+
+          <p className="text-sm text-ink-dim border-t border-line pt-6 mt-12">
+            أسئلة قانونية؟ راسلنا عبر <a href="#/contact">صفحة التواصل</a>.
+          </p>
+        </div>
+      </article>
+    </PublicPageShell>
+  );
+}
+
+// ============================================================
+// CONTACT PAGE (Project request — like AmanPro's LibyaProContactPage)
+// ============================================================
+const PROJECT_TYPES = [
+  { id: 'AI_INTEGRATION', iconName: 'sparkles', title: 'دمج AI في تطبيقك', desc: 'إضافة قدرات ذكاء اصطناعي تعاوني لمنتجك الحالي — chatbot, تحليل بيانات, agents.' },
+  { id: 'CUSTOM_AGENT',   iconName: 'code',     title: 'agent ذكي مخصّص',   desc: 'بناء مساعد ذكي يفهم عملك ويقوم بمهام متخصّصة بأداء أفضل من النماذج العامة.' },
+  { id: 'CONSULTING',     iconName: 'shield',   title: 'استشارة AI',          desc: 'دراسة عملك، تحديد الفرص، خطة استخدام AI لتحسين الكفاءة.' },
+  { id: 'TRAINING',       iconName: 'chat',     title: 'تدريب فريقك',         desc: 'ورش عمل لفريقك على استخدام نماذج AI الحديثة بفعالية في عملهم اليومي.' },
+];
+
+const STEPS = [
+  { num: '01', title: 'استشارة مجانية', desc: 'نجتمع معك (عبر الإنترنت أو في مكتبنا) لفهم فكرتك ومتطلباتها.' },
+  { num: '02', title: 'عرض سعر شفّاف', desc: 'نُرسل خطة عمل تفصيلية + جدول زمني + تكلفة ثابتة بدون مفاجآت.' },
+  { num: '03', title: 'بدء التطوير',     desc: 'بعد الموافقة، يبدأ فريقنا التطوير مع تسليم تدريجي وتحديثات أسبوعية.' },
+];
+
+function ContactPage() {
+  const [selected, setSelected] = useState('AI_INTEGRATION');
+  const [sent, setSent] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState('');
+
+  async function submit(e) {
+    e.preventDefault();
+    setBusy(true); setErr('');
+    const fd = new FormData(e.target);
+    const projectType = PROJECT_TYPES.find(p => p.id === selected);
+    try {
+      await api('/support/threads', {
+        method: 'POST',
+        body: JSON.stringify({
+          name: fd.get('name'), email: fd.get('email'),
+          phone: fd.get('phone') || null,
+          subject: `طلب مشروع: ${projectType?.title || selected}`,
+          message: `[نوع المشروع: ${projectType?.title}]\n\n${fd.get('message')}`,
+        }),
+      });
+      setSent(true);
+    } catch (e) { setErr(e.message); }
+    finally { setBusy(false); }
+  }
+
+  return (
+    <PublicPageShell>
+      <section className="max-w-6xl mx-auto px-6 pt-16 md:pt-24 pb-12 text-center">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-line bg-surface text-ink-muted text-xs font-semibold mb-6">
+          <span className="w-1.5 h-1.5 rounded-full bg-brand breathe"></span>
+          <span>ليبيا برو AI · الفرع الاستشاري</span>
+        </div>
+        <h1 className="text-4xl md:text-6xl font-display font-extrabold mb-5 tracking-tight">
+          نبني لك <span className="text-brand">حلول الذكاء الاصطناعي</span><br className="hidden md:block"/>على المقاس
+        </h1>
+        <p className="text-base md:text-lg text-ink-muted max-w-2xl mx-auto">
+          فريق هندسي ليبي بمعايير عالمية. نُحوّل الذكاء الاصطناعي من ترفٍ إلى ميزة تنافسية حقيقية لعملك.
+        </p>
+      </section>
+
+      <section className="max-w-6xl mx-auto px-6 pb-20 grid lg:grid-cols-3 gap-6">
+        {/* LEFT - Project type + form */}
+        <div className="lg:col-span-2 space-y-5">
+          {/* Project type */}
+          <div className="card-soft rounded-2xl p-7">
+            <h2 className="text-lg font-bold mb-1 tracking-tight">نوع المشروع</h2>
+            <p className="text-sm text-ink-muted mb-5 pb-4 border-b border-line">اختر الفئة الأقرب لاحتياجك.</p>
+            <div className="grid sm:grid-cols-2 gap-3">
+              {PROJECT_TYPES.map(p => {
+                const active = selected === p.id;
+                return (
+                  <button key={p.id} type="button" onClick={() => setSelected(p.id)}
+                    className={`text-right p-4 rounded-xl border smooth ${
+                      active ? 'border-brand bg-brand-soft shadow-sm' : 'border-line hover:border-line-strong bg-surface'
+                    }`}>
+                    <div className="flex items-center justify-between mb-2">
+                      <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${active ? 'bg-brand text-white' : 'bg-paper-soft text-ink'}`}>
+                        <Icon name={p.iconName} className="w-4 h-4" strokeWidth={1.8} />
+                      </div>
+                      {active && <Icon name="check" className="w-4 h-4 text-brand" strokeWidth={2.5} />}
+                    </div>
+                    <div className="font-bold text-sm mb-1 tracking-tight">{p.title}</div>
+                    <div className="text-xs text-ink-muted leading-relaxed">{p.desc}</div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Form */}
+          <div className="card-soft rounded-2xl p-7">
+            <h2 className="text-lg font-bold mb-1 tracking-tight">اطلب عرض السعر</h2>
+            <p className="text-sm text-ink-muted mb-5 pb-4 border-b border-line">املأ النموذج وسنعود إليك خلال 48 ساعة باستشارة مجانية.</p>
+            {sent ? (
+              <div className="text-center py-8 fade-in">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-brand-soft text-brand mb-3">
+                  <Icon name="check" className="w-6 h-6" strokeWidth={2.5} />
+                </div>
+                <h3 className="text-lg font-bold mb-1 tracking-tight">شكراً، استلمنا طلبك</h3>
+                <p className="text-sm text-ink-muted">سنتواصل معك خلال 48 ساعة على البريد الذي أدخلته.</p>
+              </div>
+            ) : (
+              <form onSubmit={submit} className="space-y-3.5">
+                <div className="grid sm:grid-cols-2 gap-3.5">
+                  <input name="name" required placeholder="الاسم الكامل *" className="bg-paper-soft border border-line rounded-lg px-4 py-3 smooth focus:border-brand focus-ring text-sm" />
+                  <input name="phone" type="tel" placeholder="+218 ..." dir="ltr" className="bg-paper-soft border border-line rounded-lg px-4 py-3 smooth focus:border-brand focus-ring text-sm" />
+                </div>
+                <input name="email" type="email" required placeholder="البريد الإلكتروني *" dir="ltr" className="w-full bg-paper-soft border border-line rounded-lg px-4 py-3 smooth focus:border-brand focus-ring text-sm" />
+                <textarea name="message" required minLength={20} rows={5} placeholder="اشرح فكرتك بإيجاز - الهدف، الجمهور، أي تفاصيل تقنية تعرفها *"
+                  className="w-full bg-paper-soft border border-line rounded-lg px-4 py-3 smooth focus:border-brand focus-ring text-sm resize-none" />
+                {err && <div className="bg-red-50 border border-red-200 text-red-700 rounded-lg px-3 py-2 text-sm">{err}</div>}
+                <Btn type="submit" variant="primary" size="lg" disabled={busy} className="w-full">
+                  {busy ? '...' : 'إرسال الطلب'}
+                </Btn>
+                <p className="text-xs text-ink-dim text-center pt-2">بإرسالك للنموذج، توافق على معالجة بياناتك وفق <a href="#/privacy" className="text-brand">سياسة الخصوصية</a>.</p>
+              </form>
+            )}
+          </div>
+        </div>
+
+        {/* RIGHT - Steps + guarantees */}
+        <aside className="space-y-5">
+          <div className="card-elevated rounded-2xl p-7 sticky top-24">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-9 h-9 rounded-lg bg-brand text-white flex items-center justify-center">
+                <Icon name="sparkles" className="w-4 h-4" />
+              </div>
+              <h3 className="text-base font-bold tracking-tight">ما بعد الإرسال</h3>
+            </div>
+            <ol className="space-y-5">
+              {STEPS.map(s => (
+                <li key={s.num} className="flex gap-3.5">
+                  <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-paper-soft border border-line flex items-center justify-center font-display font-extrabold text-xs text-brand">
+                    {s.num}
+                  </div>
+                  <div className="flex-1 min-w-0 pt-1">
+                    <div className="font-bold text-sm mb-1 tracking-tight">{s.title}</div>
+                    <div className="text-xs text-ink-muted leading-relaxed">{s.desc}</div>
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <div className="mt-6 pt-5 border-t border-line">
+              <div className="text-[10px] text-ink-dim font-bold uppercase tracking-widest mb-2">ضمان جودة</div>
+              <div className="text-xs text-ink-muted leading-relaxed">
+                كل مشروع يأتي مع <strong className="text-ink">ضمان 3 أشهر</strong> على الإصلاحات + <strong className="text-ink">كود مفتوح</strong> لعميلك بالكامل.
+              </div>
+            </div>
+            <div className="mt-5 pt-5 border-t border-line text-center">
+              <div className="text-[10px] text-ink-dim font-bold uppercase tracking-widest mb-2">شركاؤنا</div>
+              <div className="space-y-2">
+                {SISTER_BRANDS.map((b, i) => (
+                  <a key={i} href={b.url} target="_blank" rel="noopener" className="block text-xs text-ink-muted hover:text-brand smooth">
+                    <strong className="text-ink">{b.name}</strong> — {b.desc}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      {/* General contact (for non-project inquiries) */}
+      <section className="max-w-3xl mx-auto px-6 pb-24">
+        <div className="text-center bg-paper-soft rounded-2xl border border-line p-8">
+          <h3 className="font-bold text-lg mb-2 tracking-tight">للاستفسارات العامة</h3>
+          <p className="text-sm text-ink-muted mb-4">دعم تقني، أسئلة عن المنصة، شراكات...</p>
+          <div className="text-sm">
+            <a href="mailto:contact@libyapro.ai" className="text-brand hover:text-brand-hover smooth font-mono font-semibold">contact@libyapro.ai</a>
+          </div>
+        </div>
+      </section>
+    </PublicPageShell>
+  );
+}
+
+// ============================================================
+// LIBYA PRO TECH MODAL — تعريف بالشركة + نموذج طلب مشروع
+// ============================================================
+const LPT_SERVICES = [
+  { iconName: 'mobile',  title: 'تطبيقات الجوال',     desc: 'iOS / Android / PWA — تجربة سلسة على كل الأجهزة' },
+  { iconName: 'globe',   title: 'مواقع وتطبيقات ويب', desc: 'منصات تجارية، أنظمة إدارة، لوحات تحكم متقدمة' },
+  { iconName: 'bolt',    title: 'استشارات تقنية',     desc: 'تحليل، تصميم معماري، تكامل مع أنظمة قائمة' },
+  { iconName: 'desktop', title: 'حلول السوفتوير',     desc: 'برمجيات مخصصة، ERP، CRM، أتمتة العمليات' },
+];
+
+const LPT_STATS = [
+  { value: '100%', label: 'التزام بالجودة' },
+  { value: '24/7', label: 'دعم فني' },
+  { value: '15+',  label: 'سنة خبرة' },
+  { value: '50+',  label: 'مشروع منجز' },
+];
+
+const LPT_PROJECT_TYPES = [
+  'لم أُحدد بعد', 'موقع ويب', 'تطبيق جوال', 'متجر إلكتروني',
+  'نظام إدارة (ERP/CRM)', 'استشارة تقنية', 'تكامل مع أنظمة قائمة', 'مشروع آخر',
+];
+
+const LPT_REFERRAL = [
+  'لم أُحدد بعد', 'بحث Google', 'وسائل التواصل', 'من صديق', 'مشروع شقيق', 'إعلان', 'أخرى',
+];
+
+function LibyaProTechModal({ onClose }) {
+  const [sent, setSent] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState('');
+
+  async function submit(e) {
+    e.preventDefault();
+    setBusy(true); setErr('');
+    const fd = new FormData(e.target);
+    const projectType = fd.get('project_type') || 'لم أُحدد بعد';
+    const referral = fd.get('referral') || 'لم أُحدد بعد';
+    const company = fd.get('company') || '';
+    const details = fd.get('details') || '';
+
+    try {
+      await api('/support/threads', {
+        method: 'POST',
+        body: JSON.stringify({
+          name: fd.get('name'),
+          email: fd.get('email') || `noemail-${Date.now()}@libyapro.tech`,
+          phone: fd.get('phone') || null,
+          subject: `[ليبيا برو للتقنية] طلب مشروع: ${projectType}`,
+          message:
+            `نوع المشروع: ${projectType}\n` +
+            (company ? `الشركة/الجهة: ${company}\n` : '') +
+            `كيف عرفنا: ${referral}\n\n` +
+            `--- التفاصيل ---\n${details}`,
+        }),
+      });
+      setSent(true); e.target.reset();
+    } catch (e) { setErr(e.message); }
+    finally { setBusy(false); }
+  }
+
+  return (
+    <div className="fixed inset-0 z-[60] bg-ink/60 flex items-start justify-center p-3 md:p-6 fade-in overflow-y-auto" onClick={onClose}>
+      <div className="card-elevated rounded-2xl max-w-2xl w-full my-4 relative" onClick={e => e.stopPropagation()}>
+        <button onClick={onClose} className="absolute top-3 left-3 z-10 w-9 h-9 rounded-full bg-paper-soft hover:bg-line text-ink-muted hover:text-ink smooth flex items-center justify-center">
+          <Icon name="close" className="w-4 h-4" strokeWidth={2} />
+        </button>
+
+        {/* Hero */}
+        <div className="text-center pt-10 pb-6 px-6 border-b border-line">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-brand text-white mb-5 shadow-lg shadow-brand/20">
+            <Icon name="desktop" className="w-7 h-7" strokeWidth={1.6} />
+          </div>
+          <h2 className="text-3xl md:text-4xl font-display font-extrabold mb-2 tracking-tight">
+            ليبيا برو<span className="text-brand mr-2">للتقنية</span>
+          </h2>
+          <p className="text-sm text-ink-muted mb-4 max-w-md mx-auto leading-relaxed">
+            تصميم وبناء المواقع والمنصات والتطبيقات المميزة في ليبيا
+          </p>
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-paper-soft border border-line text-ink-muted text-[11px] font-semibold">
+            <span>فرع من Egypt Pro Ospra</span>
+          </div>
+          <p className="text-sm text-ink-muted mt-5 max-w-md mx-auto leading-relaxed">
+            نبني المنصات الرقمية للسوق الليبي والعربي. كود نظيف، بنية قابلة للنمو، تسليم ضمن المواعيد.
+          </p>
+        </div>
+
+        {/* Services grid */}
+        <div className="px-5 md:px-7 py-6 grid sm:grid-cols-2 gap-3 border-b border-line">
+          {LPT_SERVICES.map((s, i) => (
+            <div key={i} className="card-soft rounded-xl p-4 smooth hover:border-line-strong">
+              <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-paper-soft text-brand mb-3">
+                <Icon name={s.iconName} className="w-5 h-5" strokeWidth={1.6} />
+              </div>
+              <div className="font-bold text-sm mb-1 tracking-tight">{s.title}</div>
+              <div className="text-xs text-ink-muted leading-relaxed">{s.desc}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Stats */}
+        <div className="px-5 md:px-7 py-5 grid grid-cols-4 gap-2 border-b border-line bg-paper-soft">
+          {LPT_STATS.map((s, i) => (
+            <div key={i} className="text-center">
+              <div className="text-xl md:text-2xl font-display font-extrabold text-brand">{s.value}</div>
+              <div className="text-[10px] md:text-xs text-ink-muted font-semibold mt-0.5">{s.label}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Form */}
+        <div className="px-5 md:px-7 py-7">
+          <h3 className="text-center font-bold text-base mb-1 tracking-tight">📩 تواصل معنا الآن</h3>
+          <p className="text-center text-xs text-ink-muted mb-5">سنرد عليك خلال 24 ساعة</p>
+
+          {sent ? (
+            <div className="text-center py-6 fade-in">
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-brand-soft text-brand mb-3">
+                <Icon name="check" className="w-6 h-6" strokeWidth={2.5} />
+              </div>
+              <h4 className="text-lg font-bold mb-1 tracking-tight">تم استلام طلبك 🚀</h4>
+              <p className="text-sm text-ink-muted">سنتواصل معك قريباً جداً</p>
+              <Btn variant="secondary" size="md" onClick={onClose} className="mt-5">إغلاق</Btn>
+            </div>
+          ) : (
+            <form onSubmit={submit} className="space-y-3">
+              <div className="grid sm:grid-cols-2 gap-3">
+                <input name="name" required minLength={2} placeholder="الاسم الكامل *"
+                  className="bg-paper-soft border border-line rounded-lg px-3 py-2.5 text-sm focus:border-brand focus-ring smooth" />
+                <input name="phone" type="tel" required placeholder="رقم الهاتف *" dir="ltr"
+                  className="bg-paper-soft border border-line rounded-lg px-3 py-2.5 text-sm focus:border-brand focus-ring smooth" />
+              </div>
+              <div className="grid sm:grid-cols-2 gap-3">
+                <input name="email" type="email" placeholder="البريد الإلكتروني" dir="ltr"
+                  className="bg-paper-soft border border-line rounded-lg px-3 py-2.5 text-sm focus:border-brand focus-ring smooth" />
+                <input name="company" placeholder="الشركة / الجهة"
+                  className="bg-paper-soft border border-line rounded-lg px-3 py-2.5 text-sm focus:border-brand focus-ring smooth" />
+              </div>
+              <div className="grid sm:grid-cols-2 gap-3">
+                <select name="referral" defaultValue="لم أُحدد بعد"
+                  className="bg-paper-soft border border-line rounded-lg px-3 py-2.5 text-sm focus:border-brand focus-ring smooth">
+                  {LPT_REFERRAL.map(o => <option key={o} value={o}>كيف عرفت عنا؟ — {o}</option>)}
+                </select>
+                <select name="project_type" defaultValue="لم أُحدد بعد"
+                  className="bg-paper-soft border border-line rounded-lg px-3 py-2.5 text-sm focus:border-brand focus-ring smooth">
+                  {LPT_PROJECT_TYPES.map(o => <option key={o} value={o}>نوع المشروع — {o}</option>)}
+                </select>
+              </div>
+              <textarea name="details" required minLength={10} rows={4} placeholder="تفاصيل المشروع *"
+                className="w-full bg-paper-soft border border-line rounded-lg px-3 py-2.5 text-sm focus:border-brand focus-ring smooth resize-none" />
+              {err && <div className="bg-red-50 border border-red-200 text-red-700 rounded-lg px-3 py-2 text-sm">{err}</div>}
+              <Btn type="submit" variant="brand" size="lg" disabled={busy} className="w-full">
+                {busy ? '...' : <><Icon name="rocket" className="w-4 h-4" /><span>إرسال الطلب الآن</span></>}
+              </Btn>
+              <p className="text-[11px] text-ink-dim text-center pt-1 flex items-center justify-center gap-1.5">
+                <Icon name="lock" className="w-3 h-3" />
+                <span>معلوماتك سرّية ولن نشارك مع أي طرف ثالث</span>
+              </p>
+            </form>
+          )}
+        </div>
+
+        {/* Modal footer */}
+        <div className="px-7 py-5 border-t border-line bg-surface-soft text-center rounded-b-2xl">
+          <div className="text-xs text-ink-muted mb-1 font-semibold">Libya Pro Tech — A subsidiary of Egypt Pro Ospra</div>
+          <div className="text-[11px] text-ink-dim">🌐 بناء المستقبل الرقمي العربي</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// FLOATING CHAT WIDGET (visitor → admin live chat)
+// ============================================================
+function ChatWidget() {
+  const [open, setOpen] = useState(false);
+  const [token, setToken] = useState(() => localStorage.getItem('lp_chat_token'));
+  const [thread, setThread] = useState(null);
+  const [error, setError] = useState('');
+  const [text, setText] = useState('');
+  const [sending, setSending] = useState(false);
+  const scrollRef = useRef(null);
+
+  // Polling while open
+  useEffect(() => {
+    if (!open || !token) return;
+    let cancelled = false;
+    const fetchThread = async () => {
+      try {
+        const t = await api(`/support/threads/${token}`);
+        if (!cancelled) setThread(t);
+      } catch (e) {
+        if (e.status === 404) {
+          // token expired/invalid - clear
+          localStorage.removeItem('lp_chat_token');
+          setToken(null);
+          setThread(null);
+        }
+      }
+    };
+    fetchThread();
+    const id = setInterval(fetchThread, 4000);
+    return () => { cancelled = true; clearInterval(id); };
+  }, [open, token]);
+
+  // Auto-scroll
+  useEffect(() => {
+    if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+  }, [thread?.messages?.length]);
+
+  async function startChat(e) {
+    e.preventDefault();
+    setSending(true); setError('');
+    const fd = new FormData(e.target);
+    try {
+      const r = await api('/support/chat/start', {
+        method: 'POST',
+        body: JSON.stringify({
+          name: fd.get('name'),
+          email: fd.get('email'),
+          phone: fd.get('phone') || null,
+          initial_message: fd.get('message'),
+        }),
+      });
+      localStorage.setItem('lp_chat_token', r.visitor_token);
+      setToken(r.visitor_token);
+    } catch (e) { setError(e.message); }
+    finally { setSending(false); }
+  }
+
+  async function send() {
+    const t = text.trim();
+    if (!t || sending) return;
+    setSending(true); setError('');
+    try {
+      await api(`/support/threads/${token}/messages`, {
+        method: 'POST',
+        body: JSON.stringify({ content: t }),
+      });
+      setText('');
+      // Optimistic refresh
+      const updated = await api(`/support/threads/${token}`);
+      setThread(updated);
+    } catch (e) { setError(e.message); }
+    finally { setSending(false); }
+  }
+
+  function reset() {
+    if (!confirm('بدء محادثة جديدة؟ ستفقد المحادثة الحالية.')) return;
+    localStorage.removeItem('lp_chat_token');
+    setToken(null); setThread(null);
+  }
+
+  // Closed bubble
+  if (!open) {
+    return (
+      <button
+        onClick={() => setOpen(true)}
+        className="fixed bottom-6 left-6 z-50 bg-ink hover:bg-brand smooth text-white rounded-full shadow-2xl shadow-ink/30 px-5 py-3 flex items-center gap-2 font-semibold text-sm"
+        style={{boxShadow:'0 12px 32px -8px rgba(26,26,26,0.4)'}}
+        aria-label="فتح الدردشة">
+        <Icon name="chat" className="w-4 h-4" />
+        <span>هل تحتاج مساعدة؟</span>
+        {thread?.messages?.some(m => m.sender === 'admin' && (!thread.last_visitor_view_at || new Date(m.created_at) > new Date(thread.last_visitor_view_at))) && (
+          <span className="w-2 h-2 rounded-full bg-brand breathe"></span>
+        )}
+      </button>
+    );
+  }
+
+  return (
+    <div className="fixed bottom-6 left-6 z-50 w-[360px] max-w-[calc(100vw-3rem)] h-[520px] max-h-[calc(100vh-3rem)] flex flex-col card-elevated rounded-2xl overflow-hidden fade-in" style={{boxShadow:'0 24px 48px -12px rgba(0,0,0,0.25)'}}>
+      {/* Header */}
+      <div className="flex items-center justify-between px-4 py-3 bg-ink text-paper">
+        <div className="flex items-center gap-2.5">
+          <span className="lp-mark" style={{width:24,height:24}}><span></span></span>
+          <div className="leading-tight">
+            <div className="text-sm font-bold">دعم ليبيا برو AI</div>
+            <div className="text-[10px] text-paper/60">عادةً نرد خلال ساعات</div>
+          </div>
+        </div>
+        <div className="flex items-center gap-1">
+          {token && (
+            <button onClick={reset} title="محادثة جديدة" className="text-paper/70 hover:text-paper p-1 smooth">
+              <Icon name="plus" className="w-4 h-4" />
+            </button>
+          )}
+          <button onClick={() => setOpen(false)} className="text-paper/70 hover:text-paper p-1 smooth">
+            <Icon name="close" className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+
+      {/* Body */}
+      {!token ? (
+        <form onSubmit={startChat} className="flex-1 overflow-y-auto p-5 space-y-3 bg-paper">
+          <div className="text-center mb-2">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-brand-soft text-brand mb-3">
+              <Icon name="chat" className="w-5 h-5" />
+            </div>
+            <h3 className="font-bold text-base mb-1 tracking-tight">مرحباً بك</h3>
+            <p className="text-xs text-ink-muted">اكتب اسمك وبريدك لنبدأ المحادثة</p>
+          </div>
+          <input name="name" required minLength={2} placeholder="الاسم *"
+            className="w-full bg-paper-soft border border-line rounded-lg px-3 py-2.5 text-sm focus:border-brand focus-ring smooth" />
+          <input name="email" type="email" required dir="ltr" placeholder="البريد الإلكتروني *"
+            className="w-full bg-paper-soft border border-line rounded-lg px-3 py-2.5 text-sm focus:border-brand focus-ring smooth" />
+          <input name="phone" type="tel" dir="ltr" placeholder="+218 ... (اختياري)"
+            className="w-full bg-paper-soft border border-line rounded-lg px-3 py-2.5 text-sm focus:border-brand focus-ring smooth" />
+          <textarea name="message" required minLength={5} rows={3} placeholder="ما الذي تريد معرفته؟ *"
+            className="w-full bg-paper-soft border border-line rounded-lg px-3 py-2.5 text-sm focus:border-brand focus-ring smooth resize-none" />
+          {error && <div className="bg-red-50 border border-red-200 text-red-700 rounded-lg px-3 py-2 text-xs">{error}</div>}
+          <Btn type="submit" variant="primary" size="md" disabled={sending} className="w-full">
+            {sending ? '...' : 'بدء المحادثة'}
+          </Btn>
+          <p className="text-[10px] text-ink-dim text-center pt-1">بإرسال الرسالة، توافق على <a href="#/privacy" className="text-brand">سياسة الخصوصية</a></p>
+        </form>
+      ) : (
+        <>
+          <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3 bg-paper-soft">
+            {!thread ? (
+              <div className="text-center text-ink-dim text-sm pt-8">جارٍ التحميل...</div>
+            ) : thread.messages.length === 0 ? (
+              <div className="text-center text-ink-dim text-sm pt-8">
+                <p>تم بدء المحادثة</p>
+                <p className="text-xs mt-1">ابدأ بكتابة رسالتك</p>
+              </div>
+            ) : thread.messages.map(m => (
+              <ChatBubble key={m.id} msg={m} />
+            ))}
+            {thread?.messages?.length > 0 && thread.status === 'open' && !thread.messages.some(m => m.sender === 'admin') && (
+              <div className="text-xs text-ink-dim text-center py-2 italic">
+                سنرد عليك قريباً ✨
+              </div>
+            )}
+          </div>
+          <div className="border-t border-line p-3 bg-surface">
+            {error && <div className="bg-red-50 border border-red-200 text-red-700 rounded-md px-2 py-1 text-xs mb-2">{error}</div>}
+            <div className="flex gap-2 items-end">
+              <textarea
+                value={text} onChange={e => setText(e.target.value)}
+                onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } }}
+                placeholder="اكتب رسالتك..." rows={1}
+                className="flex-1 bg-paper-soft border border-line rounded-lg px-3 py-2 text-sm focus:border-brand focus-ring smooth resize-none max-h-[120px]" />
+              <Btn variant="primary" size="sm" onClick={send} disabled={!text.trim() || sending}>
+                <Icon name="send" className="w-4 h-4" />
+              </Btn>
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+function ChatBubble({ msg }) {
+  const isAdmin = msg.sender === 'admin';
+  return (
+    <div className={`flex gap-2 fade-in ${isAdmin ? '' : 'flex-row-reverse'}`}>
+      <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 text-xs font-bold ${
+        isAdmin ? 'bg-brand-soft text-brand border border-brand/30' : 'bg-paper-soft text-ink border border-line'
+      }`}>
+        {isAdmin ? 'L' : (msg.sender_name?.charAt(0) || '?')}
+      </div>
+      <div className="max-w-[75%]">
+        <div className={`px-3 py-2 rounded-2xl text-sm leading-relaxed ${
+          isAdmin
+            ? 'bg-surface border border-line rounded-tr-md'
+            : 'bg-ink text-paper rounded-tl-md'
+        }`}>
+          {msg.content}
+        </div>
+        <div className={`text-[10px] text-ink-dim mt-1 ${isAdmin ? '' : 'text-left'}`}>
+          {new Date(msg.created_at).toLocaleTimeString('ar', {hour:'2-digit', minute:'2-digit'})}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// ROOT
+// ============================================================
+function App() {
+  const [user, setUser] = useState(null);
+  const [authMode, setAuthMode] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [oauthError, setOauthError] = useState('');
+  const route = useHashRoute();
+
+  // معالجة العودة من Google OAuth
+  useEffect(() => {
+    // 1. فحص URL hash للتوكن (من /auth-google-success?token=...)
+    const hash = window.location.hash;
+    if (hash.includes('auth-google-success')) {
+      const m = hash.match(/token=([^&]+)/);
+      if (m && m[1]) {
+        setToken(m[1]);
+        // امسح hash
+        window.history.replaceState({}, '', window.location.pathname);
+      }
+    }
+    // 2. فحص query لأخطاء OAuth
+    const url = new URL(window.location.href);
+    const err = url.searchParams.get('google_error');
+    if (err) {
+      setOauthError(`فشل تسجيل الدخول بـ Google: ${err}`);
+      url.searchParams.delete('google_error');
+      window.history.replaceState({}, '', url.pathname + url.hash);
+    }
+  }, []);
+
+  useEffect(() => {
+    const t = getToken();
+    if (!t) { setLoading(false); return; }
+    api('/auth/me').then(u => setUser(u)).catch(() => setToken(null)).finally(() => setLoading(false));
+  }, []);
+
+  // Public routes (always available, no login required)
+  if (route === '/privacy') return <PrivacyPage />;
+  if (route === '/terms')   return <TermsPage />;
+  if (route === '/contact') return <ContactPage />;
+
+  if (loading) {
+    return <div className="h-full flex items-center justify-center bg-paper">
+      <span className="lp-mark breathe" style={{width: 40, height: 40}}><span></span></span>
+    </div>;
+  }
+  if (!user) {
+    return (<>
+      <Landing onCTA={(m) => setAuthMode(m)} />
+      <ChatWidget />
+      {authMode && <AuthModal initialMode={authMode} onAuth={u => { setUser(u); setAuthMode(null); }} onClose={() => setAuthMode(null)} />}
+      {oauthError && (
+        <div className="fixed top-6 right-6 z-[70] card-elevated rounded-xl p-4 max-w-sm fade-in border-2 border-red-200 bg-red-50">
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex-1">
+              <div className="text-sm font-bold text-red-800 mb-1">خطأ في تسجيل الدخول</div>
+              <div className="text-xs text-red-700">{oauthError}</div>
+            </div>
+            <button onClick={() => setOauthError('')} className="text-red-700 hover:text-red-900"><Icon name="close" className="w-4 h-4" /></button>
+          </div>
+        </div>
+      )}
+    </>);
+  }
+  return <MainApp user={user} onLogout={() => setUser(null)} />;
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
